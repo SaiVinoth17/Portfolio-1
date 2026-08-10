@@ -13,7 +13,7 @@ import shadowImage from "@/assets/images/shadowImage.webp";
 import skyImage from "@/assets/images/skyImage.webp";
 import cloudsImage from "@/assets/images/cloudsImage.webp";
 import aboveImage from "@/assets/images/aboveImage.webp";
-import skyightLogo from "@/assets/images/logo.svg";
+import aevionLogo from "@/assets/images/logo.svg";
 import About from './About';
 import Navbar from './Navbar';
 
@@ -37,7 +37,7 @@ const SmoothScrollHero = () => {
                 duration: 1.5,
                 ease: "power2.out"
             });
-        }, 1000); // 1 second delay where ONLY the logo is visible
+        }, 1000);
 
         return () => clearTimeout(timer);
     }, []);
@@ -111,28 +111,27 @@ const SmoothScrollHero = () => {
 
     return (
         <div ref={scopeRef} className="relative">
-            {/* 1. Logo and Navbar are visible instantly */}
+            {/* Logo and Navbar */}
             <Navbar />
 
             <div className="fixed inset-0 flex items-center justify-center z-[200] pointer-events-none">
-                <div className="w-[200px] sm:w-[220px] lg:w-[250px]">
+                <div className="w-[180px] sm:w-[220px] lg:w-[250px]">
                     <Image
                         ref={logoRef}
-                        src={skyightLogo}
-                        alt="Skyight Logo"
-                        className="w-full h-auto object-contain ml-1"
+                        src={aevionLogo}
+                        alt="Aevion Studio Logo"
+                        className="w-full h-auto object-contain brightness-0 invert"
                         priority
                     />
                 </div>
-                {/* <h1 className='text-4xl ml-1'>Jesko Jets</h1> */}
             </div>
 
-            {/* 2. Content is hidden by default with inline style to prevent "sky flash" */}
+            {/* Main Content Reveal Wrapper */}
             <div ref={revealRef} style={{ opacity: 0 }}>
                 <div className="fixed inset-0 -z-50" style={{ transform: 'translate3d(0,0,0)' }}>
                     <Image
                         src={skyImage}
-                        alt="sky"
+                        alt="Aevion environment sky"
                         fill
                         className="object-cover object-bottom"
                         priority
@@ -147,7 +146,7 @@ const SmoothScrollHero = () => {
                         className="absolute inset-0 h-full w-[1500%] sm:w-[500%]"
                         style={{
                             backgroundImage: `url(${cloudsImage.src})`,
-                            backgroundSize: '50% 100%', // Each "tile" is 100% of screen width
+                            backgroundSize: '50% 100%',
                             backgroundRepeat: 'repeat-x',
                             opacity: 0.6,
                             willChange: 'transform',
@@ -161,7 +160,7 @@ const SmoothScrollHero = () => {
                         <div className="relative w-full h-full" style={{ transformStyle: 'preserve-3d' }}>
                             <Image
                                 src={innerImage}
-                                alt="inner"
+                                alt="Aevion workspace inner view"
                                 fill
                                 className="object-cover scale-100 lg:scale-[1.3] z-10"
                                 quality={100}
@@ -170,7 +169,7 @@ const SmoothScrollHero = () => {
                             />
                             <Image
                                 src={shadowImage}
-                                alt="shadow"
+                                alt="Aevion workspace shadow"
                                 fill
                                 className="object-cover scale-100 lg:scale-[1.3] opacity-50 z-20"
                                 quality={100}
@@ -179,7 +178,7 @@ const SmoothScrollHero = () => {
                             />
                             <Image
                                 src={outerImage}
-                                alt="outer"
+                                alt="Aevion workspace outer view"
                                 fill
                                 className="object-cover scale-100 lg:scale-[1.3] z-30"
                                 quality={100}
@@ -187,43 +186,154 @@ const SmoothScrollHero = () => {
                                 unoptimized
                             />
                             <div className="absolute top-[22.5%] left-[50%] md:top-[10%] md:left-[50.3%] -translate-x-1/2 w-[50%] md:w-[24%] h-auto z-10">
-                                <Image src={aboveImage} alt="above fixture" width={400} height={200} className="object-contain" quality={100} unoptimized />
+                                <Image src={aboveImage} alt="Aevion studio architecture detail" width={400} height={200} className="object-contain" quality={100} unoptimized />
                             </div>
                         </div>
                     </div>
 
-                    <div ref={contentRef} className="absolute inset-0 z-20 flex items-center justify-between px-20 text-white pointer-events-none">
-                        <div className="hero-text-left max-w-md">
-                            <h1 className="text-4xl md:text-5xl lg:text-[66px] leading-6 sm:leading-10 md:leading-12 lg:leading-14 tracking-tight font-bold -mt-64 lg:-mt-0 -ml-10 sm:-ml-0 -mr-10 sm:-mt-40 lg:pt-10">We are<br />movement</h1>
-                            <div className="mt-20 space-y-4 lg:block hidden">
-                                <h2 className="text-base sm:text-lg leading-5 font-medium">Your<br />freedom to<br />enjoy life</h2>
-                                <p className="w-10 h-px bg-white" />
-                                <p className="md:text-[10px] lg:text-[11px] font-semibold leading-4 max-w-[300px]">Every flight is designed around your comfort, time, and ambitions.</p>
+                    {/* Clean Fluid Hero Content Grid - Zero Text Collisions */}
+                    <div ref={contentRef} className="absolute inset-0 z-20 pointer-events-none text-white">
+
+                        {/* ── MOBILE: Bottom bar, two columns, zero overflow ─── */}
+                        <div className="lg:hidden absolute bottom-16 left-0 right-0 px-5 flex items-end justify-between gap-2 overflow-hidden">
+                            {/* Left */}
+                            <div className="flex-1 min-w-0 space-y-0.5">
+                                <p
+                                    style={{
+                                        fontSize: '0.625rem',
+                                        letterSpacing: '0.12em',
+                                    }}
+                                    className="font-mono text-zinc-400 uppercase whitespace-nowrap"
+                                >
+                                    AI Software Studio
+                                </p>
+                                <h1
+                                    style={{
+                                        fontSize: 'clamp(0.9375rem, 3.2vw, 1.375rem)',
+                                        lineHeight: 1.08,
+                                        letterSpacing: '-0.02em',
+                                        fontWeight: 700,
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                    className="text-white"
+                                >
+                                    We are innovation.
+                                </h1>
+                            </div>
+
+                            {/* Right */}
+                            <div className="flex-1 min-w-0 text-right space-y-0.5">
+                                <p
+                                    style={{
+                                        fontSize: '0.625rem',
+                                        letterSpacing: '0.12em',
+                                    }}
+                                    className="font-mono text-zinc-400 uppercase whitespace-nowrap"
+                                >
+                                    Est. 2024
+                                </p>
+                                <h2
+                                    style={{
+                                        fontSize: 'clamp(0.9375rem, 3.2vw, 1.375rem)',
+                                        lineHeight: 1.08,
+                                        letterSpacing: '-0.02em',
+                                        fontWeight: 700,
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                    className="text-white"
+                                >
+                                    We are engineering.
+                                </h2>
                             </div>
                         </div>
-                        <div className="hero-text-right max-w-md flex flex-col items-end">
-                            <h1 className="text-4xl md:text-5xl lg:text-[60px] font-bold leading-6 sm:leading-10 md:leading-12 lg:leading-14 text-right mt-96 sm:mt-0 mr-88 sm:mr-0 md:pt-60 lg:pt-20">We are<br />distinction</h1>
+
+                        {/* ── DESKTOP: Classic two-column split layout ─────────── */}
+                        <div className="hidden lg:flex items-center justify-between h-full px-12 lg:px-20 max-w-7xl mx-auto left-0 right-0 absolute inset-0">
+                            {/* Left Column */}
+                            <div className="hero-text-left space-y-6 max-w-md">
+                                <h1
+                                    style={{
+                                        fontSize: 'var(--text-display)',
+                                        lineHeight: 'var(--lh-display)',
+                                        letterSpacing: 'var(--ls-display)',
+                                        fontWeight: 700,
+                                    }}
+                                    className="text-white"
+                                >
+                                    We are<br />innovation
+                                </h1>
+                                <div className="space-y-4 pt-2">
+                                    <h2
+                                        style={{
+                                            fontSize: 'var(--text-h3)',
+                                            lineHeight: 'var(--lh-subheading)',
+                                            letterSpacing: 'var(--ls-subheading)',
+                                            fontWeight: 500,
+                                        }}
+                                        className="text-zinc-200"
+                                    >
+                                        Your vision<br />transformed into power
+                                    </h2>
+                                    <div className="w-10 h-px bg-white/40" />
+                                    <p
+                                        style={{
+                                            fontSize: 'var(--text-sm)',
+                                            lineHeight: 'var(--lh-body)',
+                                        }}
+                                        className="text-zinc-300 font-sans max-w-[280px]"
+                                    >
+                                        Every digital solution is engineered around your growth, scale, and strategic ambitions.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Right Column */}
+                            <div className="hero-text-right max-w-md flex flex-col items-end text-right">
+                                <h1
+                                    style={{
+                                        fontSize: 'var(--text-display)',
+                                        lineHeight: 'var(--lh-display)',
+                                        letterSpacing: 'var(--ls-display)',
+                                        fontWeight: 700,
+                                    }}
+                                    className="text-white"
+                                >
+                                    We are<br />engineering
+                                </h1>
+                            </div>
                         </div>
+
                     </div>
 
-                    <div className="scroll-indicator absolute bottom-20 right-20 z-20 text-white md:w-[30%] lg:w-[25%]">
-                        <div className="mb-4 h-[1px] w-full bg-white" />
-                        <div className="hidden sm:flex items-center justify-between">
-                            <div className="flex items-center gap-2 text-[8px] lg:text-[9px] font-bold tracking-tight">
+                    {/* Scroll Indicator — hidden on mobile to avoid bottom-bar collision */}
+                    <div className="scroll-indicator hidden sm:block absolute bottom-12 right-6 sm:right-12 lg:right-20 z-20 text-white w-[180px]">
+                        <div className="mb-3 h-[1px] w-full bg-white/40" />
+                        <div
+                            style={{ fontSize: 'var(--text-xs)' }}
+                            className="flex items-center justify-between font-mono tracking-widest text-zinc-300 whitespace-nowrap"
+                        >
+                            <div className="flex items-center gap-1.5 font-bold">
                                 <div className="flex flex-col -space-y-2">
-                                    <ChevronDown size={15} />
-                                    <ChevronDown size={15} className='-mt-[11px]' />
-                                    <ChevronDown size={15} className='-mt-[11px]' />
+                                    <ChevronDown size={14} />
+                                    <ChevronDown size={14} className='-mt-[10px]' />
                                 </div>
                                 <span>SCROLL DOWN</span>
                             </div>
-                            <p className='text-[8px] lg:text-[9px] tracking-tight'>TO START THE JOURNEY</p>
+                            <span>TO EXPLORE</span>
                         </div>
                     </div>
 
-                    <div ref={secondSectionRef} className="absolute inset-0 z-30 flex flex-col items-center justify-center text-left text-white px-4 sm:px-8 md:px-10 pointer-events-none opacity-0">
-                        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[45px] w-full sm:max-w-6xl leading-8 sm:leading-10 md:leading-12 lg:leading-14">
-                            <span className="font-bold tracking-tight">Jesko Jets®</span> is a private aviation operator with over 5,000 missions completed across 150+ countries. From international executives to global industries, our clients trust us to deliver on time, every time.
+                    {/* Second Section Reveal */}
+                    <div ref={secondSectionRef} className="absolute inset-0 z-30 flex flex-col items-center justify-center text-center text-white px-6 sm:px-12 max-w-5xl mx-auto pointer-events-none opacity-0">
+                        <h2
+                            style={{
+                                fontSize: 'var(--text-h2)',
+                                lineHeight: 'var(--lh-subheading)',
+                                letterSpacing: 'var(--ls-subheading)',
+                            }}
+                            className="font-bold text-zinc-100"
+                        >
+                            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Aevion Studio®</span> is a premium AI software & digital engineering studio. From venture-backed startups to global enterprises, founders trust us to build fast, scale seamlessly, and lead.
                         </h2>
                     </div>
                 </div>

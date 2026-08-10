@@ -1,8 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 import FloatingButton from "@/components/FloatingButton";
 import LenisProvider from "./providers/LenisProvider";
+import EnhancementProvider from "@/components/enhancements/EnhancementProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,20 +17,113 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Jets Animated Landing Page",
-  description: "Jets Animated Landing Page built for jet agencies and travel companies.",
+  title: "Aevion Studio — AI Software & Digital Engineering Studio by Sai Vinoth",
+  description: "Aevion Studio is an AI software & digital engineering studio founded by Sai Vinoth. Building modern web applications, SaaS platforms, AI solutions, and custom software for high-growth businesses.",
+  keywords: [
+    "AI Software Development",
+    "Digital Engineering Studio",
+    "Sai Vinoth",
+    "Modern Web Applications",
+    "SaaS Development",
+    "Business Automation",
+    "Custom Software Studio",
+    "Nilgiris Explorers",
+    "Ooty Mistwings",
+    "Gaming Kingdom",
+    "Aevion Studio"
+  ],
+  authors: [{ name: "Sai Vinoth" }, { name: "Aevion Studio" }],
+  metadataBase: new URL("https://aevion.studio"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Aevion Studio — AI Software & Digital Engineering Studio by Sai Vinoth",
+    description: "Building modern web applications, SaaS platforms, AI solutions, and custom software for high-growth businesses.",
+    url: "https://aevion.studio",
+    siteName: "Aevion Studio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aevion Studio — AI Software & Digital Engineering Studio by Sai Vinoth",
+    description: "Building modern web applications, SaaS platforms, AI solutions, and custom software for high-growth businesses.",
+  },
 };
 
 export default function RootLayout({ children }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://aevion.studio/#organization",
+        "name": "Aevion Studio",
+        "url": "https://aevion.studio",
+        "email": "hello@aevion.studio",
+        "founder": {
+          "@type": "Person",
+          "name": "Sai Vinoth",
+          "jobTitle": "Founder & Software Engineer"
+        },
+        "description": "A premium AI Software & Digital Engineering Studio building modern websites, web applications, AI solutions, SaaS products, and custom software.",
+        "sameAs": ["https://twitter.com/aevionstudio", "https://github.com/aevionstudio"]
+      },
+      {
+        "@type": "Person",
+        "@id": "https://aevion.studio/#saivinoth",
+        "name": "Sai Vinoth",
+        "jobTitle": "Software Engineer & Founder",
+        "worksFor": {
+          "@id": "https://aevion.studio/#organization"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Aevion Studio Motion OS",
+        "operatingSystem": "Web",
+        "applicationCategory": "DeveloperApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://aevion.studio"
+          }
+        ]
+      }
+    ]
+  };
+
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
+      <head>
+        <meta name="theme-color" content="#000000" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white selection:bg-emerald-500 selection:text-black`}
       >
         <LenisProvider>
-          <Navbar />
-          {children}
-          <FloatingButton />
+          <EnhancementProvider>
+            <Navbar />
+            {children}
+            <Footer />
+            <FloatingButton />
+          </EnhancementProvider>
         </LenisProvider>
       </body>
     </html>
