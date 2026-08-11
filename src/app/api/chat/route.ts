@@ -11,10 +11,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Prompt is required." }, { status: 400 });
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY?.trim();
 
     if (!apiKey) {
-      console.error("[Sai Vinoth AI Route Error] GROQ_API_KEY is missing.");
+      console.error("[Sai Vinoth AI Route Error] GROQ_API_KEY is missing on the server.");
       return NextResponse.json(
         { error: "Server Configuration Error: GROQ_API_KEY environment variable is missing on the server." },
         { status: 500 }
@@ -87,9 +87,8 @@ ${studioContext}
 
     const modelsToTry = [
       "llama-3.3-70b-versatile",
-      "openai/gpt-oss-120b",
-      "moonshotai/kimi-k2-instruct",
-      "llama-3.1-70b-versatile",
+      "llama-3.1-8b-instant",
+      "mixtral-8x7b-32768",
     ];
 
     const groq = new Groq({ apiKey });
