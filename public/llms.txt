@@ -1,0 +1,26 @@
+# Aevion Studio — Creative Technology & AI Software Studio
+
+> Aevion Studio is an AI software & digital engineering studio founded by Sai Vinoth. We engineer high-performance web applications, autonomous AI pipelines, SaaS platforms, and GPU-accelerated creative motion systems.
+
+## Official Canonical URLs
+- Website: https://aevion.studio
+- Studio: https://aevion.studio/studio
+- Work & Case Studies: https://aevion.studio/projects
+- First-Party Products: https://aevion.studio/products
+- Open Source: https://aevion.studio/open-source
+- Services & Capabilities: https://aevion.studio/services
+- 3D & WebGL Lab: https://aevion.studio/showcase
+- Process & Methodology: https://aevion.studio/process
+- Contact & Configurator: https://aevion.studio/contact
+
+## Core Disciplines & Services
+- Autonomous AI & LLM Systems (Groq Llama 3.3, Streaming SSE, Vector RAG)
+- Modern Web Applications (Next.js 16 App Router, React 19, TypeScript)
+- GPU-Accelerated Motion & WebGL (GSAP 3 ScrollTrigger, Three.js, Shaders)
+- Full-Stack SaaS Engineering (PostgreSQL, Supabase, Stripe, Edge CDN)
+- High-Performance UI/UX & Design Systems (Tailwind CSS v4, Zero-CLS)
+
+## Founder & Leadership
+- Founder & Software Architect: Sai Vinoth (Sai Rio)
+- Location: Global / India (Ooty, Nilgiris)
+- Contact: hello@aevion.studio

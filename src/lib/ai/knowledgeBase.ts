@@ -83,7 +83,7 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     category: "technologies",
     title: "Technology Stack",
     keywords: ["tech", "technology", "stack", "react", "next", "tailwind", "typescript", "framework", "gsap", "lenis"],
-    content: "Our core production stack is engineered for 120 FPS performance, strict type safety, and maximum scalability.",
+    content: "Our core production stack is engineered for smooth 60 FPS performance, strict type safety, and maximum scalability.",
     details: [
       "Frontend: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4",
       "Motion & 3D: Framer Motion, GSAP 3 (ScrollTrigger), Lenis Smooth Scroll, WebGL Shaders",
@@ -121,9 +121,9 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     content: "We follow a 4-phase agile engineering methodology designed to take projects from concept to edge production smoothly.",
     details: [
       "1. Discovery & System Architecture: Requirements mapping and technical spec design.",
-      "2. Interactive Motion Prototype: Prototyping 60-120 FPS visual interactions.",
+      "2. Interactive Motion Prototype: Prototyping GPU-accelerated visual interactions.",
       "3. Production Engineering: Strict TypeScript, Next.js App Router, and component building.",
-      "4. Edge Deployment & Optimization: Lighthouse 95+ audit, global CDN delivery, and continuous monitoring.",
+      "4. Edge Deployment & Optimization: Lighthouse audit, global CDN delivery, and continuous monitoring.",
     ],
     suggestedFollowUps: [
       "How much does a project cost?",

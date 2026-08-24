@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import FloatingButton from "@/components/FloatingButton";
 import LenisProvider from "./providers/LenisProvider";
 import EnhancementProvider from "@/components/enhancements/EnhancementProvider";
+import PageBackground from "@/components/PageBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -87,7 +88,7 @@ export default function RootLayout({ children }) {
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "INR"
         }
       },
       {
@@ -109,6 +110,9 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="theme-color" content="#000000" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/22b4c73e6141de7c9937f42cb58bdb4b?family=GT+America+Expanded+Bold" />
+        <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/879269be836bf8d970d4ef4fb0e54f42?family=GT+America+Extended+Regular" />
+        <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/40794b621791bf498f2f06237862031f?family=GT+America+Extended+Bold" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

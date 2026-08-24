@@ -263,15 +263,20 @@ export default function IntroAnimation() {
         return () => { clearTimeout(timer1); clearTimeout(timer2); };
     }, []);
 
-    // --- Random Scatter Positions ---
+    // --- Deterministic Scatter Positions (Pure & SSR-safe) ---
     const scatterPositions = useMemo(() => {
-        return IMAGES.map(() => ({
-            x: (Math.random() - 0.5) * 1500,
-            y: (Math.random() - 0.5) * 1000,
-            rotation: (Math.random() - 0.5) * 180,
-            scale: 0.6,
-            opacity: 0,
-        }));
+        return IMAGES.map((_, i) => {
+            const pseudo1 = ((Math.sin(i * 12.9898 + 78.233) * 43758.5453) % 1 + 1) % 1;
+            const pseudo2 = ((Math.cos(i * 4.898 + 12.123) * 43758.5453) % 1 + 1) % 1;
+            const pseudo3 = ((Math.sin(i * 93.9898 + 67.345) * 43758.5453) % 1 + 1) % 1;
+            return {
+                x: (pseudo1 - 0.5) * 1500,
+                y: (pseudo2 - 0.5) * 1000,
+                rotation: (pseudo3 - 0.5) * 180,
+                scale: 0.6,
+                opacity: 0,
+            };
+        });
     }, []);
 
     // --- Render Loop (Manual Calculation for Morph) ---

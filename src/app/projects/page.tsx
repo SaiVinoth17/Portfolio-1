@@ -1,223 +1,233 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import {
-  FolderGit2,
-  ExternalLink,
-  Github,
-  CheckCircle2,
-  Cpu,
-  ArrowUpRight,
-  Layers,
-  Sparkles,
-} from "lucide-react";
+import React, { useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { ExternalLink, Github, ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 
-const CASE_STUDIES = [
+const PROJECTS = [
   {
-    id: "nilgiris-explorers",
+    id: "nilgiris",
+    num: "001",
     title: "Nilgiris Explorers",
-    subtitle: "Premium Tourism & Experience Discovery Platform",
-    category: "Web Application • Travel Engine",
-    overview: "A premium tourism discovery platform engineered to showcase destination guides, interactive experience bookings, and local exploration for the Nilgiris (Ooty) region.",
-    problem: "Fragmented destination information and slow, outdated travel booking interfaces caused poor user retention for Nilgiris visitors.",
-    solution: "Built a high-performance Next.js 16 web application with interactive visual maps, fluid motion transitions, mobile-first optimization, and AI context recommendations.",
-    architecture: ["Next.js 16 App Router", "React 19 & TypeScript", "Tailwind CSS v4", "SEO Engine & Structured Schema"],
-    metrics: "Lighthouse 98 Performance • Sub-second Page Loads • 100% Mobile Responsive",
-    link: "https://nilgirisexplorers.com",
-    github: "https://github.com/aevionstudio",
+    type: "Travel & Discovery Platform",
+    year: "2024",
+    stack: ["Next.js 16", "Supabase", "Framer Motion", "MapboxGL"],
+    desc: "Immersive travel discovery platform for the Nilgiri Hills with real-time trail mapping, AI-curated itineraries, and dynamic terrain visualization.",
+    status: "SHIPPED",
+    color: "#f59e0b",
+    accent: "#fbbf24",
+    tags: ["AI", "Maps", "Discovery"],
+    link: "/projects/nilgiris-explorers",
   },
   {
-    id: "ooty-mistwings",
+    id: "mistwings",
+    num: "002",
     title: "Ooty Mistwings",
-    subtitle: "Cinematic Destination & Visual Storytelling Platform",
-    category: "Creative Web Engineering • Destination Discovery",
-    overview: "An immersive digital platform presenting the beauty of Ooty and the Nilgiris through cinematic UI, responsive visual storytelling, and fluid scroll interactions.",
-    problem: "Traditional travel blogs lacked visual immersion, resulting in low engagement times for prospective travelers.",
-    solution: "Engineered a cinematic storytelling layout with GPU-accelerated motion, parallax scroll dynamics, and responsive image optimizations.",
-    architecture: ["GSAP 3 ScrollTrigger", "Lenis Smooth Scroll", "TypeScript", "Responsive Fluid Layout"],
-    metrics: "120 FPS Motion Rendering • Zero Layout Shift (CLS: 0)",
-    link: "https://ootymistwings.com",
-    github: "https://github.com/aevionstudio",
+    type: "Premium Hospitality Experience",
+    year: "2024",
+    stack: ["Next.js", "GSAP", "Three.js", "Stripe"],
+    desc: "Luxury booking experience with cinematic WebGL room previews, smooth scroll storytelling, and integrated payment flows for a Nilgiri resort.",
+    status: "SHIPPED",
+    color: "#a78bfa",
+    accent: "#c4b5fd",
+    tags: ["3D", "Booking", "Luxury"],
+    link: "/projects/ooty-mistwings",
   },
   {
     id: "gaming-kingdom",
+    num: "003",
     title: "Gaming Kingdom",
-    subtitle: "High-Performance Interactive Gaming Community Hub",
-    category: "Frontend Architecture • Community Hub",
-    overview: "A fast, visually engaging web platform designed to showcase modern frontend engineering, high responsiveness, and interactive UI components for gaming enthusiasts.",
-    problem: "Gaming community hubs frequently suffer from heavy bundle sizes, slow re-renders, and poor mobile responsiveness.",
-    solution: "Designed a lightweight, modular component architecture with instant state updates, dynamic filtering, and dark glassmorphic styling.",
-    architecture: ["React 19 & TypeScript", "Tailwind v4", "Modular State Management", "Web Audio Feedback"],
-    metrics: "60 FPS Interactive Feedback • Sub-50ms Response Latency",
-    link: "https://aevion.studio",
-    github: "https://github.com/aevionstudio",
+    type: "Interactive Gaming Portal",
+    year: "2023",
+    stack: ["React", "Node.js", "Socket.io", "PostgreSQL"],
+    desc: "Real-time multiplayer gaming hub with live leaderboards, social features, and a custom game engine built on WebSockets.",
+    status: "SHIPPED",
+    color: "#34d399",
+    accent: "#6ee7b7",
+    tags: ["Real-Time", "Gaming", "Social"],
+    link: "/projects/gaming-kingdom",
   },
   {
-    id: "aevion-studio-os",
-    title: "Aevion Studio Motion OS v2.0",
-    subtitle: "Awwwards-Grade Interactive Web Operating System",
-    category: "Creative Engineering • AI Assistant",
-    overview: "An interactive web operating system integrated directly into the portfolio website featuring magnetic cursor physics, ambient background intelligence, and Groq-powered AI Assistant.",
-    problem: "Standard web portfolios feel like static brochures rather than demonstrating actual engineering capabilities.",
-    solution: "Transformed the website into a living motion operating system with real-time telemetry, Web Audio API sound synthesis, and interactive CLI terminal.",
-    architecture: ["Next.js 16", "Groq Llama 3.3 SDK", "GSAP 3 & Framer Motion", "Web Audio API Synth"],
-    metrics: "Awwwards-Grade Creative Experience • 100% Type Safe",
-    link: "https://aevion.studio",
-    github: "https://github.com/aevionstudio",
+    id: "aevion-os",
+    num: "004",
+    title: "Aevion Studio OS",
+    type: "Motion Operating System",
+    year: "2024",
+    stack: ["Next.js 16", "Three.js", "GSAP", "Framer Motion"],
+    desc: "The Aevion brand experience itself — a motion-first portfolio OS with WebGL experiments, command palette, and a 941-frame scroll sequence.",
+    status: "LIVE",
+    color: "#f43f5e",
+    accent: "#fb7185",
+    tags: ["WebGL", "GSAP", "Brand"],
+    link: "/",
   },
 ];
 
+function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: number }) {
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 40, rotate: index % 2 === 0 ? -1 : 1 }}
+      animate={inView ? { opacity: 1, y: 0, rotate: 0 } : {}}
+      transition={{ delay: index * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative group cursor-pointer"
+    >
+      {/* Film negative frame */}
+      <motion.div
+        animate={{ scale: hovered ? 1.01 : 1, rotate: hovered ? (index % 2 === 0 ? -0.5 : 0.5) : 0 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="relative rounded-3xl overflow-hidden"
+        style={{
+          background: `linear-gradient(135deg, #18140e 0%, #0f0c08 100%)`,
+          border: `1px solid ${project.color}25`,
+          boxShadow: hovered ? `0 30px 80px -20px ${project.color}30, 0 0 0 1px ${project.color}15` : "0 8px 32px rgba(0,0,0,0.5)",
+        }}
+      >
+        {/* Film strip holes top */}
+        <div className="flex justify-around px-4 py-2 border-b" style={{ borderColor: `${project.color}15` }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="w-3 h-2 rounded-sm" style={{ background: "#0a0805", border: `1px solid ${project.color}20` }} />
+          ))}
+        </div>
+
+        <div className="p-8">
+          {/* Header row */}
+          <div className="flex items-start justify-between mb-6">
+            <div>
+              <div className="text-[10px] font-mono font-bold tracking-widest mb-1" style={{ color: project.color }}>
+                FRAME {project.num} · {project.year}
+              </div>
+              <div
+                className="inline-block text-[10px] font-mono px-2.5 py-0.5 rounded-full"
+                style={{ background: `${project.color}15`, color: project.accent, border: `1px solid ${project.color}25` }}
+              >
+                {project.status}
+              </div>
+            </div>
+            <Link
+              href={project.link}
+              className="p-2.5 rounded-xl transition-all hover:scale-110"
+              style={{ background: `${project.color}15`, border: `1px solid ${project.color}25` }}
+            >
+              <ExternalLink size={16} style={{ color: project.color }} />
+            </Link>
+          </div>
+
+          {/* Title */}
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1">{project.title}</h3>
+          <p className="text-xs font-mono mb-5" style={{ color: `${project.color}90` }}>{project.type}</p>
+
+          {/* Description */}
+          <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.desc}</p>
+
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2 mb-6">
+            {project.tags.map((t) => (
+              <span key={t} className="text-[10px] font-mono px-2.5 py-1 rounded-lg" style={{ background: `${project.color}10`, color: project.accent, border: `1px solid ${project.color}20` }}>
+                {t}
+              </span>
+            ))}
+          </div>
+
+          {/* Stack */}
+          <div className="flex flex-wrap gap-2 pt-5 border-t" style={{ borderColor: `${project.color}12` }}>
+            {project.stack.map((s) => (
+              <span key={s} className="text-[10px] font-mono px-2.5 py-1 rounded-lg border border-white/8 text-zinc-500">{s}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Film strip holes bottom */}
+        <div className="flex justify-around px-4 py-2 border-t" style={{ borderColor: `${project.color}15` }}>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div key={i} className="w-3 h-2 rounded-sm" style={{ background: "#0a0805", border: `1px solid ${project.color}20` }} />
+          ))}
+        </div>
+
+        {/* Spotlight overlay on hover */}
+        <motion.div
+          className="absolute inset-0 rounded-3xl pointer-events-none"
+          animate={{ opacity: hovered ? 1 : 0 }}
+          style={{ background: `radial-gradient(ellipse at 30% 30%, ${project.color}08, transparent 60%)` }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+}
+
 export default function ProjectsPage() {
   return (
-    <main className="min-h-screen bg-black text-white pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto selection:bg-emerald-500 selection:text-black">
-      {/* Hero Header */}
-      <section className="space-y-6 text-center max-w-4xl mx-auto mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono"
-        >
-          <FolderGit2 size={14} /> FEATURED CASE STUDIES
-        </motion.div>
+    <main
+      className="min-h-screen text-white selection:bg-amber-500 selection:text-black"
+      style={{ background: "linear-gradient(180deg, #110f0e 0%, #0d0b09 50%, #0a0806 100%)" }}
+    >
+      {/* Film grain texture overlay */}
+      <div
+        className="pointer-events-none fixed inset-0 z-[1] opacity-[0.04]"
+        style={{
+          backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E\")",
+          backgroundSize: "200px 200px",
+        }}
+      />
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          style={{ fontSize: 'var(--text-h1)', lineHeight: 'var(--lh-heading)', letterSpacing: 'var(--ls-heading)' }}
-          className="font-bold text-white font-sans"
-        >
-          Featured Projects & Engineering <br />
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            Case Studies.
-          </span>
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          style={{ fontSize: 'var(--text-body)', lineHeight: 'var(--lh-body)' }}
-          className="text-zinc-400 max-w-3xl mx-auto"
-        >
-          Detailed engineering breakdowns of our flagship platforms including Nilgiris Explorers, Ooty Mistwings, Gaming Kingdom, and Aevion Studio Motion OS.
-        </motion.p>
-      </section>
-
-      {/* Case Studies List */}
-      <section className="space-y-12 mb-24">
-        {CASE_STUDIES.map((project) => (
-          <motion.article
-            key={project.id}
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="p-8 sm:p-12 rounded-3xl bg-zinc-950/90 border border-white/10 space-y-8 hover:border-emerald-500/40 transition-colors relative overflow-hidden"
+      <div className="relative z-10 pt-32 pb-24 px-4 sm:px-8 max-w-6xl mx-auto">
+        {/* Hero */}
+        <section className="mb-20 max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-400 text-xs font-mono mb-8"
           >
-            {/* Top Bar */}
-            <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-white/10 pb-6">
-              <div>
-                <span className="text-xs font-mono text-emerald-400 uppercase tracking-widest">{project.category}</span>
-                <h2
-                  style={{ fontSize: 'var(--text-h2)', lineHeight: 'var(--lh-subheading)', letterSpacing: 'var(--ls-heading)' }}
-                  className="font-bold text-white mt-1"
-                >
-                  <Link href={`/projects/${project.id}`} className="hover:text-emerald-300 transition-colors">
-                    {project.title}
-                  </Link>
-                </h2>
-                <p className="text-sm text-zinc-400 mt-1">{project.subtitle}</p>
-              </div>
+            <Sparkles size={12} /> FILM LAB · {PROJECTS.length} NEGATIVES DEVELOPED
+          </motion.div>
 
-              <div className="flex items-center gap-3">
-                <Link
-                  href={`/projects/${project.id}`}
-                  className="px-4 py-2.5 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-white font-bold text-xs rounded-xl transition-all inline-flex items-center gap-1.5 cursor-pointer"
-                >
-                  Deep Case Study <ArrowUpRight size={14} />
-                </Link>
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-white rounded-xl transition-colors cursor-pointer"
-                  title="View GitHub"
-                >
-                  <Github size={18} />
-                </a>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-xl transition-all inline-flex items-center gap-1.5 cursor-pointer shadow-md shadow-emerald-500/20"
-                >
-                  Live Demo <ExternalLink size={14} />
-                </a>
-              </div>
-            </div>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
+          >
+            <span className="text-white">Work that</span>
+            <br />
+            <span style={{ background: "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              left a mark.
+            </span>
+          </motion.h1>
 
-            {/* Content Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-              <div className="space-y-3">
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Layers className="text-emerald-400" size={18} /> Problem & Overview
-                </h3>
-                <p className="text-zinc-300 leading-relaxed">{project.overview}</p>
-                <div className="p-4 rounded-2xl bg-zinc-900/60 border border-white/5 space-y-1">
-                  <span className="text-xs font-mono text-amber-400">Core Challenge</span>
-                  <p className="text-xs text-zinc-300">{project.problem}</p>
-                </div>
-              </div>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.25 }}
+            className="text-zinc-500 text-sm max-w-lg leading-relaxed"
+          >
+            Each project is a frame developed in the darkroom. Built with precision, shipped with intent.
+          </motion.p>
+        </section>
 
-              <div className="space-y-3">
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Sparkles className="text-emerald-400" size={18} /> Solution & Architecture
-                </h3>
-                <p className="text-zinc-300 leading-relaxed">{project.solution}</p>
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {project.architecture.map((item, i) => (
-                    <span
-                      key={i}
-                      className="text-xs bg-zinc-900 border border-white/10 text-emerald-300 px-3 py-1 rounded-full font-mono flex items-center gap-1.5"
-                    >
-                      <CheckCircle2 size={12} className="text-emerald-400" />
-                      {item}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
+        {/* Projects Grid */}
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-24">
+          {PROJECTS.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
+        </section>
 
-            {/* Performance Benchmark Bar */}
-            <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between font-mono text-xs text-emerald-400">
-              <div className="flex items-center gap-2">
-                <Cpu size={16} />
-                <span>Performance Benchmark</span>
-              </div>
-              <span className="font-bold">{project.metrics}</span>
-            </div>
-          </motion.article>
-        ))}
-      </section>
-
-      {/* CTA Box */}
-      <section className="text-center p-12 rounded-3xl bg-zinc-950 border border-white/10 space-y-6">
-        <h2
-          style={{ fontSize: 'var(--text-h2)', lineHeight: 'var(--lh-subheading)' }}
-          className="font-bold text-white"
-        >Have a Project Requiring High Engineering Standards?</h2>
-        <p className="text-zinc-400 max-w-xl mx-auto text-sm">
-          Discuss your case study requirements directly with founder Sai Vinoth.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-bold rounded-2xl hover:bg-zinc-200 transition-all text-sm"
-        >
-          Start a Case Study <ArrowUpRight size={16} />
-        </Link>
-      </section>
+        {/* More work CTA */}
+        <section className="text-center">
+          <p className="text-zinc-600 font-mono text-xs mb-6">MORE IN THE DARKROOM — CONTACT FOR FULL PORTFOLIO</p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-black"
+            style={{ background: "linear-gradient(135deg, #f59e0b, #ef4444)", boxShadow: "0 0 40px #f59e0b30" }}
+          >
+            Request Full Portfolio <ArrowUpRight size={16} />
+          </Link>
+        </section>
+      </div>
     </main>
   );
 }

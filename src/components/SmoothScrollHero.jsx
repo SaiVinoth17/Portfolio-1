@@ -15,7 +15,6 @@ import cloudsImage from "@/assets/images/cloudsImage.webp";
 import aboveImage from "@/assets/images/aboveImage.webp";
 import aevionLogo from "@/assets/images/logo.svg";
 import About from './About';
-import Navbar from './Navbar';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -111,9 +110,6 @@ const SmoothScrollHero = () => {
 
     return (
         <div ref={scopeRef} className="relative">
-            {/* Logo and Navbar */}
-            <Navbar />
-
             <div className="fixed inset-0 flex items-center justify-center z-[200] pointer-events-none">
                 <div className="w-[180px] sm:w-[220px] lg:w-[250px]">
                     <Image

@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Sparkles,
   X,
   Send,
   User,
@@ -18,8 +17,6 @@ import {
   Mic,
   MicOff,
   Paperclip,
-  PanelLeftClose,
-  PanelLeft,
   Search,
   Plus,
   Cpu,
@@ -27,8 +24,15 @@ import {
   Zap,
   Code2,
   CornerDownLeft,
+  MoreHorizontal,
+  Sparkles,
+  PanelLeftClose,
+  PanelLeft,
 } from "lucide-react";
 
+// ─────────────────────────────────────────────
+//  Types (UNCHANGED)
+// ─────────────────────────────────────────────
 interface ProjectCardData {
   title: string;
   description: string;
@@ -45,47 +49,179 @@ interface Message {
   isStreaming?: boolean;
 }
 
+// ─────────────────────────────────────────────
+//  Quick Action Chips (replaces large cards)
+// ─────────────────────────────────────────────
+const QUICK_CHIPS = [
+  { icon: Code2,     label: "Build",    query: "Help me architect a new product from scratch" },
+  { icon: Terminal,  label: "Analyze",  query: "Analyze the architecture and tech stack of Aevion Studio" },
+  { icon: Sparkles,  label: "Design",   query: "What design system principles does Aevion follow?" },
+  { icon: Cpu,       label: "Code",     query: "Show me a Next.js 16 App Router pattern with server actions" },
+  { icon: Search,    label: "Research", query: "Research: What is the best AI stack for a new SaaS product?" },
+  { icon: Zap,       label: "Explore",  query: "Tell me about all of Aevion Studio's featured projects" },
+];
+
+// Action cards still used for sidebar history references
 const ACTION_CARDS = [
-  {
-    icon: FolderGit2,
-    title: "Nilgiris Explorers",
-    subtitle: "Explore tourism & travel platform",
-    query: "Tell me about Nilgiris Explorers",
-  },
-  {
-    icon: Code2,
-    title: "Engineering Philosophy",
-    subtitle: "Architecture & trade-offs",
-    query: "What is your engineering philosophy?",
-  },
-  {
-    icon: Terminal,
-    title: "Tech Stack & Motion",
-    subtitle: "Next.js 16, GSAP, Framer Motion",
-    query: "What technology stack do you use?",
-  },
-  {
-    icon: Zap,
-    title: "Book a Project",
-    subtitle: "Collaborate with Aevion Studio",
-    query: "How can we work together with Aevion Studio?",
-  },
+  { icon: FolderGit2, title: "Nilgiris Explorers", subtitle: "Explore tourism & travel platform", query: "Tell me about Nilgiris Explorers" },
+  { icon: Code2,      title: "Engineering Philosophy", subtitle: "Architecture & trade-offs",       query: "What is your engineering philosophy?" },
+  { icon: Terminal,   title: "Tech Stack & Motion",    subtitle: "Next.js 16, GSAP, Framer Motion", query: "What technology stack do you use?" },
+  { icon: Zap,        title: "Book a Project",         subtitle: "Collaborate with Aevion Studio",  query: "How can we work together with Aevion Studio?" },
 ];
 
 const INITIAL_MESSAGE: Message = {
   id: "1",
   sender: "ai",
-  text: "Hey! I'm Sai Vinoth, founder of Aevion Studio. Ask me about my featured projects (Nilgiris Explorers, Ooty Mistwings), engineering decisions, or general technical questions.",
+  text: "Hey! I'm Aevion AI, the official AI assistant for Aevion Studio. Ask me about our featured projects (Nilgiris Explorers, Ooty Mistwings), founder Sai Vinoth, engineering architecture, or general technical questions.",
   suggestedFollowUps: [
-    "Who built this website?",
+    "Who is Sai Vinoth?",
     "Tell me about Nilgiris Explorers",
-    "How do you approach engineering?",
+    "What is your tech stack?",
   ],
 };
 
+// ─────────────────────────────────────────────
+//  AI Core — animated indicator
+// ─────────────────────────────────────────────
+type AIState = "idle" | "thinking" | "generating" | "completed";
+
+function AICore({ state }: { state: AIState }) {
+  const isActive = state === "thinking" || state === "generating";
+
+  return (
+    <div className="relative flex items-center justify-center w-16 h-16 mx-auto">
+      {/* Outer atmospheric ring */}
+      <motion.div
+        className="absolute inset-0 rounded-full"
+        style={{ background: "radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%)" }}
+        animate={isActive ? { scale: [1, 1.3, 1], opacity: [0.6, 1, 0.6] } : { scale: [1, 1.05, 1], opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: isActive ? 1.2 : 3, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      {/* Orbit ring 1 — visible during thinking/generating */}
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.6 }}
+            animate={{ opacity: 1, scale: 1, rotate: 360 }}
+            exit={{ opacity: 0, scale: 0.6 }}
+            transition={{ rotate: { duration: 2, repeat: Infinity, ease: "linear" }, opacity: { duration: 0.4 } }}
+            className="absolute w-14 h-14 rounded-full border border-emerald-500/20"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Orbit ring 2 — counter-rotate, generating only */}
+      <AnimatePresence>
+        {state === "generating" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, rotate: -360 }}
+            exit={{ opacity: 0 }}
+            transition={{ rotate: { duration: 3, repeat: Infinity, ease: "linear" }, opacity: { duration: 0.3 } }}
+            className="absolute w-10 h-10 rounded-full border border-emerald-400/15"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Core circle */}
+      <motion.div
+        className="relative z-10 w-8 h-8 rounded-full flex items-center justify-center"
+        style={{ background: "radial-gradient(circle at 35% 35%, rgba(16,185,129,0.4) 0%, rgba(16,185,129,0.08) 100%)", border: "1px solid rgba(16,185,129,0.3)" }}
+        animate={
+          state === "completed"
+            ? { scale: [1, 1.25, 1], boxShadow: ["0 0 0px rgba(16,185,129,0)", "0 0 20px rgba(16,185,129,0.5)", "0 0 0px rgba(16,185,129,0)"] }
+            : isActive
+            ? { boxShadow: ["0 0 6px rgba(16,185,129,0.2)", "0 0 16px rgba(16,185,129,0.5)", "0 0 6px rgba(16,185,129,0.2)"] }
+            : { boxShadow: ["0 0 4px rgba(16,185,129,0.1)", "0 0 8px rgba(16,185,129,0.2)", "0 0 4px rgba(16,185,129,0.1)"] }
+        }
+        transition={{ duration: isActive ? 1 : 3, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <motion.div
+          animate={isActive ? { rotate: 360 } : {}}
+          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        >
+          <Sparkles size={14} className="text-emerald-400" />
+        </motion.div>
+      </motion.div>
+
+      {/* Orbital particles — generating state */}
+      <AnimatePresence>
+        {state === "generating" && (
+          <>
+            {[0, 120, 240].map((angle) => (
+              <motion.div
+                key={angle}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: [0, 1, 0], rotate: [angle, angle + 360] }}
+                exit={{ opacity: 0 }}
+                transition={{ opacity: { duration: 1.5, repeat: Infinity }, rotate: { duration: 2.5, repeat: Infinity, ease: "linear" } }}
+                className="absolute w-full h-full"
+              >
+                <div
+                  className="absolute w-1.5 h-1.5 rounded-full bg-emerald-400"
+                  style={{ top: 0, left: "50%", transform: "translateX(-50%)", boxShadow: "0 0 6px rgba(16,185,129,0.8)" }}
+                />
+              </motion.div>
+            ))}
+          </>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────
+//  Trigger Button
+// ─────────────────────────────────────────────
+function TriggerButton({ onClick }: { onClick: () => void }) {
+  return (
+    <motion.button
+      whileHover={{ scale: 1.06 }}
+      whileTap={{ scale: 0.94 }}
+      onClick={onClick}
+      className="fixed bottom-20 right-6 z-[9990] group cursor-pointer"
+      data-cursor="Aevion AI"
+    >
+      <div
+        className="relative flex items-center gap-2.5 px-4 py-2.5 rounded-full"
+        style={{
+          background: "rgba(9,9,12,0.95)",
+          border: "1px solid rgba(255,255,255,0.08)",
+          backdropFilter: "blur(20px)",
+          boxShadow: "0 0 0 1px rgba(16,185,129,0.15), 0 8px 32px rgba(0,0,0,0.6), 0 0 40px rgba(16,185,129,0.08)",
+        }}
+      >
+        {/* Subtle glow bg */}
+        <span
+          className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+          style={{ background: "radial-gradient(circle at center, rgba(16,185,129,0.06) 0%, transparent 70%)" }}
+        />
+
+        {/* Core dot */}
+        <div className="relative w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(16,185,129,0.15)", border: "1px solid rgba(16,185,129,0.3)" }}>
+          <Sparkles size={11} className="text-emerald-400" />
+          {/* Online ping */}
+          <span className="absolute -top-0.5 -right-0.5 flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-60" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+        </div>
+
+        <span className="relative text-[12px] font-medium text-zinc-300 tracking-tight hidden sm:block">Aevion AI</span>
+      </div>
+    </motion.button>
+  );
+}
+
+// ─────────────────────────────────────────────
+//  Main Component
+// ─────────────────────────────────────────────
 export function AevionAI() {
+  // ── State (ALL PRESERVED) ──────────────────
   const [isOpen, setIsOpen] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [showSecondaryMenu, setShowSecondaryMenu] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -93,41 +229,45 @@ export function AevionAI() {
   const [isListening, setIsListening] = useState(false);
   const [attachedFile, setAttachedFile] = useState<string | null>(null);
   const [sidebarSearch, setSidebarSearch] = useState("");
+  const [aiState, setAiState] = useState<AIState>("idle");
+  const [isFocused, setIsFocused] = useState(false);
 
+  // ── Refs (ALL PRESERVED) ──────────────────
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const streamingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isUserAtBottomRef = useRef(true);
+  const messageIdCounterRef = useRef(0);
 
-  // Load chat session from localStorage
+  const hasConversation = messages.length > 1;
+
+  // ── Effects (ALL PRESERVED) ───────────────
+
+  // Load session from localStorage
   useEffect(() => {
     try {
       const saved = localStorage.getItem("aevion_chat_session_v5");
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) {
-          setMessages(parsed);
+          requestAnimationFrame(() => { setMessages(parsed); });
         }
       }
-    } catch {
-      // Ignore localStorage errors
-    }
+    } catch { /* ignore */ }
   }, []);
 
-  // Save chat session to localStorage
+  // Save session to localStorage
   useEffect(() => {
     try {
       if (messages.length > 0) {
         localStorage.setItem("aevion_chat_session_v5", JSON.stringify(messages));
       }
-    } catch {
-      // Ignore localStorage errors
-    }
+    } catch { /* ignore */ }
   }, [messages]);
 
-  // Global keyboard shortcut (Cmd/Ctrl + K to open AI window)
+  // Cmd/Ctrl+K keyboard shortcut
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
@@ -139,21 +279,21 @@ export function AevionAI() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Track scroll position to prevent auto-scrolling when user scrolled up
+  // Track scroll position
   const handleScroll = () => {
     if (!messagesContainerRef.current) return;
     const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
-    const distanceToBottom = scrollHeight - scrollTop - clientHeight;
-    isUserAtBottomRef.current = distanceToBottom < 90;
+    isUserAtBottomRef.current = scrollHeight - scrollTop - clientHeight < 90;
   };
 
+  // Auto-scroll to bottom
   useEffect(() => {
     if (isUserAtBottomRef.current && messagesContainerRef.current) {
       messagesContainerRef.current.scrollTop = messagesContainerRef.current.scrollHeight;
     }
   }, [messages]);
 
-  // Auto-grow textarea height
+  // Auto-grow textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -161,28 +301,34 @@ export function AevionAI() {
     }
   }, [input]);
 
+  // Sync AI state with generation state
+  useEffect(() => {
+    if (isGenerating) {
+      setAiState("thinking");
+      const t = setTimeout(() => setAiState("generating"), 600);
+      return () => clearTimeout(t);
+    } else {
+      if (aiState === "generating" || aiState === "thinking") {
+        setAiState("completed");
+        const t = setTimeout(() => setAiState("idle"), 1200);
+        return () => clearTimeout(t);
+      }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isGenerating]);
+
+  // ── Logic (ALL PRESERVED) ─────────────────
+
   const detectProjectCard = (query: string): ProjectCardData | undefined => {
     const q = query.toLowerCase();
     if (q.includes("nilgiri") || q.includes("explorer")) {
-      return {
-        title: "Nilgiris Explorers",
-        description: "Premium travel & tourism discovery platform for Ooty and the Nilgiris with immersive UI and AI enhancements.",
-        tags: ["Next.js 16", "React 19", "Tourism UI", "SEO Engine"],
-      };
+      return { title: "Nilgiris Explorers", description: "Premium travel & tourism discovery platform for Ooty and the Nilgiris with immersive UI and AI enhancements.", tags: ["Next.js 16", "React 19", "Tourism UI", "SEO Engine"] };
     }
     if (q.includes("mistwing") || q.includes("ooty")) {
-      return {
-        title: "Ooty Mistwings",
-        description: "Cinematic destination discovery platform featuring immersive visual storytelling and motion interactions.",
-        tags: ["Destination Storytelling", "Cinematic UI", "Next.js", "Performance"],
-      };
+      return { title: "Ooty Mistwings", description: "Cinematic destination discovery platform featuring immersive visual storytelling and motion interactions.", tags: ["Destination Storytelling", "Cinematic UI", "Next.js", "Performance"] };
     }
     if (q.includes("gaming") || q.includes("kingdom")) {
-      return {
-        title: "Gaming Kingdom",
-        description: "Fast, visually engaging gaming web platform built to showcase high-performance responsive frontend architecture.",
-        tags: ["Gaming UI", "High FPS", "React", "Tailwind"],
-      };
+      return { title: "Gaming Kingdom", description: "Fast, visually engaging gaming web platform built to showcase high-performance responsive frontend architecture.", tags: ["Gaming UI", "High FPS", "React", "Tailwind"] };
     }
     return undefined;
   };
@@ -199,30 +345,24 @@ export function AevionAI() {
       streamingIntervalRef.current = null;
     }
     setIsGenerating(false);
-    setMessages((prev) =>
-      prev.map((m) => (m.isStreaming ? { ...m, isStreaming: false } : m))
-    );
+    setMessages((prev) => prev.map((m) => (m.isStreaming ? { ...m, isStreaming: false } : m)));
   };
 
   const handleClearChat = () => {
     handleStopGenerating();
     setMessages([INITIAL_MESSAGE]);
-    try {
-      localStorage.removeItem("aevion_chat_session_v5");
-    } catch {
-      // Ignore errors
-    }
+    try { localStorage.removeItem("aevion_chat_session_v5"); } catch { /* ignore */ }
   };
 
   const handleExportChat = () => {
     const chatText = messages
-      .map((m) => `**${m.sender === "user" ? "Visitor" : "Sai Vinoth AI"}**: ${m.text}`)
+      .map((m) => `**${m.sender === "user" ? "Visitor" : "Aevion AI"}**: ${m.text}`)
       .join("\n\n---\n\n");
     const blob = new Blob([chatText], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "sai-vinoth-ai-session.md";
+    a.download = "aevion-ai-session.md";
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -236,18 +376,17 @@ export function AevionAI() {
       setAttachedFile(null);
     }
 
-    const userMsg: Message = {
-      id: Date.now().toString(),
-      sender: "user",
-      text: fullPrompt,
-    };
+    messageIdCounterRef.current += 1;
+    const userMsgId = `user-msg-${messageIdCounterRef.current}`;
+    const userMsg: Message = { id: userMsgId, sender: "user", text: fullPrompt };
 
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsGenerating(true);
     isUserAtBottomRef.current = true;
 
-    const streamMsgId = (Date.now() + 1).toString();
+    messageIdCounterRef.current += 1;
+    const streamMsgId = `ai-msg-${messageIdCounterRef.current}`;
     const streamingMsg: Message = {
       id: streamMsgId,
       sender: "ai",
@@ -269,12 +408,27 @@ export function AevionAI() {
         body: JSON.stringify({ prompt: fullPrompt, history: historyForAI }),
       });
 
-      const data = await res.json();
-      const responseText = data.text || data.error || "Sorry, I am unable to generate a response right now.";
-      const followUps = data.suggestedFollowUps || [
-        "Tell me about Nilgiris Explorers",
-        "What is your tech stack?",
-      ];
+      let data: { text?: string; suggestedFollowUps?: string[]; error?: string; details?: string } = {};
+      try { data = await res.json(); } catch (jsonErr) { console.error("[Aevion AI] JSON parse error:", jsonErr); }
+
+      let responseText = "";
+      let followUps: string[] = [];
+
+      if (!res.ok) {
+        if (res.status === 401) {
+          responseText = `⚠️ **Configuration Notice**: ${data.error || "AI API key is missing. Configure the required environment variable."}`;
+        } else if (res.status === 429) {
+          responseText = "⏳ **Rate Limit**: The AI service is experiencing high request volume. Please wait a moment and try again.";
+        } else {
+          responseText = data.error
+            ? `⚠️ **${data.error}**: ${data.details || "Please try again in a moment."}`
+            : `⚠️ **AI Service Notice**: Server returned status ${res.status}. Please try again.`;
+        }
+        followUps = ["Who is Sai Vinoth", "Tell me about Nilgiris Explorers", "What is your tech stack?"];
+      } else {
+        responseText = data.text || "I'm here! Feel free to ask me anything about Aevion Studio projects or software engineering.";
+        followUps = data.suggestedFollowUps || ["Tell me about Nilgiris Explorers", "What is your tech stack?"];
+      }
 
       let charIndex = 0;
       streamingIntervalRef.current = setInterval(() => {
@@ -284,36 +438,19 @@ export function AevionAI() {
           setIsGenerating(false);
           setMessages((prev) =>
             prev.map((m) =>
-              m.id === streamMsgId
-                ? {
-                    ...m,
-                    text: responseText,
-                    suggestedFollowUps: followUps,
-                    isStreaming: false,
-                  }
-                : m
+              m.id === streamMsgId ? { ...m, text: responseText, suggestedFollowUps: followUps, isStreaming: false } : m
             )
           );
         } else {
           const currentSlice = responseText.slice(0, charIndex);
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === streamMsgId ? { ...m, text: currentSlice } : m
-            )
-          );
+          setMessages((prev) => prev.map((m) => (m.id === streamMsgId ? { ...m, text: currentSlice } : m)));
         }
       }, 15);
     } catch {
       setIsGenerating(false);
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === streamMsgId
-            ? {
-                ...m,
-                text: "An error occurred while connecting to the AI server. Please try again.",
-                isStreaming: false,
-              }
-            : m
+          m.id === streamMsgId ? { ...m, text: "An error occurred while connecting to the AI server. Please try again.", isStreaming: false } : m
         )
       );
     }
@@ -321,9 +458,7 @@ export function AevionAI() {
 
   const handleRegenerate = () => {
     const lastUserMessage = [...messages].reverse().find((m) => m.sender === "user");
-    if (lastUserMessage) {
-      handleSendQuery(lastUserMessage.text);
-    }
+    if (lastUserMessage) handleSendQuery(lastUserMessage.text);
   };
 
   const toggleVoice = () => {
@@ -335,11 +470,10 @@ export function AevionAI() {
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      setAttachedFile(file.name);
-    }
+    if (file) setAttachedFile(file.name);
   };
 
+  // ── Text Formatter (ALL PRESERVED) ────────
   const formatText = (text: string) => {
     const lines = text.split("\n");
     let inCodeBlock = false;
@@ -352,24 +486,21 @@ export function AevionAI() {
           const codeContent = codeLines.join("\n");
           codeLines.length = 0;
           return (
-            <div key={idx} className="my-3 bg-zinc-950 border border-white/10 rounded-2xl overflow-hidden font-mono text-[15px] shadow-2xl">
-              <div className="bg-zinc-900/90 px-4 py-2 flex justify-between items-center text-zinc-400 border-b border-white/10">
+            <div key={idx} className="my-3 rounded-2xl overflow-hidden font-mono text-[13px] shadow-xl" style={{ background: "#080a0e", border: "1px solid rgba(255,255,255,0.06)" }}>
+              <div className="px-4 py-2 flex justify-between items-center border-b" style={{ background: "rgba(255,255,255,0.03)", borderColor: "rgba(255,255,255,0.06)" }}>
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80 inline-block"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80 inline-block"></span>
-                    <span className="w-2.5 h-2.5 rounded-full bg-green-500/80 inline-block"></span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/70 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/70 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/70 inline-block" />
                   </div>
-                  <span className="text-[11px] tracking-wider uppercase font-semibold text-zinc-400">code</span>
+                  <span className="text-[10px] tracking-widest uppercase text-zinc-600">code</span>
                 </div>
-                <button
-                  onClick={() => handleCopyText(codeContent, `code-${idx}`)}
-                  className="hover:text-white transition-colors cursor-pointer flex items-center gap-1.5 text-[11px]"
-                >
-                  <Copy size={12} /> {copiedId === `code-${idx}` ? "Copied!" : "Copy"}
+                <button onClick={() => handleCopyText(codeContent, `code-${idx}`)} className="hover:text-white transition-colors cursor-pointer flex items-center gap-1 text-[11px] text-zinc-600">
+                  <Copy size={11} /> {copiedId === `code-${idx}` ? "Copied" : "Copy"}
                 </button>
               </div>
-              <pre className="p-4 text-emerald-400 overflow-x-auto leading-relaxed antialiased">
+              <pre className="p-4 text-emerald-400 overflow-x-auto leading-relaxed text-[12px]">
                 <code>{codeContent}</code>
               </pre>
             </div>
@@ -377,185 +508,212 @@ export function AevionAI() {
         }
         return null;
       }
-
-      if (inCodeBlock) {
-        codeLines.push(line);
-        return null;
-      }
+      if (inCodeBlock) { codeLines.push(line); return null; }
 
       if (line.startsWith("|") && line.endsWith("|")) {
         const cells = line.split("|").filter((c) => c.trim().length > 0);
         return (
-          <div key={idx} className="flex gap-2 font-mono text-[13px] bg-zinc-900/80 p-2.5 rounded-xl border border-white/10 my-1.5">
-            {cells.map((c, i) => (
-              <span key={i} className="flex-1 font-semibold text-zinc-200">{c.trim()}</span>
-            ))}
+          <div key={idx} className="flex gap-2 font-mono text-[12px] p-2.5 rounded-xl my-1.5" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}>
+            {cells.map((c, i) => <span key={i} className="flex-1 text-zinc-300">{c.trim()}</span>)}
           </div>
         );
       }
 
       if (line.startsWith("**") && line.endsWith("**")) {
-        return (
-          <p key={idx} className="font-bold text-white mt-3 mb-1 text-[17px] tracking-tight">
-            {line.replace(/\*\*/g, "")}
-          </p>
-        );
+        return <p key={idx} className="font-semibold text-white mt-3 mb-1 text-[15px] tracking-tight">{line.replace(/\*\*/g, "")}</p>;
       }
 
       if (line.startsWith("• ") || line.startsWith("- ")) {
         return (
-          <p key={idx} className="pl-4 text-zinc-200 my-1 flex items-start gap-2 text-[16px] leading-[1.6]">
-            <span className="text-emerald-400 mt-1.5">•</span>
+          <p key={idx} className="pl-3 text-zinc-300 my-1 flex items-start gap-2 text-[14px] leading-relaxed">
+            <span className="text-emerald-400 mt-1.5 text-[8px]">●</span>
             <span>{line.replace(/^[•-]\s*/, "")}</span>
           </p>
         );
       }
 
-      return (
-        <p key={idx} className="my-1.5 text-zinc-200 leading-[1.65] text-[16px] antialiased">
-          {line}
-        </p>
-      );
+      return <p key={idx} className="my-1 text-zinc-300 leading-relaxed text-[14px]">{line}</p>;
     });
   };
 
   const totalTokensEstimate = messages.reduce((acc, m) => acc + m.text.length, 0);
 
+  // ── Render ────────────────────────────────
   return (
     <>
-      {/* Animated AI Floating Orb Trigger Button */}
-      <motion.button
-        whileHover={{ scale: 1.08 }}
-        whileTap={{ scale: 0.94 }}
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 right-6 z-[9990] group cursor-pointer"
-        data-cursor="Sai Vinoth AI"
-      >
-        <div className="relative flex items-center justify-center p-3.5 rounded-full bg-zinc-950/90 border border-white/20 backdrop-blur-2xl shadow-[0_0_50px_rgba(16,185,129,0.35)]">
-          <span className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 opacity-60 blur-md group-hover:opacity-100 group-hover:blur-lg transition-all duration-500 animate-pulse"></span>
-          
-          <div className="relative z-10 flex items-center gap-2.5 px-1.5">
-            <div className="relative w-6 h-6 rounded-full bg-gradient-to-tr from-emerald-400 via-teal-300 to-cyan-300 flex items-center justify-center shadow-inner">
-              <Sparkles size={14} className="text-black" />
-            </div>
-            <span className="text-sm font-semibold text-white tracking-tight hidden sm:inline-block pr-1 font-sans antialiased">
-              Sai Vinoth AI
-            </span>
-          </div>
+      {/* ── Trigger Button ─────────────────── */}
+      <TriggerButton onClick={() => setIsOpen(true)} />
 
-          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
-          </span>
-        </div>
-      </motion.button>
-
-      {/* Floating Raycast / Vision Pro AI Operating System Window */}
+      {/* ── Backdrop Overlay ───────────────── */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[9990]"
+            style={{ backdropFilter: "blur(12px) saturate(150%)", background: "radial-gradient(ellipse at 60% 40%, rgba(16,185,129,0.04) 0%, rgba(0,0,0,0.75) 70%)" }}
+            onClick={() => setIsOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Main Window ────────────────────── */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 24, scale: 0.97 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 40, scale: 0.95 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-20 right-4 sm:right-6 z-[9999] w-[94vw] sm:w-[540px] h-[80vh] max-h-[640px] bg-zinc-950/95 backdrop-blur-2xl border border-white/10 text-white rounded-[28px] shadow-[0_0_80px_rgba(0,0,0,0.9)] flex flex-col overflow-hidden ring-1 ring-white/10 antialiased"
+            exit={{ opacity: 0, y: 24, scale: 0.97 }}
+            transition={{ type: "spring", stiffness: 380, damping: 32 }}
+            className="fixed z-[9999] flex flex-col antialiased"
+            style={{
+              bottom: "5rem",
+              right: "1rem",
+              left: "1rem",
+              maxWidth: "600px",
+              margin: "0 auto",
+              height: "85vh",
+              maxHeight: "720px",
+              // On larger screens, pin to the right
+              ...(typeof window !== "undefined" && window.innerWidth >= 640 ? { left: "auto", right: "1.5rem", margin: 0 } : {}),
+              background: "rgba(7,8,11,0.97)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "24px",
+              boxShadow: "0 0 0 1px rgba(16,185,129,0.06), 0 32px 80px rgba(0,0,0,0.85), 0 0 120px rgba(16,185,129,0.04)",
+              backdropFilter: "blur(40px) saturate(180%)",
+            }}
             data-lenis-prevent="true"
             data-lenis-prevent-wheel="true"
             data-lenis-prevent-touch="true"
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Fixed Header */}
-            <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between bg-zinc-900/60 shrink-0">
+            {/* ── Header ───────────────────────── */}
+            <div
+              className="flex items-center justify-between px-5 py-3.5 shrink-0"
+              style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}
+            >
+              {/* Left: sidebar toggle + brand */}
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => setShowSidebar((prev) => !prev)}
-                  className="text-zinc-400 hover:text-white p-1.5 transition-colors cursor-pointer rounded-lg hover:bg-white/5"
-                  title="Toggle History Sidebar"
+                  onClick={() => setShowSidebar((p) => !p)}
+                  className="text-zinc-600 hover:text-zinc-300 transition-colors p-1.5 rounded-lg hover:bg-white/5 cursor-pointer"
+                  title="Toggle history"
                 >
-                  {showSidebar ? <PanelLeftClose size={18} /> : <PanelLeft size={18} />}
+                  {showSidebar ? <PanelLeftClose size={16} /> : <PanelLeft size={16} />}
                 </button>
-                <div className="flex items-center gap-3">
-                  <div className="relative w-8 h-8 rounded-full bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 p-0.5 shadow-md flex items-center justify-center">
-                    <div className="w-full h-full bg-zinc-950 rounded-full flex items-center justify-center">
-                      <Sparkles size={16} className="text-emerald-400" />
-                    </div>
+
+                <div className="flex items-center gap-2.5">
+                  {/* AI core dot */}
+                  <div className="relative w-6 h-6 rounded-full flex items-center justify-center" style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)" }}>
+                    <Sparkles size={12} className="text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-                      Sai Vinoth AI <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981]"></span>
-                    </h3>
-                    <p className="text-[12px] text-zinc-400">
-                      Founder of Aevion Studio • <span className="text-emerald-400 font-medium">Online</span>
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[12px] font-semibold text-white tracking-tight">AEVION AI</span>
+                      <div className="flex items-center gap-1">
+                        <span className="relative flex h-1.5 w-1.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                          <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                        </span>
+                        <span className="text-[10px] text-emerald-500 font-medium tracking-wide uppercase">Online</span>
+                      </div>
+                    </div>
+                    <div className="text-[10px] text-zinc-600 tracking-wide">Intelligence Engine</div>
                   </div>
                 </div>
               </div>
 
-              {/* Header Actions */}
-              <div className="flex items-center gap-2 text-zinc-400">
-                <button
-                  onClick={handleExportChat}
-                  title="Export Chat to Markdown"
-                  className="hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
-                >
-                  <Download size={16} />
-                </button>
-                <button
-                  onClick={handleClearChat}
-                  title="Reset Chat History"
-                  className="hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
-                >
-                  <Trash2 size={16} />
-                </button>
+              {/* Right: secondary actions (collapsed) + close */}
+              <div className="flex items-center gap-1">
+                <div className="relative">
+                  <button
+                    onClick={() => setShowSecondaryMenu((p) => !p)}
+                    className="text-zinc-600 hover:text-zinc-300 p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+                    title="More options"
+                  >
+                    <MoreHorizontal size={16} />
+                  </button>
+
+                  <AnimatePresence>
+                    {showSecondaryMenu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute right-0 top-9 rounded-xl overflow-hidden z-50 min-w-[160px]"
+                        style={{ background: "rgba(12,14,18,0.98)", border: "1px solid rgba(255,255,255,0.08)", boxShadow: "0 16px 48px rgba(0,0,0,0.6)" }}
+                      >
+                        {[
+                          { icon: Download, label: "Export chat", action: handleExportChat },
+                          { icon: Trash2, label: "Clear history", action: handleClearChat },
+                          { icon: Plus, label: "New session", action: handleClearChat },
+                        ].map(({ icon: Icon, label, action }) => (
+                          <button
+                            key={label}
+                            onClick={() => { action(); setShowSecondaryMenu(false); }}
+                            className="w-full flex items-center gap-2.5 px-4 py-2.5 text-[12px] text-zinc-400 hover:text-white hover:bg-white/5 transition-colors cursor-pointer text-left"
+                          >
+                            <Icon size={13} /> {label}
+                          </button>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+                  className="text-zinc-600 hover:text-zinc-200 p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+                  title="Close (Esc)"
                 >
-                  <X size={18} />
+                  <X size={16} />
                 </button>
               </div>
             </div>
 
-            {/* Main Body with strict flex min-h-0 */}
-            <div className="flex-1 min-h-0 flex overflow-hidden relative">
-              {/* Sidebar Drawer */}
+            {/* ── Body ─────────────────────────── */}
+            <div className="flex-1 min-h-0 flex overflow-hidden">
+
+              {/* Sidebar */}
               <AnimatePresence>
                 {showSidebar && (
                   <motion.div
                     initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: 200, opacity: 1 }}
+                    animate={{ width: 188, opacity: 1 }}
                     exit={{ width: 0, opacity: 0 }}
-                    className="h-full bg-zinc-900/95 border-r border-white/10 flex flex-col overflow-hidden text-xs shrink-0"
+                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    className="h-full flex flex-col overflow-hidden shrink-0"
+                    style={{ borderRight: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.015)" }}
                   >
-                    <div className="p-3 border-b border-white/10 flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">History</span>
-                      <button
-                        onClick={handleClearChat}
-                        className="text-zinc-400 hover:text-emerald-400 p-1 cursor-pointer"
-                        title="New Chat"
-                      >
-                        <Plus size={16} />
+                    <div className="p-3 flex items-center justify-between" style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                      <span className="text-[10px] font-medium text-zinc-600 uppercase tracking-widest">History</span>
+                      <button onClick={handleClearChat} className="text-zinc-600 hover:text-emerald-400 p-1 cursor-pointer transition-colors" title="New session">
+                        <Plus size={14} />
                       </button>
                     </div>
-                    <div className="p-2.5">
-                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 bg-black/40 border border-white/10 rounded-xl text-[11px] text-zinc-400">
-                        <Search size={14} />
+                    <div className="p-2">
+                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-[11px] text-zinc-600" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)" }}>
+                        <Search size={12} />
                         <input
                           type="text"
                           value={sidebarSearch}
                           onChange={(e) => setSidebarSearch(e.target.value)}
-                          placeholder="Search chats..."
-                          className="bg-transparent focus:outline-none text-white w-full"
+                          placeholder="Search..."
+                          className="bg-transparent focus:outline-none text-zinc-300 w-full text-[11px]"
                         />
                       </div>
                     </div>
-                    <div className="flex-1 overflow-y-auto p-2 space-y-1 text-[12px] no-scrollbar">
+                    <div className="flex-1 overflow-y-auto p-2 space-y-0.5 no-scrollbar">
                       {messages
-                        .filter((m) => m.sender === "user")
+                        .filter((m) => m.sender === "user" && m.text.toLowerCase().includes(sidebarSearch.toLowerCase()))
                         .map((m, i) => (
                           <div
                             key={i}
                             onClick={() => handleSendQuery(m.text)}
-                            className="p-2.5 rounded-xl bg-zinc-800/40 hover:bg-zinc-800 border border-transparent hover:border-white/10 cursor-pointer truncate text-zinc-300 transition-colors"
+                            className="px-3 py-2 rounded-xl cursor-pointer text-zinc-500 hover:text-zinc-200 text-[11px] truncate transition-colors hover:bg-white/5"
                           >
                             {m.text}
                           </div>
@@ -565,9 +723,9 @@ export function AevionAI() {
                 )}
               </AnimatePresence>
 
-              {/* Messages Wrapper Flex Container */}
-              <div className="flex-1 min-h-0 flex flex-col h-full overflow-hidden bg-gradient-to-b from-transparent via-black/20 to-black/50">
-                {/* INDEPENDENT SCROLLABLE MESSAGES CONTAINER WITH LENIS PREVENT */}
+              {/* Main chat area */}
+              <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
+                {/* Messages scroll area */}
                 <div
                   ref={messagesContainerRef}
                   onScroll={handleScroll}
@@ -576,202 +734,286 @@ export function AevionAI() {
                   data-lenis-prevent="true"
                   data-lenis-prevent-wheel="true"
                   data-lenis-prevent-touch="true"
-                  className="flex-1 min-h-0 overflow-y-auto overscroll-contain scroll-smooth p-5 space-y-5 font-sans text-[16px] antialiased touch-pan-y [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-zinc-700/60 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-emerald-500/60 transition-colors"
+                  className="flex-1 min-h-0 overflow-y-auto overscroll-contain scroll-smooth touch-pan-y [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full"
                 >
-                  {/* Empty State / Suggested Action Cards */}
-                  {messages.length === 1 && (
-                    <div className="py-3 space-y-4">
-                      <div className="text-center space-y-1.5">
-                        <span className="text-[11px] font-mono text-emerald-400 uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full inline-block">
-                          Sai Vinoth AI Assistant
-                        </span>
-                        <h4 className="text-lg font-bold text-white tracking-tight">What would you like to build?</h4>
-                        <p className="text-[13px] text-zinc-400">Ask about projects, engineering architecture, or general coding.</p>
-                      </div>
 
-                      <div className="grid grid-cols-2 gap-2.5 pt-2">
-                        {ACTION_CARDS.map((card, i) => {
-                          const IconComp = card.icon;
-                          return (
-                            <button
-                              key={i}
-                              onClick={() => handleSendQuery(card.query)}
-                              className="p-3.5 bg-zinc-900/60 hover:bg-zinc-800/80 border border-white/10 rounded-2xl text-left transition-all hover:scale-[1.02] cursor-pointer group flex flex-col justify-between h-28"
-                            >
-                              <div className="p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 group-hover:rotate-6 transition-transform w-fit">
-                                <IconComp size={16} />
-                              </div>
-                              <div>
-                                <h5 className="text-[13px] font-bold text-white tracking-tight leading-snug group-hover:text-emerald-300 transition-colors">
-                                  {card.title}
-                                </h5>
-                                <p className="text-[11px] text-zinc-400 line-clamp-1 mt-0.5">{card.subtitle}</p>
-                              </div>
-                            </button>
-                          );
-                        })}
-                      </div>
-                    </div>
+                  {/* ── LANDING STATE (no conversation) ── */}
+                  {!hasConversation && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      className="flex flex-col items-center justify-center min-h-full py-10 px-6 text-center"
+                    >
+                      {/* AI Core Visual */}
+                      <motion.div
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.1, duration: 0.5 }}
+                        className="mb-6"
+                      >
+                        <AICore state={aiState} />
+                      </motion.div>
+
+                      {/* ✦ symbol */}
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-emerald-400 text-[10px] font-mono tracking-[0.3em] mb-3 uppercase"
+                      >
+                        ✦ AEVION INTELLIGENCE
+                      </motion.div>
+
+                      {/* Hero heading */}
+                      <motion.h2
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.25, duration: 0.5 }}
+                        className="text-[22px] font-semibold text-white tracking-tight leading-snug mb-3"
+                      >
+                        What are we building today?
+                      </motion.h2>
+
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.35 }}
+                        className="text-[13px] text-zinc-500 max-w-[320px] leading-relaxed mb-8"
+                      >
+                        Tell Aevion what you want to create, solve, analyze, or explore.
+                      </motion.p>
+
+                      {/* Quick action chips */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.45 }}
+                        className="flex flex-wrap gap-2 justify-center"
+                      >
+                        {QUICK_CHIPS.map(({ icon: Icon, label, query }) => (
+                          <motion.button
+                            key={label}
+                            whileHover={{ scale: 1.04, y: -1 }}
+                            whileTap={{ scale: 0.97 }}
+                            onClick={() => handleSendQuery(query)}
+                            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-[12px] text-zinc-400 hover:text-white cursor-pointer transition-all"
+                            style={{
+                              background: "rgba(255,255,255,0.03)",
+                              border: "1px solid rgba(255,255,255,0.07)",
+                            }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.background = "rgba(16,185,129,0.06)";
+                              e.currentTarget.style.borderColor = "rgba(16,185,129,0.2)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                              e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
+                            }}
+                          >
+                            <Icon size={11} className="text-emerald-400 opacity-70" />
+                            {label}
+                          </motion.button>
+                        ))}
+                      </motion.div>
+                    </motion.div>
                   )}
 
-                  {/* Messages */}
-                  {messages.map((msg) => (
-                    <div key={msg.id} className="space-y-2 group">
-                      <div
-                        className={`flex items-start gap-3 ${
-                          msg.sender === "user" ? "flex-row-reverse" : ""
-                        }`}
-                      >
-                        <div
-                          className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 shadow-md ${
-                            msg.sender === "user"
-                              ? "bg-gradient-to-tr from-emerald-500 to-teal-400 text-black font-bold"
-                              : "bg-gradient-to-tr from-zinc-800 to-zinc-900 text-emerald-400 border border-white/10"
-                          }`}
+                  {/* ── CONVERSATION STATE ── */}
+                  {hasConversation && (
+                    <div className="p-5 space-y-6">
+                      {messages.map((msg, msgIdx) => (
+                        <motion.div
+                          key={msg.id}
+                          initial={{ opacity: 0, y: 12 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                          className="group"
                         >
-                          {msg.sender === "user" ? <User size={16} /> : <Sparkles size={16} />}
-                        </div>
-
-                        {/* User Message Bubbles: High Contrast WCAG AA Compliant */}
-                        <div
-                          className={`p-4 rounded-2xl max-w-[85%] leading-[1.65] relative ${
-                            msg.sender === "user"
-                              ? "bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 text-white font-medium shadow-lg shadow-emerald-950/40 border border-emerald-500/30 text-[16px]"
-                              : "bg-zinc-900/90 border border-white/10 text-zinc-200 shadow-xl text-[16px]"
-                          }`}
-                        >
-                          {formatText(msg.text)}
-
-                          {msg.isStreaming && (
-                            <span className="inline-block w-2 h-4 bg-emerald-400 ml-1 animate-pulse rounded-sm" />
-                          )}
-
-                          {!msg.isStreaming && msg.text && (
-                            <button
-                              onClick={() => handleCopyText(msg.text, msg.id)}
-                              title="Copy Message"
-                              className="absolute -bottom-3 right-3 bg-zinc-950 border border-white/10 p-1.5 rounded-lg text-zinc-400 hover:text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer shadow-lg"
-                            >
-                              {copiedId === msg.id ? (
-                                <Check size={12} className="text-emerald-400" />
-                              ) : (
-                                <Copy size={12} />
-                              )}
-                            </button>
-                          )}
-
-                          {/* Rich Project Cards */}
-                          {msg.projectCard && !msg.isStreaming && (
-                            <div className="mt-3 p-3.5 bg-black/70 border border-emerald-500/40 rounded-xl space-y-2">
-                              <div className="flex items-center gap-2 text-emerald-400 font-bold text-[14px]">
-                                <FolderGit2 size={16} />
-                                <span>{msg.projectCard.title}</span>
-                              </div>
-                              <p className="text-[13px] text-zinc-300 leading-relaxed">
-                                {msg.projectCard.description}
-                              </p>
-                              <div className="flex flex-wrap gap-1.5 pt-1">
-                                {msg.projectCard.tags.map((tag, idx) => (
-                                  <span
-                                    key={idx}
-                                    className="text-[11px] bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 px-2.5 py-0.5 rounded-md font-mono"
+                          {msg.sender === "user" ? (
+                            /* USER message — right-aligned, minimal bubble */
+                            <div className="flex justify-end">
+                              <div
+                                className="max-w-[80%] px-4 py-3 rounded-2xl rounded-tr-sm text-[13px] text-white leading-relaxed relative"
+                                style={{ background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.2)" }}
+                              >
+                                {msg.text}
+                                {!msg.isStreaming && msg.text && (
+                                  <button
+                                    onClick={() => handleCopyText(msg.text, msg.id)}
+                                    className="absolute -bottom-3 right-2 p-1 rounded-md text-zinc-600 hover:text-zinc-300 opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+                                    style={{ background: "rgba(7,8,11,0.95)", border: "1px solid rgba(255,255,255,0.06)" }}
                                   >
-                                    {tag}
-                                  </span>
-                                ))}
+                                    {copiedId === msg.id ? <Check size={10} className="text-emerald-400" /> : <Copy size={10} />}
+                                  </button>
+                                )}
                               </div>
                             </div>
-                          )}
+                          ) : (
+                            /* AI message — editorial layout */
+                            <div className="space-y-3">
+                              {/* AI sender label */}
+                              <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 rounded-full flex items-center justify-center shrink-0" style={{ background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.2)" }}>
+                                  <Sparkles size={10} className="text-emerald-400" />
+                                </div>
+                                <span className="text-[10px] font-medium text-zinc-600 tracking-wide uppercase">Aevion</span>
+                                {msg.isStreaming && (
+                                  <div className="flex gap-0.5 items-center">
+                                    {[0, 1, 2].map((i) => (
+                                      <motion.span
+                                        key={i}
+                                        className="w-1 h-1 rounded-full bg-emerald-500"
+                                        animate={{ opacity: [0.3, 1, 0.3] }}
+                                        transition={{ duration: 1, delay: i * 0.2, repeat: Infinity }}
+                                      />
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
 
-                          {msg.link && !msg.isStreaming && (
-                            <a
-                              href={msg.link.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1 text-emerald-400 font-bold hover:underline mt-2 text-[14px]"
-                            >
-                              {msg.link.text} <ArrowUpRight size={14} />
-                            </a>
-                          )}
-                        </div>
-                      </div>
+                              {/* Message content */}
+                              <div className="pl-7 relative">
+                                <div className="text-zinc-300 space-y-0.5 relative">
+                                  {formatText(msg.text)}
+                                  {msg.isStreaming && (
+                                    <motion.span
+                                      className="inline-block w-0.5 h-3.5 bg-emerald-400 ml-0.5 rounded-full"
+                                      animate={{ opacity: [1, 0] }}
+                                      transition={{ duration: 0.6, repeat: Infinity }}
+                                    />
+                                  )}
+                                </div>
 
-                      {/* Suggested Follow-ups */}
-                      {msg.sender === "ai" &&
-                        !msg.isStreaming &&
-                        msg.suggestedFollowUps && (
-                          <div className="pl-11 flex flex-wrap gap-2">
-                            {msg.suggestedFollowUps.map((chip, idx) => (
-                              <button
-                                key={idx}
-                                onClick={() => handleSendQuery(chip)}
-                                className="text-[12px] bg-zinc-900 hover:bg-zinc-800 border border-white/10 text-emerald-400 px-3 py-1.5 rounded-full transition-colors cursor-pointer hover:border-emerald-500/40"
-                              >
-                                {chip}
-                              </button>
-                            ))}
-                          </div>
-                        )}
+                                {/* Project card */}
+                                {msg.projectCard && !msg.isStreaming && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.2 }}
+                                    className="mt-4 p-4 rounded-2xl space-y-3"
+                                    style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)" }}
+                                  >
+                                    <div className="flex items-center gap-2">
+                                      <FolderGit2 size={13} className="text-emerald-400" />
+                                      <span className="text-[11px] font-semibold text-white">{msg.projectCard.title}</span>
+                                    </div>
+                                    <p className="text-[12px] text-zinc-500 leading-relaxed">{msg.projectCard.description}</p>
+                                    <div className="flex flex-wrap gap-1.5">
+                                      {msg.projectCard.tags.map((tag, idx) => (
+                                        <span key={idx} className="text-[10px] font-mono px-2 py-0.5 rounded-md text-emerald-400" style={{ background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.15)" }}>
+                                          {tag}
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </motion.div>
+                                )}
+
+                                {/* Link */}
+                                {msg.link && !msg.isStreaming && (
+                                  <a href={msg.link.url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-emerald-400 hover:text-emerald-300 mt-2 text-[12px] transition-colors">
+                                    {msg.link.text} <ArrowUpRight size={12} />
+                                  </a>
+                                )}
+
+                                {/* Copy button */}
+                                {!msg.isStreaming && msg.text && msg.id !== "1" && (
+                                  <button
+                                    onClick={() => handleCopyText(msg.text, msg.id)}
+                                    className="mt-3 flex items-center gap-1 text-[10px] text-zinc-700 hover:text-zinc-400 cursor-pointer transition-colors opacity-0 group-hover:opacity-100"
+                                  >
+                                    {copiedId === msg.id ? <><Check size={10} className="text-emerald-400" /> Copied</> : <><Copy size={10} /> Copy</>}
+                                  </button>
+                                )}
+                              </div>
+
+                              {/* Suggested follow-ups */}
+                              {!msg.isStreaming && msg.suggestedFollowUps && msgIdx === messages.length - 1 && (
+                                <motion.div
+                                  initial={{ opacity: 0 }}
+                                  animate={{ opacity: 1 }}
+                                  transition={{ delay: 0.3 }}
+                                  className="pl-7 flex flex-wrap gap-1.5"
+                                >
+                                  {msg.suggestedFollowUps.map((chip, idx) => (
+                                    <button
+                                      key={idx}
+                                      onClick={() => handleSendQuery(chip)}
+                                      className="text-[11px] px-3 py-1.5 rounded-full text-zinc-500 hover:text-zinc-200 cursor-pointer transition-all"
+                                      style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
+                                    >
+                                      {chip}
+                                    </button>
+                                  ))}
+                                </motion.div>
+                              )}
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
+                      <div ref={messagesEndRef} />
                     </div>
-                  ))}
-                  <div ref={messagesEndRef} />
+                  )}
                 </div>
 
-                {/* Footer Status & Control Bar */}
-                <div className="px-5 py-2 bg-zinc-950 border-t border-white/10 flex justify-between items-center text-[12px] text-zinc-400 font-mono shrink-0">
-                  <div className="flex items-center gap-2.5">
+                {/* ── Status bar ─────────────────── */}
+                <div
+                  className="px-5 py-2 flex justify-between items-center text-[11px] text-zinc-700 font-mono shrink-0"
+                  style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+                >
+                  <div className="flex items-center gap-3">
                     <button
                       onClick={handleRegenerate}
                       disabled={isGenerating}
-                      className="hover:text-emerald-400 flex items-center gap-1.5 cursor-pointer transition-colors disabled:opacity-50"
+                      className="flex items-center gap-1 hover:text-zinc-400 transition-colors cursor-pointer disabled:opacity-30"
                     >
-                      <RefreshCw size={12} /> Regenerate
+                      <RefreshCw size={11} /> Regenerate
                     </button>
-                    <span>•</span>
-                    <span>~{totalTokensEstimate} tokens</span>
+                    <span className="text-zinc-800">·</span>
+                    <span className="text-zinc-800">~{totalTokensEstimate} tokens</span>
                   </div>
 
                   {isGenerating && (
                     <button
                       onClick={handleStopGenerating}
-                      className="text-red-400 hover:text-red-300 flex items-center gap-1.5 cursor-pointer transition-colors"
+                      className="flex items-center gap-1 text-red-500/70 hover:text-red-400 cursor-pointer transition-colors"
                     >
-                      <Square size={12} /> Stop Generating
+                      <Square size={10} /> Stop
                     </button>
                   )}
                 </div>
 
-                {/* File Attachment Badge */}
+                {/* ── File attachment badge ──────── */}
                 {attachedFile && (
-                  <div className="px-5 py-1.5 bg-emerald-500/10 border-t border-emerald-500/20 text-[12px] text-emerald-400 font-mono flex justify-between items-center shrink-0">
-                    <span>Attached: {attachedFile}</span>
-                    <button onClick={() => setAttachedFile(null)} className="hover:text-white cursor-pointer">
-                      <X size={14} />
-                    </button>
+                  <div className="px-5 py-2 flex items-center justify-between text-[11px] font-mono text-emerald-400 shrink-0" style={{ background: "rgba(16,185,129,0.05)", borderTop: "1px solid rgba(16,185,129,0.12)" }}>
+                    <span className="truncate">↳ {attachedFile}</span>
+                    <button onClick={() => setAttachedFile(null)} className="hover:text-white cursor-pointer ml-2 shrink-0"><X size={12} /></button>
                   </div>
                 )}
 
-                {/* FIXED STICKY INPUT BAR AT BOTTOM */}
-                <div className="p-4 border-t border-white/10 bg-zinc-950/95 flex flex-col gap-2 shrink-0 sticky bottom-0 z-10">
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="file"
-                      ref={fileInputRef}
-                      onChange={handleFileUpload}
-                      className="hidden"
-                    />
-                    <button
-                      onClick={() => fileInputRef.current?.click()}
-                      title="Attach File"
-                      className="p-2.5 text-zinc-400 hover:text-white rounded-xl hover:bg-white/5 transition-colors cursor-pointer"
-                    >
-                      <Paperclip size={18} />
-                    </button>
+                {/* ── Command Composer ───────────── */}
+                <div
+                  className="p-4 shrink-0"
+                  style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}
+                >
+                  <input type="file" ref={fileInputRef} onChange={handleFileUpload} className="hidden" />
 
+                  <motion.div
+                    animate={isFocused
+                      ? { boxShadow: "0 0 0 1px rgba(16,185,129,0.25), 0 8px 32px rgba(0,0,0,0.4)" }
+                      : { boxShadow: "0 0 0 1px rgba(255,255,255,0.06), 0 4px 16px rgba(0,0,0,0.3)" }
+                    }
+                    transition={{ duration: 0.2 }}
+                    className="flex flex-col rounded-2xl overflow-hidden"
+                    style={{ background: isFocused ? "rgba(255,255,255,0.04)" : "rgba(255,255,255,0.025)" }}
+                  >
+                    {/* Textarea */}
                     <textarea
                       ref={textareaRef}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
+                      onFocus={() => setIsFocused(true)}
+                      onBlur={() => setIsFocused(false)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" && !e.shiftKey) {
                           e.preventDefault();
@@ -779,37 +1021,64 @@ export function AevionAI() {
                         }
                       }}
                       rows={1}
-                      placeholder="Ask Sai Vinoth AI..."
-                      className="flex-1 bg-zinc-900 border border-white/10 rounded-2xl px-4 py-2.5 text-[16px] text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500 transition-colors resize-none overflow-hidden antialiased"
+                      placeholder={hasConversation ? "Continue the conversation..." : "Describe an idea, problem, or project..."}
+                      className="w-full bg-transparent px-4 pt-3.5 pb-2 text-[13px] text-white placeholder-zinc-600 focus:outline-none resize-none overflow-hidden leading-relaxed"
+                      style={{ minHeight: "44px", maxHeight: "140px" }}
                     />
 
-                    <button
-                      onClick={toggleVoice}
-                      title={isListening ? "Listening..." : "Voice Dictation"}
-                      className={`p-2.5 rounded-xl transition-colors cursor-pointer ${
-                        isListening
-                          ? "bg-red-500/20 text-red-400 border border-red-500/40 animate-pulse"
-                          : "text-zinc-400 hover:text-white hover:bg-white/5"
-                      }`}
-                    >
-                      {isListening ? <MicOff size={18} /> : <Mic size={18} />}
-                    </button>
+                    {/* Controls row */}
+                    <div className="flex items-center justify-between px-3 pb-3 pt-1">
+                      <div className="flex items-center gap-1">
+                        {/* Attachment */}
+                        <button
+                          onClick={() => fileInputRef.current?.click()}
+                          title="Attach file"
+                          className="p-1.5 text-zinc-600 hover:text-zinc-300 rounded-lg hover:bg-white/5 transition-all cursor-pointer"
+                        >
+                          <Paperclip size={15} />
+                        </button>
 
-                    <button
-                      onClick={() => handleSendQuery(input)}
-                      disabled={isGenerating || !input.trim()}
-                      className="p-2.5 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-40 text-zinc-950 rounded-xl transition-all cursor-pointer font-bold shadow-lg shadow-emerald-500/20"
-                    >
-                      <Send size={16} />
-                    </button>
-                  </div>
+                        {/* Voice */}
+                        <button
+                          onClick={toggleVoice}
+                          title={isListening ? "Listening..." : "Voice input"}
+                          className={`p-1.5 rounded-lg transition-all cursor-pointer ${
+                            isListening ? "text-red-400 bg-red-500/10" : "text-zinc-600 hover:text-zinc-300 hover:bg-white/5"
+                          }`}
+                        >
+                          {isListening ? <MicOff size={15} /> : <Mic size={15} />}
+                        </button>
+                      </div>
 
-                  {/* Input Shortcut Hint & Character Counter */}
-                  <div className="flex justify-between items-center text-[11px] text-zinc-500 font-mono px-1">
-                    <span className="flex items-center gap-1">
-                      <CornerDownLeft size={10} /> Enter to send • Shift+Enter for new line
-                    </span>
-                    <span>{input.length}/2000</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-mono text-zinc-700 hidden sm:block">
+                          <CornerDownLeft size={9} className="inline mr-0.5" /> send
+                        </span>
+
+                        {/* Send button */}
+                        <motion.button
+                          whileHover={!isGenerating && input.trim() ? { scale: 1.08 } : {}}
+                          whileTap={!isGenerating && input.trim() ? { scale: 0.94 } : {}}
+                          onClick={() => handleSendQuery(input)}
+                          disabled={isGenerating || !input.trim()}
+                          className="flex items-center justify-center w-8 h-8 rounded-xl transition-all cursor-pointer disabled:cursor-not-allowed"
+                          style={{
+                            background: input.trim() && !isGenerating
+                              ? "rgba(16,185,129,1)"
+                              : "rgba(255,255,255,0.05)",
+                            boxShadow: input.trim() && !isGenerating ? "0 0 20px rgba(16,185,129,0.3)" : "none",
+                          }}
+                        >
+                          <Send size={14} className={input.trim() && !isGenerating ? "text-black" : "text-zinc-700"} />
+                        </motion.button>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Hint */}
+                  <div className="flex justify-between items-center mt-2 px-1">
+                    <span className="text-[10px] font-mono text-zinc-800">Cmd+K to toggle</span>
+                    <span className="text-[10px] font-mono text-zinc-800">{input.length}/2000</span>
                   </div>
                 </div>
               </div>

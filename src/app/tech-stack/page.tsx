@@ -1,153 +1,218 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Cpu, Terminal, Layers, Server, Cloud, Sparkles, CheckCircle2, ArrowUpRight } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 
-const CATEGORIES = [
-  {
-    name: "Frontend & Motion Engine",
-    icon: Layers,
-    items: [
-      { name: "Next.js 16 (App Router)", desc: "React framework with Server Components and static site generation" },
-      { name: "React 19", desc: "Latest UI library for concurrent rendering and state" },
-      { name: "TypeScript", desc: "Strict type safety preventing runtime errors" },
-      { name: "Tailwind CSS v4", desc: "Utility-first CSS styling with theme inline variables" },
-      { name: "GSAP 3 (ScrollTrigger)", desc: "120 FPS scroll animations and timeline scrubbing" },
-      { name: "Framer Motion", desc: "Spring physics animation engine for React" },
-      { name: "Lenis Smooth Scroll", desc: "Momentum smooth scrolling mechanics" },
-    ],
-  },
-  {
-    name: "AI & Machine Learning",
-    icon: Cpu,
-    items: [
-      { name: "Groq Llama 3.3 SDK", desc: "Ultra-fast LLM inference API engine" },
-      { name: "Google Gemini API", desc: "Multimodal LLM generation and retrieval" },
-      { name: "Context RAG Pipelines", desc: "Vector domain context injection engine" },
-      { name: "Typewriter Streaming", desc: "Token streaming animation API routes" },
-    ],
-  },
-  {
-    name: "Backend & Database",
-    icon: Server,
-    items: [
-      { name: "Node.js", desc: "Serverless runtime engine" },
-      { name: "Python", desc: "Data processing and ML scripts" },
-      { name: "Supabase", desc: "Open-source Firebase alternative with PostgreSQL" },
-      { name: "PostgreSQL", desc: "Relational database architecture" },
-    ],
-  },
-  {
-    name: "Cloud, DevOps & Security",
-    icon: Cloud,
-    items: [
-      { name: "Vercel Edge Network", desc: "Global CDN serverless deployment" },
-      { name: "Git & GitHub", desc: "Version control and automated CI/CD" },
-      { name: "Lighthouse 95+ Audit", desc: "Core Web Vitals and CLS optimization" },
-      { name: "WCAG AA Accessibility", desc: "Keyboard navigation and screen reader support" },
-    ],
-  },
+const CATEGORIES = ["All", "Frontend", "Backend", "AI/ML", "DevOps", "Design"];
+
+const TECH = [
+  { name: "Next.js", cat: "Frontend", version: "16.x", level: 98, icon: "▲", color: "#22d3ee" },
+  { name: "React", cat: "Frontend", version: "19.x", level: 98, icon: "⚛", color: "#22d3ee" },
+  { name: "TypeScript", cat: "Frontend", version: "5.x", level: 96, icon: "TS", color: "#22d3ee" },
+  { name: "Three.js", cat: "Frontend", version: "0.168", level: 90, icon: "▣", color: "#06b6d4" },
+  { name: "GSAP", cat: "Frontend", version: "3.x", level: 94, icon: "◈", color: "#06b6d4" },
+  { name: "Framer Motion", cat: "Frontend", version: "11.x", level: 95, icon: "◇", color: "#06b6d4" },
+  { name: "Tailwind CSS", cat: "Frontend", version: "4.x", level: 96, icon: "✦", color: "#0ea5e9" },
+  { name: "Node.js", cat: "Backend", version: "22.x", level: 92, icon: "⬡", color: "#22d3ee" },
+  { name: "PostgreSQL", cat: "Backend", version: "16.x", level: 90, icon: "◉", color: "#0ea5e9" },
+  { name: "Supabase", cat: "Backend", version: "2.x", level: 94, icon: "⊛", color: "#0ea5e9" },
+  { name: "Prisma", cat: "Backend", version: "5.x", level: 88, icon: "◈", color: "#22d3ee" },
+  { name: "Groq / Llama", cat: "AI/ML", version: "3.3", level: 92, icon: "⌁", color: "#22d3ee" },
+  { name: "LangChain", cat: "AI/ML", version: "0.3", level: 85, icon: "⛓", color: "#0ea5e9" },
+  { name: "OpenAI SDK", cat: "AI/ML", version: "4.x", level: 90, icon: "◯", color: "#06b6d4" },
+  { name: "Vercel", cat: "DevOps", version: "Latest", level: 96, icon: "△", color: "#22d3ee" },
+  { name: "Docker", cat: "DevOps", version: "25.x", level: 82, icon: "⬡", color: "#0ea5e9" },
+  { name: "Figma", cat: "Design", version: "Latest", level: 88, icon: "◈", color: "#22d3ee" },
 ];
 
-export default function TechStackPage() {
+function CircuitTrace({ delay = 0 }: { delay?: number }) {
   return (
-    <main className="min-h-screen bg-black text-white pt-28 pb-20 px-4 sm:px-8 max-w-7xl mx-auto selection:bg-emerald-500 selection:text-black">
-      {/* Hero */}
-      <section className="space-y-6 text-center max-w-4xl mx-auto mb-20">
+    <motion.div
+      className="absolute h-px opacity-0"
+      style={{ background: "linear-gradient(90deg, transparent, #22d3ee60, transparent)" }}
+      initial={{ opacity: 0, scaleX: 0 }}
+      whileInView={{ opacity: [0, 1, 0], scaleX: [0, 1, 1] }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 1.5, ease: "easeInOut" }}
+    />
+  );
+}
+
+function PingDot({ color, delay = 0 }: { color: string; delay?: number }) {
+  return (
+    <div className="relative w-2 h-2">
+      <div className="absolute inset-0 rounded-full" style={{ background: color }} />
+      <motion.div
+        className="absolute inset-0 rounded-full"
+        style={{ background: color }}
+        animate={{ scale: [1, 3], opacity: [0.8, 0] }}
+        transition={{ duration: 2, delay, repeat: Infinity, ease: "easeOut" }}
+      />
+    </div>
+  );
+}
+
+function TechCard({ tech, index }: { tech: typeof TECH[0]; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ delay: index * 0.04, duration: 0.5 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="relative p-5 rounded-2xl border transition-all duration-300 group"
+      style={{
+        borderColor: hovered ? `${tech.color}40` : "#22d3ee12",
+        background: hovered ? `${tech.color}08` : "transparent",
+      }}
+    >
+      {/* Ping dot top-right */}
+      <div className="absolute top-3 right-3">
+        <PingDot color={tech.color} delay={index * 0.2} />
+      </div>
+
+      {/* Icon */}
+      <div
+        className="text-sm font-mono font-bold mb-3 w-8 h-8 flex items-center justify-center rounded-lg"
+        style={{ color: tech.color, background: `${tech.color}15`, border: `1px solid ${tech.color}25` }}
+      >
+        {tech.icon}
+      </div>
+
+      <h3 className="text-sm font-bold text-white mb-0.5">{tech.name}</h3>
+      <div className="text-[10px] font-mono text-zinc-600 mb-4">v{tech.version}</div>
+
+      {/* Proficiency trace bar */}
+      <div className="h-0.5 w-full rounded-full mb-1" style={{ background: "#22d3ee15" }}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono"
-        >
-          <Terminal size={14} /> PRODUCTION TECH STACK
-        </motion.div>
+          className="h-full rounded-full"
+          style={{ background: `linear-gradient(90deg, ${tech.color}80, ${tech.color})` }}
+          initial={{ width: "0%" }}
+          animate={inView ? { width: `${tech.level}%` } : {}}
+          transition={{ delay: index * 0.04 + 0.3, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        />
+      </div>
+      <div className="text-[10px] font-mono text-right" style={{ color: `${tech.color}80` }}>{tech.level}%</div>
+    </motion.div>
+  );
+}
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          style={{ fontSize: 'var(--text-h1)', lineHeight: 'var(--lh-heading)', letterSpacing: 'var(--ls-heading)' }}
-          className="font-bold text-white font-sans"
-        >
-          Battle-Tested Engineering <br />
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            Technology Matrix.
-          </span>
-        </motion.h1>
+export default function TechStackPage() {
+  const [activeCategory, setActiveCategory] = useState("All");
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          style={{ fontSize: 'var(--text-body)', lineHeight: 'var(--lh-body)' }}
-          className="text-zinc-400 max-w-3xl mx-auto"
-        >
-          Our technology choices are engineered for 120 FPS performance, zero layout shift, strict type safety, and global scalability.
-        </motion.p>
-      </section>
+  const filtered = activeCategory === "All" ? TECH : TECH.filter((t) => t.cat === activeCategory);
 
-      {/* Categorized Tech Stack Grid */}
-      <section className="space-y-16 mb-24">
-        {CATEGORIES.map((cat, idx) => {
-          const IconComp = cat.icon;
-          return (
-            <div key={idx} className="space-y-6">
-              <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-                <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl">
-                  <IconComp size={20} />
-                </div>
-                <h2
-                  style={{ fontSize: 'var(--text-h3)', lineHeight: 'var(--lh-subheading)' }}
-                  className="font-bold text-white tracking-tight"
-                >{cat.name}</h2>
-              </div>
+  return (
+    <main
+      className="min-h-screen text-white selection:bg-cyan-500 selection:text-black"
+      style={{ background: "#060b18" }}
+    >
+      {/* Blueprint grid */}
+      <div
+        className="pointer-events-none fixed inset-0 z-[1] opacity-[0.06]"
+        style={{
+          backgroundImage: "linear-gradient(rgba(34,211,238,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(34,211,238,0.6) 1px, transparent 1px)",
+          backgroundSize: "80px 80px",
+        }}
+      />
+      {/* Diagonal blueprint lines */}
+      <div
+        className="pointer-events-none fixed inset-0 z-[1] opacity-[0.02]"
+        style={{
+          backgroundImage: "linear-gradient(45deg, rgba(34,211,238,0.8) 1px, transparent 1px), linear-gradient(-45deg, rgba(34,211,238,0.8) 1px, transparent 1px)",
+          backgroundSize: "120px 120px",
+        }}
+      />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {cat.items.map((tech, i) => (
-                  <motion.div
-                    key={i}
-                    whileHover={{ y: -4 }}
-                    className="p-6 rounded-2xl bg-zinc-950/90 border border-white/10 space-y-2 hover:border-emerald-500/40 transition-colors"
-                  >
-                    <div className="flex items-center justify-between">
-                      <h3
-                        style={{ fontSize: 'var(--text-h4)', lineHeight: 'var(--lh-tight)' }}
-                        className="font-bold text-white flex items-center gap-2"
-                      >
-                        <CheckCircle2 size={16} className="text-emerald-400" />
-                        {tech.name}
-                      </h3>
-                    </div>
-                    <p
-                      style={{ fontSize: 'var(--text-sm)', lineHeight: 'var(--lh-body)' }}
-                      className="text-zinc-400"
-                    >{tech.desc}</p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
-      </section>
+      <div className="relative z-10 pt-32 pb-24 px-4 sm:px-8 max-w-7xl mx-auto">
+        {/* Hero */}
+        <section className="mb-20 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/25 bg-cyan-500/10 text-cyan-400 text-xs font-mono mb-8"
+          >
+            <Sparkles size={12} /> BLUEPRINT · {TECH.length} TECHNOLOGIES LOADED
+          </motion.div>
 
-      {/* CTA Box */}
-      <section className="text-center p-12 rounded-3xl bg-zinc-950 border border-white/10 space-y-6">
-        <h2
-          style={{ fontSize: 'var(--text-h2)', lineHeight: 'var(--lh-subheading)' }}
-          className="font-bold text-white"
-        >Need a Custom Tech Stack Solution?</h2>
-        <p className="text-zinc-400 max-w-xl mx-auto text-sm">
-          Discuss technical specs and architectural choices directly with founder Sai Vinoth.
-        </p>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-500 text-black font-bold rounded-2xl hover:bg-emerald-400 transition-all text-sm shadow-lg shadow-emerald-500/20"
-        >
-          Consult on Architecture <ArrowUpRight size={16} />
-        </Link>
-      </section>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
+          >
+            <span className="text-white">The Technology</span>
+            <br />
+            <span style={{ background: "linear-gradient(135deg, #22d3ee 0%, #0ea5e9 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+              Stack.
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.25 }}
+            className="text-zinc-500 font-mono text-sm max-w-lg mx-auto"
+          >
+            Every tool chosen for a reason. Every version tracked. Every proficiency measured.
+          </motion.p>
+        </section>
+
+        {/* Category filter */}
+        <section className="mb-12 flex justify-center">
+          <div
+            className="flex items-center gap-2 p-1.5 rounded-2xl flex-wrap justify-center"
+            style={{ background: "#22d3ee08", border: "1px solid #22d3ee15" }}
+          >
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setActiveCategory(cat)}
+                className="px-5 py-2 rounded-xl text-xs font-mono font-bold transition-all"
+                style={{
+                  background: activeCategory === cat ? "linear-gradient(135deg, #22d3ee, #0ea5e9)" : "transparent",
+                  color: activeCategory === cat ? "#000" : "#6b7280",
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        {/* Tech Grid */}
+        <AnimatePresence mode="wait">
+          <motion.section
+            key={activeCategory}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-24"
+          >
+            {filtered.map((t, i) => <TechCard key={t.name} tech={t} index={i} />)}
+          </motion.section>
+        </AnimatePresence>
+
+        {/* CTA */}
+        <section className="text-center">
+          <p className="text-zinc-600 font-mono text-xs mb-6">BUILT WITH THIS STACK · READY TO BUILD WITH YOU</p>
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-sm"
+            style={{ background: "linear-gradient(135deg, #22d3ee, #0ea5e9)", boxShadow: "0 0 40px #22d3ee30" }}
+          >
+            Start a Project <ArrowUpRight size={16} />
+          </Link>
+        </section>
+      </div>
     </main>
   );
 }

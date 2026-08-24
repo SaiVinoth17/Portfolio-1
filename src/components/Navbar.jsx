@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -22,9 +22,12 @@ const navLinks = [
   { text: "Home",        href: "/" },
   { text: "About",       href: "/about" },
   { text: "Projects",    href: "/projects" },
-  { text: "3D Showcase", href: "/showcase" },
-  { text: "Services",    href: "/services" },
+  { text: "Stack",       href: "/tech-stack" },
   { text: "Process",     href: "/process" },
+  { text: "Showcase",    href: "/showcase" },
+  { text: "Services",    href: "/services" },
+  { text: "Resume",      href: "/resume" },
+  { text: "Blog",        href: "/blog" },
 ];
 
 const contactLinks = [
@@ -45,9 +48,7 @@ function NavLink({ href, children }) {
         background: hover ? "rgba(255,255,255,0.10)" : "transparent",
         color: hover ? "#fff" : "rgba(255,255,255,0.75)",
       }}
-      className="relative px-3 py-1.5 rounded-full
-                 text-[11px] font-mono uppercase tracking-[0.1em] font-medium
-                 cursor-pointer select-none whitespace-nowrap"
+      className="relative px-3 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.1em] font-medium cursor-pointer select-none whitespace-nowrap"
     >
       {children}
     </Link>
@@ -107,14 +108,7 @@ function GlassPill({ children, className = "", style = {} }) {
 }
 
 export default function Navbar() {
-  const [isOpen,  setIsOpen]  = useState(false);
-  const [scrollY, setScrollY] = useState(0);
-
-  useEffect(() => {
-    const fn = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", fn, { passive: true });
-    return () => window.removeEventListener("scroll", fn);
-  }, []);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
@@ -167,8 +161,7 @@ export default function Navbar() {
       {/* ── Desktop navbar ─────────────────────────────────────── */}
       <nav
         aria-label="Main navigation"
-        className="fixed top-0 left-0 w-full z-[100] pointer-events-none
-                   flex justify-center pt-4 px-4"
+        className="fixed top-0 left-0 w-full z-[100] pointer-events-none flex justify-center pt-4 px-4"
       >
         <GlassPill className="hidden lg:flex pointer-events-auto gap-1 px-2 py-1.5">
           {/* Nav links */}
@@ -193,10 +186,7 @@ export default function Navbar() {
             {/* CTA — opaque pill inside the glass pill */}
             <Link
               href="/contact"
-              className="ml-2 px-4 py-1.5 rounded-full
-                         text-[11px] font-mono uppercase tracking-[0.1em] font-bold
-                         text-black cursor-pointer select-none whitespace-nowrap
-                         transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
+              className="ml-2 px-4 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.1em] font-bold text-black cursor-pointer select-none whitespace-nowrap transition-all duration-200 hover:brightness-110 hover:scale-[1.03]"
               style={{
                 background:
                   "linear-gradient(135deg,#34d399 0%,#10b981 55%,#059669 100%)",
@@ -213,16 +203,14 @@ export default function Navbar() {
         <GlassPill className="lg:hidden w-full pointer-events-auto px-4 py-2.5 justify-between">
           <Link
             href="/"
-            className="text-[11px] font-mono uppercase tracking-[0.12em]
-                       font-bold text-white/90"
+            className="text-[11px] font-mono uppercase tracking-[0.12em] font-bold text-white/90"
           >
             AEVION STUDIO
           </Link>
           <button
             onClick={() => setIsOpen(true)}
             aria-label="Open menu"
-            className="text-white/80 p-1.5 rounded-xl
-                       hover:bg-white/10 transition-colors cursor-pointer ml-auto"
+            className="text-white/80 p-1.5 rounded-xl hover:bg-white/10 transition-colors cursor-pointer ml-auto"
           >
             <Menu size={18} strokeWidth={1.5} />
           </button>
@@ -248,11 +236,9 @@ export default function Navbar() {
 
         {/* Panel — iOS 26 glass on dark */}
         <div
-          className={`absolute right-0 top-0 h-screen w-[78%] sm:w-1/2
-                      flex flex-col px-6 pt-8 pb-10
-                      transition-transform duration-500 ease-in-out ${
-                        isOpen ? "translate-x-0" : "translate-x-full"
-                      }`}
+          className={`absolute right-0 top-0 h-screen w-[78%] sm:w-1/2 flex flex-col px-6 pt-8 pb-10 transition-transform duration-500 ease-in-out ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
           style={{
             backdropFilter: "blur(40px) saturate(220%) brightness(105%)",
             WebkitBackdropFilter: "blur(40px) saturate(220%) brightness(105%)",
@@ -286,9 +272,7 @@ export default function Navbar() {
                 key={link.text}
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="group flex items-center gap-3 px-4 py-3 rounded-2xl
-                           text-white/60 hover:text-white
-                           transition-all duration-200 font-mono text-sm tracking-wide"
+                className="group flex items-center gap-3 px-4 py-3 rounded-2xl text-white/60 hover:text-white transition-all duration-200 font-mono text-sm tracking-wide"
                 style={{
                   background: "transparent",
                   transitionDelay: isOpen ? `${i * 35}ms` : "0ms",
@@ -310,9 +294,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               onClick={() => setIsOpen(false)}
-              className="block w-full text-center py-3.5 rounded-2xl
-                         text-black font-bold font-mono text-sm tracking-wider
-                         transition-all hover:brightness-110 hover:scale-[1.01] cursor-pointer"
+              className="block w-full text-center py-3.5 rounded-2xl text-black font-bold font-mono text-sm tracking-wider transition-all hover:brightness-110 hover:scale-[1.01] cursor-pointer"
               style={{
                 background:
                   "linear-gradient(135deg,#34d399 0%,#10b981 55%,#059669 100%)",

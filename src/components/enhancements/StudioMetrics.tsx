@@ -32,6 +32,9 @@ export function StudioMetrics({ isOpen, onClose }: StudioMetricsProps) {
               <div className="flex items-center gap-2 text-xs font-bold text-blue-400">
                 <Activity size={16} />
                 <span>Aevion Global Edge & Telemetry</span>
+                <span className="text-[9px] font-mono bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded-full">
+                  SIMULATED
+                </span>
               </div>
               <button
                 onClick={onClose}

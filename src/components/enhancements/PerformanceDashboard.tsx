@@ -6,7 +6,7 @@ import { Activity, Cpu, Gauge, Zap, X } from "lucide-react";
 
 export function PerformanceDashboard() {
   const [isOpen, setIsOpen] = useState(false);
-  const [fps, setFps] = useState(120);
+  const [fps, setFps] = useState(60);
   const [memory, setMemory] = useState<string | null>(null);
   const [scrollVel, setScrollVel] = useState(0);
 
