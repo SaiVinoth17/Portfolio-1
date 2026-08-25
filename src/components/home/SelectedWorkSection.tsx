@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Github, ExternalLink, Sparkles, Layers, Cpu, Compass, Gamepad2, Laptop } from "lucide-react";
+import React, { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ArrowUpRight, Github, Layers, Compass, Sparkles, Gamepad2, Laptop } from "lucide-react";
 import Link from "next/link";
+import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
 
 interface CaseStudy {
   id: string;
@@ -19,7 +22,7 @@ interface CaseStudy {
   githubUrl?: string;
   status: string;
   accentColor: string;
-  icon: any;
+  icon: typeof Compass;
 }
 
 const CASE_STUDIES: CaseStudy[] = [
@@ -35,7 +38,7 @@ const CASE_STUDIES: CaseStudy[] = [
       "Engineered an immersive discovery platform featuring dynamic terrain mapping, AI-curated personalized itineraries, high-speed cached offline support, and 60 FPS scroll transitions.",
     outcome:
       "Fast sub-second initial page loads, 100% Lighthouse SEO score, and seamless exploration across mobile and desktop devices.",
-    technologies: ["Next.js 16", "TypeScript", "Framer Motion", "Supabase", "MapboxGL", "Tailwind CSS"],
+    technologies: ["Next.js 16", "TypeScript", "GSAP", "Supabase", "MapboxGL", "Tailwind CSS"],
     demoUrl: "/projects/nilgiris-explorers",
     githubUrl: "https://github.com/aevionstudio",
     status: "SHIPPED & LIVE",
@@ -102,39 +105,91 @@ const CASE_STUDIES: CaseStudy[] = [
 ];
 
 export default function SelectedWorkSection() {
-  const [activeProject, setActiveProject] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current || isReducedMotion()) return;
+
+      // Section Header
+      gsap.fromTo(
+        ".work-header-elem",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".work-header",
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Project Cards Progressive Reveal
+      const cards = gsap.utils.toArray<HTMLElement>(".case-study-card");
+      cards.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 40, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: MOTION.duration.cinematic,
+            ease: MOTION.ease.cinematic,
+            scrollTrigger: {
+              trigger: card,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      });
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <section id="work" className="relative bg-[#050509] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="work"
+      className="relative bg-[#050509] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+    >
       {/* Background radial glow */}
       <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-white/[0.02] blur-[150px] rounded-full" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-20">
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
+        <div className="work-header flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-cyan-400">
+            <div className="work-header-elem inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-cyan-400">
               <Layers size={13} />
               <span>PRODUCTION CASE STUDIES</span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
-              SELECTED<br />
+            <h2 className="work-header-elem text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
+              SELECTED
+              <br />
               <span className="bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
-                SYSTEMS &amp; PRODUCTS.
+                SYSTEMS &amp; ARCHITECTURE.
               </span>
             </h2>
           </div>
 
-          <div className="max-w-md">
+          <div className="work-header-elem max-w-md">
             <p className="text-sm font-mono text-zinc-400 leading-relaxed">
-              Every project is a bespoke case study engineered with strict type safety, visual storytelling, and high-performance mechanics.
+              Every project is a bespoke case study engineered with strict type safety, visual
+              storytelling, and high-performance mechanics.
             </p>
             <div className="mt-4">
               <Link
                 href="/projects"
-                className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider font-bold"
+                className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-[0.1em] font-bold"
               >
-                View Full Systems Archive <ArrowUpRight size={14} />
+                ACCESS FULL ARCHIVE <ArrowUpRight size={14} />
               </Link>
             </div>
           </div>
@@ -142,17 +197,11 @@ export default function SelectedWorkSection() {
 
         {/* Large Format Editorial Case Studies */}
         <div className="space-y-12">
-          {CASE_STUDIES.map((project, idx) => {
-            const Icon = project.icon;
-
+          {CASE_STUDIES.map((project) => {
             return (
-              <motion.div
+              <div
                 key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7, delay: idx * 0.1 }}
-                className="rounded-3xl border border-white/10 bg-[#08080f] p-8 sm:p-12 hover:border-white/20 transition-all duration-300 group relative overflow-hidden"
+                className="case-study-card rounded-3xl border border-white/10 bg-[#08080f] p-8 sm:p-12 hover:border-white/20 transition-all duration-300 group relative overflow-hidden"
               >
                 {/* Glow accent */}
                 <div
@@ -210,23 +259,27 @@ export default function SelectedWorkSection() {
 
                       <div className="flex items-center gap-3">
                         {project.demoUrl && (
-                          <Link
-                            href={project.demoUrl}
-                            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-black font-bold font-mono text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all hover:scale-105"
-                          >
-                            Launch Case Study <ArrowUpRight size={14} />
-                          </Link>
+                          <AevionMagnetic strength={0.25}>
+                            <Link
+                              href={project.demoUrl}
+                              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white text-black font-bold font-mono text-[10px] uppercase tracking-[0.1em] hover:bg-zinc-200 transition-all hover:scale-105"
+                            >
+                              INITIALIZE DEMO <ArrowUpRight size={14} />
+                            </Link>
+                          </AevionMagnetic>
                         )}
                         {project.githubUrl && (
-                          <a
-                            href={project.githubUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
-                            title="GitHub Repository"
-                          >
-                            <Github size={16} />
-                          </a>
+                          <AevionMagnetic strength={0.3}>
+                            <a
+                              href={project.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-2.5 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors block"
+                              title="GitHub Repository"
+                            >
+                              <Github size={16} />
+                            </a>
+                          </AevionMagnetic>
                         )}
                       </div>
                     </div>
@@ -262,7 +315,7 @@ export default function SelectedWorkSection() {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>

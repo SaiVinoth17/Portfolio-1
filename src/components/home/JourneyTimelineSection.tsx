@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Clock, Sparkles, Terminal, Cpu, GitCommit, CheckCircle2, ArrowUpRight } from "lucide-react";
-import Link from "next/link";
+import React, { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { Clock } from "lucide-react";
+import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 
 const MILESTONES = [
   {
@@ -41,42 +42,87 @@ const MILESTONES = [
 ];
 
 export default function JourneyTimelineSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current || isReducedMotion()) return;
+
+      // Header
+      gsap.fromTo(
+        ".timeline-header-elem",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".timeline-header",
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Timeline Milestones Progressive Reveal
+      const items = gsap.utils.toArray<HTMLElement>(".timeline-milestone-item");
+      items.forEach((item) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, x: -25 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: MOTION.duration.standard,
+            ease: MOTION.ease.cinematic,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      });
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section className="relative bg-[#030306] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative bg-[#030306] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto relative z-10 space-y-20">
         {/* Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
+        <div className="timeline-header flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-emerald-400">
+            <div className="timeline-header-elem inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-emerald-400">
               <Clock size={13} />
               <span>BUILDING IN PUBLIC // THE CONTINUUM</span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
-              THE EVOLUTION<br />
+            <h2 className="timeline-header-elem text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
+              THE EVOLUTION
+              <br />
               <span className="bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
                 OF AEVION SYSTEMS.
               </span>
             </h2>
           </div>
 
-          <div className="max-w-md">
+          <div className="timeline-header-elem max-w-md">
             <p className="text-sm font-mono text-zinc-400 leading-relaxed">
-              Tracking our chronological engineering leaps, product launches, and architectural milestones in full public view.
+              Tracking our chronological engineering leaps, product launches, and architectural
+              milestones in full public view.
             </p>
           </div>
         </div>
 
         {/* Timeline Grid */}
         <div className="relative border-l border-white/10 ml-4 sm:ml-8 pl-6 sm:pl-10 space-y-12">
-          {MILESTONES.map((m, idx) => (
-            <motion.div
-              key={m.phase}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: idx * 0.1 }}
-              className="relative group"
-            >
+          {MILESTONES.map((m) => (
+            <div key={m.phase} className="timeline-milestone-item relative group">
               {/* Timeline node dot */}
               <div
                 className="absolute -left-[31px] sm:-left-[47px] top-1.5 w-4 h-4 rounded-full border-2 border-black bg-zinc-600 group-hover:scale-125 transition-transform duration-300 flex items-center justify-center"
@@ -122,7 +168,7 @@ export default function JourneyTimelineSection() {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

@@ -7,6 +7,7 @@ export function CustomCursor() {
   const [hoverLabel, setHoverLabel] = useState<string | null>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(false);
 
   const rawX = useMotionValue(-100);
   const rawY = useMotionValue(-100);
@@ -22,11 +23,32 @@ export function CustomCursor() {
   const scaleY = useTransform(velocityY, [-100, 0, 100], [0.8, 1, 0.8]);
 
   useEffect(() => {
-    // Disable custom cursor on touch screens or reduced motion
     if (typeof window === "undefined") return;
-    const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (isTouch || reducedMotion) return;
+
+    // Strictly enable ONLY for desktop devices with precise pointer and hover capabilities
+    const checkEligibility = () => {
+      const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+      const canHover = window.matchMedia("(hover: hover)").matches;
+      const isDesktopWidth = window.innerWidth >= 768;
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      const eligible = hasFinePointer && canHover && isDesktopWidth && !reducedMotion;
+      setIsEnabled(eligible);
+      if (!eligible) {
+        setIsVisible(false);
+      }
+    };
+
+    checkEligibility();
+    window.addEventListener("resize", checkEligibility);
+
+    return () => {
+      window.removeEventListener("resize", checkEligibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isEnabled) return;
 
     let lastX = 0;
     let lastY = 0;
@@ -43,7 +65,9 @@ export function CustomCursor() {
 
       // Check magnetic target
       const target = e.target as HTMLElement | null;
-      const interactiveEl = target?.closest("button, a, [data-cursor], [role='button'], .cursor-pointer") as HTMLElement | null;
+      const interactiveEl = target?.closest(
+        "button, a, [data-cursor], [role='button'], .cursor-pointer"
+      ) as HTMLElement | null;
 
       if (interactiveEl) {
         setIsHovered(true);
@@ -51,9 +75,9 @@ export function CustomCursor() {
         if (customLabel) {
           setHoverLabel(customLabel);
         } else if (interactiveEl.tagName === "A") {
-          setHoverLabel("Open");
+          setHoverLabel("Link");
         } else if (interactiveEl.tagName === "BUTTON") {
-          setHoverLabel("Explore");
+          setHoverLabel("Action");
         } else {
           setHoverLabel("View");
         }
@@ -87,9 +111,9 @@ export function CustomCursor() {
       window.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [isVisible, rawX, rawY, velocityX, velocityY]);
+  }, [isEnabled, isVisible, rawX, rawY, velocityX, velocityY]);
 
-  if (!isVisible) return null;
+  if (!isEnabled || !isVisible) return null;
 
   return (
     <motion.div
@@ -101,15 +125,15 @@ export function CustomCursor() {
         scaleX,
         scaleY,
       }}
-      className="fixed top-0 left-0 pointer-events-none z-[9999] flex items-center justify-center"
+      className="fixed top-0 left-0 pointer-events-none z-[45] hidden md:flex items-center justify-center"
     >
       {/* Outer Ring */}
       <motion.div
         animate={{
-          width: isHovered ? 48 : 20,
-          height: isHovered ? 48 : 20,
-          backgroundColor: isHovered ? "rgba(255, 255, 255, 0.15)" : "rgba(255, 255, 255, 0)",
-          borderColor: isHovered ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.4)",
+          width: isHovered ? 44 : 18,
+          height: isHovered ? 44 : 18,
+          backgroundColor: isHovered ? "rgba(255, 255, 255, 0.12)" : "rgba(255, 255, 255, 0)",
+          borderColor: isHovered ? "rgba(255, 255, 255, 0.6)" : "rgba(255, 255, 255, 0.35)",
         }}
         transition={{ type: "spring", stiffness: 400, damping: 25 }}
         className="rounded-full border border-white/40 backdrop-blur-[2px] flex items-center justify-center overflow-hidden shadow-lg shadow-black/20"
@@ -119,17 +143,19 @@ export function CustomCursor() {
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.6 }}
-            className="text-[9px] font-extrabold uppercase tracking-widest text-white px-1 select-none"
+            className="text-[8px] font-mono font-bold uppercase tracking-widest text-white px-1 select-none"
           >
             {hoverLabel}
           </motion.span>
         )}
       </motion.div>
 
-      {/* Inner Glowing Core Dot */}
+      {/* Inner Dot */}
       {!isHovered && (
         <div className="absolute w-1.5 h-1.5 bg-white rounded-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
       )}
     </motion.div>
   );
 }
+
+export default CustomCursor;

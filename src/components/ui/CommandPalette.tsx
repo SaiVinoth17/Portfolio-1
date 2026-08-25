@@ -107,6 +107,16 @@ export default function CommandPalette() {
       action: () => router.push("/blog"),
     },
     {
+      id: "ai-intelligence",
+      title: "Aevion Intelligence (AI Intelligence Layer)",
+      category: "Actions",
+      icon: Sparkles,
+      shortcut: "J",
+      action: () => {
+        window.dispatchEvent(new CustomEvent("open-aevion-ai"));
+      },
+    },
+    {
       id: "contact",
       title: "Start a Project (Product Configurator)",
       category: "Actions",

@@ -33,7 +33,7 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     content:
       "Aevion was founded by Sai Rio and Edison — two builders focused on turning ambitious ideas into real technology.\n\nBoth are co-founders with equal standing, combining foundational product strategy, systems engineering, AI pipelines, and high-performance software building.",
     details: [
-      "Sai Rio — Co-Founder: Product • Engineering • AI • Systems • Product Vision.",
+      "Sai Rio — Co-Founder: Product • Engineering • AI • Systems • Product Vision. (GitHub: https://github.com/SaiVinoth17)",
       "Edison — Co-Founder: Development • Technology • Engineering • Building. (GitHub: https://github.com/edisonedi84431-art)",
       "Core Ethos: 'Two builders. One vision. Technology without limits.'",
     ],
@@ -49,12 +49,13 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     id: "founder-sai-rio",
     category: "founders",
     title: "About Co-Founder Sai Rio",
-    keywords: ["sai", "sai rio", "who is sai", "who is sai rio", "about sai", "about sai rio", "sai's role"],
+    keywords: ["sai", "sai rio", "who is sai", "who is sai rio", "about sai", "about sai rio", "sai's role", "sai github"],
     content:
       "Sai Rio is Co-Founder of Aevion. He focuses on Product, Engineering, AI, Systems, and Product Vision.",
     details: [
       "Role: Co-Founder of Aevion Studio alongside Edison.",
       "Focus Areas: Autonomous AI systems architecture, Next.js 16 frameworks, vector context pipelines, streaming inference, and overall product vision.",
+      "Verified GitHub Profile: https://github.com/SaiVinoth17",
       "Philosophy: 'Software should be an extension of human will. Eliminate friction until only raw performance, intelligence, and clarity remain.'",
     ],
     suggestedFollowUps: [

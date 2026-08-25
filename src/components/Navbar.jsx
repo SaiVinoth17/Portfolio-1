@@ -159,7 +159,7 @@ export default function Navbar() {
       {/* ── Desktop navbar ─────────────────────────────────────── */}
       <nav
         aria-label="Main navigation"
-        className="fixed top-0 left-0 w-full z-[100] pointer-events-none flex justify-center pt-4 px-4"
+        className="fixed top-0 left-0 w-full z-40 pointer-events-none flex justify-center pt-4 px-4"
       >
         <GlassPill className="hidden lg:flex pointer-events-auto gap-1 px-2 py-1.5">
           {/* Nav links */}
@@ -217,7 +217,7 @@ export default function Navbar() {
 
       {/* ── Mobile drawer ──────────────────────────────────────── */}
       <div
-        className={`fixed inset-0 z-[300] transition-all duration-500 ${
+        className={`fixed inset-0 z-50 transition-all duration-500 ${
           isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
         onClick={() => setIsOpen(false)}

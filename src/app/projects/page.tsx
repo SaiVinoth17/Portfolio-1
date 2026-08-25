@@ -194,10 +194,11 @@ export default function ProjectsPage() {
             transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
           >
-            <span className="text-white">Work that</span>
+            <span className="text-white">Proven systems
+            </span>
             <br />
             <span style={{ background: "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              left a mark.
+              shipped with intent.
             </span>
           </motion.h1>
 
@@ -207,7 +208,7 @@ export default function ProjectsPage() {
             transition={{ delay: 0.25 }}
             className="text-zinc-500 text-sm max-w-lg leading-relaxed"
           >
-            Each project is a frame developed in the darkroom. Built with precision, shipped with intent.
+            Every project is an architecture decision. Engineered for performance, built for scale, shipped without compromise.
           </motion.p>
         </section>
 

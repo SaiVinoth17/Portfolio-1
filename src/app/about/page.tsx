@@ -13,7 +13,7 @@ const FOUNDERS_INFO = [
     title: "Product • Engineering • AI • Systems • Vision",
     bio: "Focusing on autonomous AI architectures, streaming LLM pipelines, next-generation frameworks, and overall product vision. Believes that modern software must feel as fluid and intelligent as thought itself.",
     specialties: ["Autonomous Agents", "Groq / LLM Streaming", "Next.js 16 Systems", "Vector & Context RAG", "System Design"],
-    github: "https://github.com/aevionstudio",
+    github: "https://github.com/SaiVinoth17",
     accent: "#34d399",
   },
   {

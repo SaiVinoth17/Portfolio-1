@@ -14,40 +14,49 @@ export function AchievementSystem() {
   const [achievement, setAchievement] = useState<Achievement | null>(null);
 
   useEffect(() => {
-    // Welcome achievement after 3s
+    // Welcome achievement after 4s, auto-dismiss in 6s
     const timer = setTimeout(() => {
       setAchievement({
         id: "welcome",
-        title: "Aevion OS Explorer",
-        description: "Welcome to Aevion Studio Motion Operating System v2.0",
+        title: "Aevion Studio OS",
+        description: "Kinetic motion & intelligence layer active.",
       });
-    }, 3500);
+    }, 4000);
 
-    return () => clearTimeout(timer);
+    const dismissTimer = setTimeout(() => {
+      setAchievement(null);
+    }, 10000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(dismissTimer);
+    };
   }, []);
 
   return (
     <AnimatePresence>
       {achievement && (
         <motion.div
-          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+          initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
-          exit={{ opacity: 0, y: 50, scale: 0.9 }}
-          className="fixed bottom-6 left-6 z-[99999] bg-gradient-to-r from-gray-950 via-gray-900 to-gray-950 border border-yellow-500/40 text-white p-4 rounded-2xl shadow-2xl flex items-center gap-3.5 max-w-sm font-sans"
+          exit={{ opacity: 0, y: -20, scale: 0.95 }}
+          transition={{ duration: 0.3 }}
+          className="fixed top-20 sm:top-24 right-4 left-4 sm:left-auto sm:right-6 z-40 bg-zinc-950/95 border border-emerald-500/30 text-white p-3 sm:p-3.5 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm font-sans backdrop-blur-xl"
         >
-          <div className="p-2.5 bg-yellow-500/10 border border-yellow-500/30 rounded-xl text-yellow-400 shrink-0">
-            <Trophy size={20} />
+          <div className="p-2 bg-emerald-500/10 border border-emerald-500/25 rounded-xl text-emerald-400 shrink-0">
+            <Trophy size={16} />
           </div>
-          <div className="flex-1">
-            <div className="text-[10px] font-extrabold uppercase tracking-widest text-yellow-400">
-              Achievement Unlocked
+          <div className="flex-1 min-w-0">
+            <div className="text-[9px] font-mono font-bold uppercase tracking-widest text-emerald-400">
+              System Telemetry
             </div>
-            <h4 className="text-xs font-bold text-white leading-tight">{achievement.title}</h4>
-            <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{achievement.description}</p>
+            <h4 className="text-xs font-bold text-white leading-tight truncate">{achievement.title}</h4>
+            <p className="text-[11px] text-zinc-400 mt-0.5 leading-snug truncate">{achievement.description}</p>
           </div>
           <button
             onClick={() => setAchievement(null)}
-            className="text-gray-500 hover:text-white transition-colors cursor-pointer"
+            className="text-zinc-500 hover:text-white p-1 transition-colors cursor-pointer shrink-0"
+            aria-label="Dismiss notification"
           >
             <X size={14} />
           </button>
@@ -56,3 +65,5 @@ export function AchievementSystem() {
     </AnimatePresence>
   );
 }
+
+export default AchievementSystem;

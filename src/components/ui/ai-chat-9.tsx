@@ -10,13 +10,11 @@ import {
   Cpu,
   Zap,
   Sliders,
-  DollarSign,
   Layers,
   Check,
   RefreshCw,
   Square,
   Copy,
-  Paperclip,
   Mic,
   MicOff,
   Globe,
@@ -24,18 +22,17 @@ import {
   X,
   Code2,
   BrainCircuit,
-  Info,
+  Terminal,
+  Users,
 } from "lucide-react";
 
 export interface AIModel {
   id: string;
   name: string;
-  provider: "groq" | "nvidia" | "openai" | "anthropic" | "google";
+  provider: "gemini" | "groq" | "nvidia" | "anthropic" | "openai";
   providerName: string;
   description: string;
   contextWindow: string;
-  inputCost: string;
-  outputCost: string;
   speed: string;
   supportsReasoning: boolean;
   isRecommended?: boolean;
@@ -43,81 +40,49 @@ export interface AIModel {
 
 export const AI_MODELS: AIModel[] = [
   {
-    id: "openai/gpt-oss-120b",
-    name: "GPT-OSS 120B",
-    provider: "groq",
-    providerName: "Groq (Active Engine)",
-    description: "High-intelligence open-weights reasoning model with high-throughput LPU acceleration.",
-    contextWindow: "131,072 tokens",
-    inputCost: "$0.15 / 1M tokens",
-    outputCost: "$0.60 / 1M tokens",
-    speed: "1,250 tok/s",
+    id: "gemini-2.5-flash",
+    name: "Gemini 2.5 Flash",
+    provider: "gemini",
+    providerName: "Google DeepMind / Cloud",
+    description: "Million-token multimodal model with high-speed reasoning, deep context retrieval, and zero latency.",
+    contextWindow: "1,000,000 tokens",
+    speed: "450 tok/s",
     supportsReasoning: true,
     isRecommended: true,
   },
   {
-    id: "openai/gpt-oss-20b",
-    name: "GPT-OSS 20B",
+    id: "llama-3.3-70b-versatile",
+    name: "Llama 3.3 70B Versatile",
     provider: "groq",
-    providerName: "Groq (Active Engine)",
-    description: "Lightweight and ultra-low latency model optimized for interactive chat and rapid code completion.",
+    providerName: "Groq LPU Engine",
+    description: "High-intelligence open-weights reasoning model with high-throughput LPU acceleration.",
     contextWindow: "131,072 tokens",
-    inputCost: "$0.08 / 1M tokens",
-    outputCost: "$0.20 / 1M tokens",
-    speed: "1,800 tok/s",
+    speed: "1,250 tok/s",
     supportsReasoning: true,
   },
   {
-    id: "groq/compound-mini",
-    name: "Compound Mini",
+    id: "openai/gpt-oss-120b",
+    name: "GPT-OSS 120B",
     provider: "groq",
-    providerName: "Groq (Active Engine)",
-    description: "High-speed reasoning assistant designed for concise coding and knowledge synthesis.",
-    contextWindow: "128,000 tokens",
-    inputCost: "$0.05 / 1M tokens",
-    outputCost: "$0.10 / 1M tokens",
+    providerName: "Groq LPU Engine",
+    description: "Deep reasoning architecture with high token velocity for complex engineering tasks.",
+    contextWindow: "131,072 tokens",
     speed: "950 tok/s",
-    supportsReasoning: false,
+    supportsReasoning: true,
   },
   {
-    id: "nvidia/nemotron-3.5-lightning-30b-a3b",
-    name: "Nemotron 3.5 Lightning",
+    id: "nvidia/nemotron-4-340b-instruct",
+    name: "Nemotron 4 340B",
     provider: "nvidia",
     providerName: "NVIDIA NIM",
-    description: "NVIDIA's flagship distilled instruction model engineered for high accuracy and software design.",
+    description: "NVIDIA flagship distilled instruction model engineered for high accuracy and software design.",
     contextWindow: "128,000 tokens",
-    inputCost: "$0.20 / 1M tokens",
-    outputCost: "$0.70 / 1M tokens",
     speed: "650 tok/s",
-    supportsReasoning: true,
-  },
-  {
-    id: "claude-3-7-sonnet",
-    name: "Claude 3.7 Sonnet",
-    provider: "anthropic",
-    providerName: "Anthropic",
-    description: "Hybrid reasoning architecture for complex coding, architectural synthesis, and full-stack design.",
-    contextWindow: "200,000 tokens",
-    inputCost: "$3.00 / 1M tokens",
-    outputCost: "$15.00 / 1M tokens",
-    speed: "120 tok/s",
-    supportsReasoning: true,
-  },
-  {
-    id: "gemini-2.5-flash",
-    name: "Gemini 2.5 Flash",
-    provider: "google",
-    providerName: "Google Cloud",
-    description: "Million-token multimodal model with high-speed reasoning and deep retrieval capabilities.",
-    contextWindow: "1,000,000 tokens",
-    inputCost: "$0.10 / 1M tokens",
-    outputCost: "$0.40 / 1M tokens",
-    speed: "400 tok/s",
     supportsReasoning: true,
   },
 ];
 
-export type ReasoningEffort = "none" | "low" | "medium" | "high";
+export type ReasoningEffort = "low" | "medium" | "high";
 
 export interface AIChatMessage {
   id: string;
@@ -126,6 +91,8 @@ export interface AIChatMessage {
   modelUsed?: string;
   suggestedFollowUps?: string[];
   isStreaming?: boolean;
+  isError?: boolean;
+  timestamp?: string;
 }
 
 interface AIChat9Props {
@@ -144,15 +111,16 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
   const [input, setInput] = useState(initialPrompt);
   const [messages, setMessages] = useState<AIChatMessage[]>([
     {
-      id: "initial-1",
+      id: "initial-aevion-composer-msg",
       sender: "ai",
-      text: "I'm Aevion's intelligence layer. Ask me about what we're building, the people behind it, or the experiments we're working on.",
+      text: "AEVION INTELLIGENCE ONLINE\n\n*\"Two builders. One vision. Technology without limits.\"*\n\nWhat are we building?",
       suggestedFollowUps: [
-        "Meet the founders",
-        "What is Aevion?",
-        "What are you building?",
-        "Explore our projects",
+        "EXPLORE AEVION",
+        "ENTER THE LAB",
+        "MEET THE BUILDERS",
+        "CHALLENGE THE INTELLIGENCE",
       ],
+      timestamp: "ONLINE",
     },
   ]);
 
@@ -165,7 +133,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
   const streamingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const msgIdCounter = useRef(1);
 
-  // Auto-grow input textarea
+  // Auto-grow textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -173,7 +141,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
     }
   }, [input]);
 
-  // Scroll to bottom on new messages
+  // Scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -208,6 +176,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
       id: `user-${msgIdCounter.current}`,
       sender: "user",
       text: queryText.trim(),
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
     msgIdCounter.current += 1;
@@ -218,6 +187,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
       text: "",
       modelUsed: selectedModel.name,
       isStreaming: true,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
 
     setMessages((prev) => [...prev, userMsg, aiStreamMsg]);
@@ -226,7 +196,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
 
     try {
       const historyForAI = messages
-        .filter((m) => m.id !== "initial-1" && !m.isStreaming && m.text.trim())
+        .filter((m) => m.id !== "initial-aevion-composer-msg" && !m.isStreaming && m.text.trim())
         .map((m) => ({ sender: m.sender, text: m.text }));
 
       const res = await fetch("/api/chat", {
@@ -249,27 +219,25 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
 
       let fullResponse = "";
       let followUps: string[] = [];
+      let isErrorResponse = false;
 
       if (!res.ok) {
-        if (res.status === 401) {
-          fullResponse = `⚠️ **Authentication Error**: ${data.error || "API key is missing or invalid."}`;
-        } else if (res.status === 429) {
-          fullResponse = "⏳ **Rate Limit**: High server volume. Please retry in a few seconds.";
-        } else {
-          fullResponse = `⚠️ **Error (${res.status})**: ${data.details || data.error || "Unable to generate response."}`;
-        }
-        followUps = ["Who are the founders?", "What is your tech stack?"];
+        isErrorResponse = true;
+        fullResponse = `INTELLIGENCE INTERRUPTED\n\n${data.details || data.error || "Unable to complete request. Please retry."}`;
+        followUps = ["MEET THE BUILDERS", "RETRY UPLINK"];
       } else {
-        fullResponse = data.text || "I'm here! What would you like to explore next?";
+        fullResponse = data.text || "Aevion Intelligence online. State your objective.";
         followUps = data.suggestedFollowUps || [
-          "Tell me about Nilgiris Explorers",
-          "What is your tech stack?",
+          "EXPLORE AEVION",
+          "ENTER THE LAB",
+          "MEET THE BUILDERS",
         ];
       }
 
       let charIndex = 0;
+      const chunkSize = fullResponse.length > 500 ? 8 : 4;
       streamingIntervalRef.current = setInterval(() => {
-        charIndex += 5;
+        charIndex += chunkSize;
         if (charIndex >= fullResponse.length) {
           if (streamingIntervalRef.current) clearInterval(streamingIntervalRef.current);
           setIsGenerating(false);
@@ -280,6 +248,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
                     ...m,
                     text: fullResponse,
                     suggestedFollowUps: followUps,
+                    isError: isErrorResponse,
                     isStreaming: false,
                   }
                 : m
@@ -291,7 +260,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
             prev.map((m) => (m.id === streamMsgId ? { ...m, text: slice } : m))
           );
         }
-      }, 15);
+      }, 14);
     } catch {
       setIsGenerating(false);
       setMessages((prev) =>
@@ -299,7 +268,8 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
           m.id === streamMsgId
             ? {
                 ...m,
-                text: "An error occurred connecting to the AI endpoint. Please try again.",
+                text: "INTELLIGENCE INTERRUPTED\n\nNetwork or endpoint connection failure.",
+                isError: true,
                 isStreaming: false,
               }
             : m
@@ -313,35 +283,35 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
     return lines.map((line, idx) => {
       if (line.startsWith("### ")) {
         return (
-          <h4 key={idx} className="font-bold text-emerald-400 text-[15px] mt-2 mb-1">
+          <h4 key={idx} className="font-bold text-emerald-400 font-mono text-[13px] mt-2 mb-1 uppercase tracking-wider">
             {line.replace("### ", "")}
           </h4>
         );
       }
       if (line.startsWith("## ")) {
         return (
-          <h3 key={idx} className="font-bold text-white text-[16px] mt-2.5 mb-1">
+          <h3 key={idx} className="font-bold text-white text-[15px] mt-2.5 mb-1 tracking-tight">
             {line.replace("## ", "")}
           </h3>
         );
       }
       if (line.startsWith("**") && line.endsWith("**")) {
         return (
-          <p key={idx} className="font-semibold text-zinc-100 my-1">
+          <p key={idx} className="font-semibold text-zinc-100 my-1 text-[14px]">
             {line.replace(/\*\*/g, "")}
           </p>
         );
       }
       if (line.startsWith("• ") || line.startsWith("- ")) {
         return (
-          <p key={idx} className="pl-3 text-zinc-300 my-0.5 flex items-start gap-1.5 text-[14px]">
-            <span className="text-emerald-400">•</span>
+          <p key={idx} className="pl-2 text-zinc-300 my-0.5 flex items-start gap-2 text-[13px] leading-relaxed">
+            <span className="text-emerald-400 mt-1 text-[6px]">●</span>
             <span>{line.replace(/^[•-]\s*/, "")}</span>
           </p>
         );
       }
       return (
-        <p key={idx} className="my-1 text-zinc-200 text-[14px] leading-relaxed">
+        <p key={idx} className="my-1 text-zinc-200 text-[13px] leading-relaxed">
           {line}
         </p>
       );
@@ -353,21 +323,19 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
       className={`relative flex flex-col h-full w-full bg-zinc-950/95 border border-white/10 rounded-3xl overflow-hidden shadow-2xl backdrop-blur-2xl text-white font-sans ${className}`}
     >
       {/* Header Bar */}
-      <div className="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-zinc-900/60 shrink-0">
+      <div className="px-5 py-3.5 border-b border-white/10 flex items-center justify-between bg-zinc-900/70 shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-emerald-500 via-teal-400 to-cyan-400 p-0.5 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-            <div className="w-full h-full bg-zinc-950 rounded-[10px] flex items-center justify-center">
-              <Sparkles size={16} className="text-emerald-400" />
-            </div>
+          <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+            <Sparkles size={16} className="text-emerald-400" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold tracking-tight text-white">AI Chat 9 • Composer</h3>
-              <span className="text-[10px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">
-                React Bits Pro
+              <h3 className="text-sm font-bold tracking-tight text-white font-mono">AEVION INTELLIGENCE • COMPOSER</h3>
+              <span className="text-[9px] font-mono uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full font-bold">
+                STUDIO OS
               </span>
             </div>
-            <p className="text-[11px] text-zinc-400">Model picker with detail card & reasoning controls</p>
+            <p className="text-[10px] text-zinc-400 font-mono">Two builders • One vision • Technology without limits</p>
           </div>
         </div>
 
@@ -375,6 +343,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
           <button
             onClick={onClose}
             className="text-zinc-400 hover:text-white p-1.5 rounded-lg hover:bg-white/5 transition-colors cursor-pointer"
+            aria-label="Close"
           >
             <X size={18} />
           </button>
@@ -382,7 +351,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
       </div>
 
       {/* Messages Scroll Area */}
-      <div className="flex-1 overflow-y-auto p-5 space-y-4 font-sans text-[14px] overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-800 [&::-webkit-scrollbar-thumb]:rounded-full">
+      <div className="flex-1 overflow-y-auto p-5 space-y-4 font-sans text-[13px] overscroll-contain [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-zinc-800 [&::-webkit-scrollbar-thumb]:rounded-full">
         {messages.map((msg) => (
           <div
             key={msg.id}
@@ -391,22 +360,24 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
             <div
               className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs ${
                 msg.sender === "user"
-                  ? "bg-gradient-to-tr from-emerald-500 to-teal-400 text-zinc-950 font-bold"
+                  ? "bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold"
                   : "bg-zinc-900 border border-white/10 text-emerald-400"
               }`}
             >
-              {msg.sender === "user" ? <User size={14} /> : <Sparkles size={14} />}
+              {msg.sender === "user" ? <User size={13} /> : <Sparkles size={13} />}
             </div>
 
             <div
               className={`p-3.5 rounded-2xl max-w-[85%] relative ${
                 msg.sender === "user"
-                  ? "bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-medium shadow-md border border-emerald-400/20"
+                  ? "bg-emerald-500/15 border border-emerald-500/30 text-white font-medium shadow-md"
+                  : msg.isError
+                  ? "bg-red-950/30 border border-red-500/30 text-red-200"
                   : "bg-zinc-900/80 border border-white/10 text-zinc-200 shadow-lg"
               }`}
             >
               {msg.modelUsed && (
-                <div className="text-[10px] font-mono text-emerald-400 mb-1 flex items-center gap-1">
+                <div className="text-[9px] font-mono text-emerald-400 mb-1.5 flex items-center gap-1">
                   <Cpu size={10} /> {msg.modelUsed}
                 </div>
               )}
@@ -417,17 +388,17 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
                 <span className="inline-block w-1.5 h-3.5 bg-emerald-400 ml-1 animate-pulse rounded-xs" />
               )}
 
-              {!msg.isStreaming && msg.sender === "ai" && (
+              {!msg.isStreaming && msg.sender === "ai" && !msg.isError && (
                 <button
                   onClick={() => handleCopy(msg.text, msg.id)}
-                  className="mt-2 text-[11px] text-zinc-400 hover:text-emerald-400 flex items-center gap-1 transition-colors cursor-pointer"
+                  className="mt-2 text-[10px] text-zinc-500 hover:text-emerald-400 flex items-center gap-1 transition-colors cursor-pointer"
                 >
                   {copiedId === msg.id ? <Check size={12} /> : <Copy size={12} />}
-                  <span>{copiedId === msg.id ? "Copied" : "Copy response"}</span>
+                  <span>{copiedId === msg.id ? "Copied" : "Copy"}</span>
                 </button>
               )}
 
-              {/* Follow ups */}
+              {/* Follow-up Prompts */}
               {msg.suggestedFollowUps && !msg.isStreaming && (
                 <div className="flex flex-wrap gap-1.5 mt-3 pt-2 border-t border-white/10">
                   {msg.suggestedFollowUps.map((chip, i) => (
@@ -447,7 +418,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Model Picker & Detail Card Floating Drawer */}
+      {/* Model Picker Drawer */}
       <AnimatePresence>
         {isPickerOpen && (
           <motion.div
@@ -459,8 +430,8 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
             <div className="flex items-center justify-between border-b border-white/10 pb-2.5">
               <div className="flex items-center gap-2">
                 <BrainCircuit size={16} className="text-emerald-400" />
-                <span className="text-xs font-bold uppercase tracking-wider text-white">
-                  Model & Provider Detail Card
+                <span className="text-xs font-bold uppercase tracking-wider text-white font-mono">
+                  Engine & Model Selector
                 </span>
               </div>
               <button
@@ -473,11 +444,11 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
 
             {/* Provider Filter Tabs */}
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-              {["all", "groq", "nvidia", "anthropic", "google"].map((prov) => (
+              {["all", "gemini", "groq", "nvidia"].map((prov) => (
                 <button
                   key={prov}
                   onClick={() => setSelectedProvider(prov)}
-                  className={`px-2.5 py-1 rounded-lg font-mono uppercase text-[11px] transition-all cursor-pointer ${
+                  className={`px-2.5 py-1 rounded-lg font-mono uppercase text-[10px] transition-all cursor-pointer ${
                     selectedProvider === prov
                       ? "bg-emerald-500 text-zinc-950 font-bold shadow-md shadow-emerald-500/20"
                       : "bg-zinc-900/80 text-zinc-400 hover:text-white border border-white/5"
@@ -488,9 +459,8 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
               ))}
             </div>
 
-            {/* Model List & Detail Card Grid */}
+            {/* Model List */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-56 overflow-y-auto pr-1">
-              {/* Model Selection List */}
               <div className="space-y-1.5">
                 {filteredModels.map((model) => (
                   <div
@@ -518,7 +488,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
                 ))}
               </div>
 
-              {/* Detail Card carrying Context, Cost & Reasoning */}
+              {/* Detail Card */}
               <div className="bg-zinc-900/90 border border-white/10 rounded-xl p-3 space-y-2.5 flex flex-col justify-between text-xs font-mono">
                 <div>
                   <div className="flex items-center justify-between text-emerald-400 font-bold border-b border-white/10 pb-1.5">
@@ -534,16 +504,15 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
 
                 <div className="grid grid-cols-2 gap-2 text-[11px] pt-1">
                   <div className="bg-black/50 p-2 rounded-lg border border-white/5">
-                    <span className="text-zinc-500 block text-[10px] uppercase">Context</span>
+                    <span className="text-zinc-500 block text-[9px] uppercase">Context Window</span>
                     <span className="text-zinc-200 font-semibold">{selectedModel.contextWindow}</span>
                   </div>
                   <div className="bg-black/50 p-2 rounded-lg border border-white/5">
-                    <span className="text-zinc-500 block text-[10px] uppercase">Est. Cost</span>
-                    <span className="text-emerald-400 font-semibold">{selectedModel.outputCost}</span>
+                    <span className="text-zinc-500 block text-[9px] uppercase">Telemetry</span>
+                    <span className="text-emerald-400 font-semibold">{selectedModel.speed}</span>
                   </div>
                 </div>
 
-                {/* Reasoning Effort Control */}
                 {selectedModel.supportsReasoning && (
                   <div className="space-y-1 pt-1 border-t border-white/10">
                     <div className="flex items-center justify-between text-[11px]">
@@ -554,8 +523,8 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
                         {reasoningEffort}
                       </span>
                     </div>
-                    <div className="grid grid-cols-4 gap-1 pt-0.5">
-                      {(["none", "low", "medium", "high"] as ReasoningEffort[]).map((effort) => (
+                    <div className="grid grid-cols-3 gap-1 pt-0.5">
+                      {(["low", "medium", "high"] as ReasoningEffort[]).map((effort) => (
                         <button
                           key={effort}
                           onClick={() => setReasoningEffort(effort)}
@@ -577,9 +546,8 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
         )}
       </AnimatePresence>
 
-      {/* Composer Bottom Bar with Model Picker Button */}
+      {/* Composer Bottom Bar */}
       <div className="p-3.5 border-t border-white/10 bg-zinc-950/95 space-y-2 shrink-0">
-        {/* Model Picker Pill Bar */}
         <div className="flex items-center justify-between gap-2 text-xs">
           <button
             onClick={() => setIsPickerOpen((prev) => !prev)}
@@ -589,26 +557,10 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
             <span className="font-semibold text-white group-hover:text-emerald-300 transition-colors">
               {selectedModel.name}
             </span>
-            <span className="text-[11px] text-zinc-500 font-mono hidden sm:inline">
-              ({selectedModel.contextWindow})
-            </span>
             <ChevronDown size={14} className={`text-zinc-400 transition-transform ${isPickerOpen ? "rotate-180" : ""}`} />
           </button>
 
           <div className="flex items-center gap-1.5">
-            <button
-              onClick={() => setWebSearchEnabled((prev) => !prev)}
-              title="Toggle Live Web Grounding"
-              className={`p-1.5 rounded-lg border transition-all cursor-pointer flex items-center gap-1 text-[11px] font-mono ${
-                webSearchEnabled
-                  ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/40"
-                  : "bg-zinc-900/60 text-zinc-400 border-white/10 hover:text-white"
-              }`}
-            >
-              <Globe size={13} />
-              <span className="hidden sm:inline">Web</span>
-            </button>
-
             {isGenerating && (
               <button
                 onClick={handleStopGenerating}
@@ -633,8 +585,8 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
               }
             }}
             rows={1}
-            placeholder={`Message ${selectedModel.name}...`}
-            className="flex-1 bg-transparent px-3 py-2 text-[14px] text-white placeholder-zinc-500 focus:outline-none resize-none overflow-hidden max-h-32"
+            placeholder="What are we building?"
+            className="flex-1 bg-transparent px-3 py-2 text-[13px] text-white placeholder-zinc-500 focus:outline-none resize-none overflow-hidden max-h-32"
           />
 
           <button
@@ -642,13 +594,13 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
             disabled={isGenerating || !input.trim()}
             className="p-2 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-30 text-zinc-950 rounded-xl transition-all cursor-pointer font-bold shadow-md shadow-emerald-500/20 shrink-0"
           >
-            <Send size={15} />
+            <Send size={14} />
           </button>
         </div>
 
         <div className="flex justify-between items-center text-[10px] text-zinc-500 font-mono px-1">
           <span className="flex items-center gap-1">
-            <CornerDownLeft size={10} /> Enter to send • Shift+Enter for new line
+            <CornerDownLeft size={10} /> Enter to send • Shift+Enter for newline
           </span>
           <span>Reasoning: {selectedModel.supportsReasoning ? reasoningEffort : "N/A"}</span>
         </div>
@@ -656,3 +608,5 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
     </div>
   );
 }
+
+export default AIChat9;

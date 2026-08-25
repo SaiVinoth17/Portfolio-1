@@ -1,14 +1,111 @@
 "use client";
 
 import React, { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowUpRight, Terminal, Cpu, Sparkles, ChevronDown, Activity, ShieldCheck, Zap } from "lucide-react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
+import RippleDistortion from "@/components/RippleDistortion";
+import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
+
+const HERO_BACKGROUNDS = [
+  {
+    id: "cyber-nexus",
+    name: "Cyber Nexus",
+    url: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=2560&auto=format&fit=crop",
+    tint: "#10b981",
+  },
+  {
+    id: "liquid-obsidian",
+    name: "Liquid Obsidian",
+    url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2560&auto=format&fit=crop",
+    tint: "#06b6d4",
+  },
+  {
+    id: "quantum-core",
+    name: "Quantum Core",
+    url: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=2560&auto=format&fit=crop",
+    tint: "#a855f7",
+  },
+];
 
 export default function AevionHero() {
+  const heroRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [bgIndex, setBgIndex] = useState(0);
+  const currentBg = HERO_BACKGROUNDS[bgIndex];
 
+  // ── 1. GSAP Master Cinematic Entrance Timeline ──────────────────────────
+  useGSAP(
+    () => {
+      if (!heroRef.current) return;
+      if (isReducedMotion()) return;
+
+      const tl = gsap.timeline({
+        defaults: { ease: MOTION.ease.cinematic },
+      });
+
+      // System status badge
+      tl.fromTo(
+          ".hero-status-badge",
+          { opacity: 0, scale: 0.92, y: 15 },
+          { opacity: 1, scale: 1, y: 0, duration: MOTION.duration.fast, delay: 0.15 }
+        )
+        // Sub-title label
+        .fromTo(
+          ".hero-eyebrow",
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: MOTION.duration.fast },
+          "-=0.3"
+        )
+        // Monolithic typography lines
+        .fromTo(
+          ".hero-heading-line",
+          { opacity: 0, y: 45, rotateX: 12 },
+          {
+            opacity: 1,
+            y: 0,
+            rotateX: 0,
+            stagger: 0.12,
+            duration: MOTION.duration.cinematic,
+            ease: MOTION.ease.cinematic,
+          },
+          "-=0.25"
+        )
+        // Narrative description
+        .fromTo(
+          ".hero-narrative",
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, duration: MOTION.duration.standard },
+          "-=0.5"
+        )
+        // Dual founder badges
+        .fromTo(
+          ".hero-founder-badge",
+          { opacity: 0, x: -15 },
+          { opacity: 1, x: 0, stagger: 0.08, duration: MOTION.duration.fast },
+          "-=0.4"
+        )
+        // CTA buttons
+        .fromTo(
+          ".hero-cta-button",
+          { opacity: 0, y: 20, scale: 0.96 },
+          { opacity: 1, y: 0, scale: 1, stagger: 0.1, duration: MOTION.duration.fast },
+          "-=0.3"
+        )
+        // Bottom telemetry metric cards
+        .fromTo(
+          ".hero-metric-card",
+          { opacity: 0, y: 25 },
+          { opacity: 1, y: 0, stagger: 0.07, duration: MOTION.duration.standard },
+          "-=0.35"
+        );
+    },
+    { scope: heroRef }
+  );
+
+  // ── 2. Interactive Canvas Particles ──────────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -26,8 +123,7 @@ export default function AevionHero() {
     };
     window.addEventListener("resize", handleResize);
 
-    // Particle nodes
-    const particleCount = Math.min(Math.floor(width / 18), 85);
+    const particleCount = Math.min(Math.floor(width / 24), 50);
     const particles: Array<{
       x: number;
       y: number;
@@ -41,10 +137,10 @@ export default function AevionHero() {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
+        vx: (Math.random() - 0.5) * 0.25,
+        vy: (Math.random() - 0.5) * 0.25,
         size: Math.random() * 2 + 1,
-        baseAlpha: Math.random() * 0.5 + 0.2,
+        baseAlpha: Math.random() * 0.35 + 0.1,
       });
     }
 
@@ -54,29 +150,11 @@ export default function AevionHero() {
     const handleMouseMove = (e: MouseEvent) => {
       localMouseX = e.clientX;
       localMouseY = e.clientY;
-      setMousePos({ x: e.clientX, y: e.clientY });
     };
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
-
-      // Subtle background grid
-      const gridSize = 50;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.025)";
-      ctx.lineWidth = 1;
-      for (let x = 0; x < width; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, height);
-        ctx.stroke();
-      }
-      for (let y = 0; y < height; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(width, y);
-        ctx.stroke();
-      }
 
       // Draw and update particles
       for (let i = 0; i < particles.length; i++) {
@@ -89,7 +167,6 @@ export default function AevionHero() {
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        // Distance to mouse
         const dx = localMouseX - p.x;
         const dy = localMouseY - p.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -97,22 +174,21 @@ export default function AevionHero() {
 
         let alpha = p.baseAlpha;
         if (dist < maxDist) {
-          alpha = p.baseAlpha + (1 - dist / maxDist) * 0.6;
-          p.x += (dx / dist) * 0.3;
-          p.y += (dy / dist) * 0.3;
+          alpha = p.baseAlpha + (1 - dist / maxDist) * 0.4;
+          p.x += (dx / dist) * 0.2;
+          p.y += (dy / dist) * 0.2;
         }
 
-        ctx.fillStyle = `rgba(52, 211, 153, ${alpha * 0.6})`;
+        ctx.fillStyle = `rgba(52, 211, 153, ${alpha * 0.5})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Connect nearby particles
         for (let j = i + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const distNodes = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (distNodes < 110) {
-            ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - distNodes / 110) * 0.12})`;
+          if (distNodes < 90) {
+            ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - distNodes / 90) * 0.08})`;
             ctx.lineWidth = 0.8;
             ctx.beginPath();
             ctx.moveTo(p.x, p.y);
@@ -121,21 +197,6 @@ export default function AevionHero() {
           }
         }
       }
-
-      // Interactive cursor glow
-      const grad = ctx.createRadialGradient(
-        localMouseX,
-        localMouseY,
-        0,
-        localMouseX,
-        localMouseY,
-        320
-      );
-      grad.addColorStop(0, "rgba(52, 211, 153, 0.08)");
-      grad.addColorStop(0.5, "rgba(16, 185, 129, 0.02)");
-      grad.addColorStop(1, "rgba(0, 0, 0, 0)");
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, width, height);
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -150,88 +211,82 @@ export default function AevionHero() {
   }, []);
 
   return (
-    <section className="relative min-h-screen w-full bg-[#030306] text-white flex flex-col justify-between overflow-hidden pt-28 pb-12 px-4 sm:px-8 lg:px-16 selection:bg-emerald-500 selection:text-black">
-      {/* Interactive Canvas Background */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0 pointer-events-none z-0"
-      />
+    <section
+      ref={heroRef}
+      className="relative min-h-[100dvh] w-full bg-[#030306] text-white flex flex-col justify-between overflow-hidden pt-28 pb-12 px-4 sm:px-8 lg:px-16 selection:bg-emerald-500 selection:text-black"
+    >
+      {/* Immersive WebGL Ripple Distortion Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <RippleDistortion
+          src={currentBg.url}
+          brushSize={170}
+          strength={0.22}
+          swirl={1.1}
+          rings={4}
+          spread={5.5}
+          fade={3.0}
+          dispersion={0.07}
+          glint={0.35}
+          tint={currentBg.tint}
+          tintAmount={0.16}
+          grayscale={false}
+          trigger="both"
+          quality="medium"
+          className="w-full h-full"
+        />
 
-      {/* Top telemetry bar */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-3 border-b border-white/10 text-[11px] font-mono">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-            <span>AEVION STUDIO // v2.6.4</span>
-          </div>
-          <span className="text-zinc-500 hidden md:inline">•</span>
-          <span className="text-zinc-400 hidden md:inline">QUANTUM CORE ACTIVE</span>
-        </div>
-
-        <div className="flex items-center gap-4 text-zinc-400">
-          <span className="flex items-center gap-1.5">
-            <Cpu size={12} className="text-emerald-400" />
-            <span>AI SYNAPSE: ONLINE</span>
-          </span>
-          <span>•</span>
-          <span className="text-zinc-300 font-bold">FOUNDED BY SAI RIO &amp; EDISON</span>
-        </div>
+        {/* Cinematic dark gradient vignette */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#030306] via-[#030306]/65 to-[#030306]/85" />
+        <div className="absolute inset-0 bg-radial-[ellipse_at_center,_var(--tw-gradient-stops)] from-transparent via-[#030306]/40 to-[#030306]/90" />
       </div>
 
+      {/* Interactive Canvas Background Particles */}
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-[1]" />
+
+
+
       {/* Main Center Hero Content */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full py-16 lg:py-24 flex flex-col justify-center">
+      <div className="relative z-10 max-w-7xl mx-auto w-full py-14 lg:py-20 flex flex-col justify-center">
         {/* Sub-badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 self-start"
-        >
+        <div className="hero-status-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 self-start">
           <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
           <span className="text-xs font-mono tracking-widest text-zinc-300 uppercase">
             Two Builders • One Vision • Technology Without Limits
           </span>
-        </motion.div>
+        </div>
 
         {/* Monolithic Brand Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="space-y-4"
-        >
-          <div className="text-[12px] sm:text-sm font-mono uppercase tracking-[0.25em] text-emerald-400 font-semibold">
-            AEVION TECHNOLOGY STUDIO
+        <div className="space-y-4">
+          <div className="hero-eyebrow text-[12px] sm:text-sm font-mono uppercase tracking-[0.25em] text-emerald-400 font-semibold">
+            AEVION STUDIO
           </div>
 
-          <h1 className="text-5xl sm:text-7xl lg:text-[100px] xl:text-[116px] font-extrabold tracking-tighter leading-[0.92] text-white">
-            WE BUILD<br />
-            <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
-              WHAT&apos;S NEXT.
+          <h1 className="text-5xl sm:text-7xl lg:text-[90px] xl:text-[106px] font-extrabold tracking-tighter leading-[0.92] text-white">
+            <span className="hero-heading-line block">SYSTEM ONLINE.</span>
+            <span className="hero-heading-line block bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
+              TECHNOLOGY<br className="hidden md:block"/>WITHOUT LIMITS.
             </span>
           </h1>
-        </motion.div>
+        </div>
 
         {/* Description & Narrative */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.25 }}
-          className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end"
-        >
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-7 space-y-4">
-            <p className="text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-2xl">
-              An experimental AI software and high-performance technology studio founded by <strong className="text-white font-semibold">Sai Rio</strong> and <strong className="text-white font-semibold">Edison</strong>. We turn complex computational challenges into ultra-fast, cinematic digital reality.
+            <p className="hero-narrative text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-2xl">
+              An experimental AI software and high-performance technology studio founded by{" "}
+              <strong className="text-white font-semibold">Sai Rio</strong> and{" "}
+              <strong className="text-white font-semibold">Edison</strong>. We turn complex computational
+              challenges into ultra-fast, cinematic digital reality.
             </p>
 
-            {/* Dual Founder Micro-Badge */}
+            {/* Dual Founder Micro-Badges */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <div className="px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
+              <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span className="text-white font-semibold">Sai Rio</span>
                 <span className="text-zinc-500">/ Product • Engineering • AI</span>
               </div>
-              <div className="px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
+              <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                 <span className="text-white font-semibold">Edison</span>
                 <span className="text-zinc-500">/ Technology • Systems • Building</span>
@@ -239,23 +294,27 @@ export default function AevionHero() {
             </div>
           </div>
 
-          {/* Action CTAs */}
+          {/* Action CTAs with Magnetic Attraction on Desktop */}
           <div className="lg:col-span-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-start lg:justify-end gap-3">
-            <Link
-              href="/projects"
-              className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white text-black font-bold text-xs uppercase font-mono tracking-wider hover:bg-zinc-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-[1.02]"
-            >
-              Selected Systems <ArrowUpRight size={16} />
-            </Link>
+            <AevionMagnetic strength={0.3}>
+              <Link
+                href="/projects"
+                className="hero-cta-button inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white text-black font-bold text-[11px] uppercase font-mono tracking-[0.1em] hover:bg-zinc-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-[1.02]"
+              >
+                EXPLORE THE WORK <ArrowUpRight size={16} />
+              </Link>
+            </AevionMagnetic>
 
-            <Link
-              href="#founders"
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-white font-mono text-xs uppercase tracking-wider transition-all"
-            >
-              Meet The Founders
-            </Link>
+            <AevionMagnetic strength={0.25}>
+              <Link
+                href="/showcase"
+                className="hero-cta-button inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-white font-mono text-[11px] uppercase tracking-[0.1em] transition-all"
+              >
+                ENTER THE LAB
+              </Link>
+            </AevionMagnetic>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Bottom Live Metrics Deck */}
@@ -263,13 +322,13 @@ export default function AevionHero() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: "FOUNDING CORES", value: "2 Equal Builders", detail: "Sai Rio & Edison" },
-            { label: "ENGINEERING STACK", value: "Next.js 16 • Three.js", detail: "TypeScript • Groq" },
+            { label: "ENGINEERING STACK", value: "Next.js 16 • GSAP", detail: "TypeScript • Three.js" },
             { label: "COMPUTE ARCHITECTURE", value: "Edge Distributed", detail: "< 24ms Cold Start" },
             { label: "SYSTEM STATUS", value: "Production Operational", detail: "100% Zero Bloat" },
           ].map((m, i) => (
             <div
               key={i}
-              className="p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/15 transition-all"
+              className="hero-metric-card p-4 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/15 transition-all"
             >
               <div className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">{m.label}</div>
               <div className="text-sm sm:text-base font-bold font-mono text-white mt-1">{m.value}</div>

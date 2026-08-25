@@ -71,6 +71,7 @@ export default function RootLayout({ children }) {
             "@type": "Person",
             "name": "Sai Rio",
             "jobTitle": "Co-Founder",
+            "sameAs": "https://github.com/SaiVinoth17",
             "knowsAbout": ["Product", "Engineering", "AI", "Systems", "Vision"]
           },
           {
@@ -82,13 +83,14 @@ export default function RootLayout({ children }) {
           }
         ],
         "description": "A serious futuristic technology studio founded by Sai Rio and Edison. Two builders. One vision. Technology without limits.",
-        "sameAs": ["https://github.com/aevionstudio", "https://github.com/edisonedi84431-art"]
+        "sameAs": ["https://github.com/SaiVinoth17", "https://github.com/edisonedi84431-art", "https://github.com/aevionstudio"]
       },
       {
         "@type": "Person",
         "@id": "https://aevion.studio/#sairio",
         "name": "Sai Rio",
         "jobTitle": "Co-Founder",
+        "sameAs": "https://github.com/SaiVinoth17",
         "worksFor": {
           "@id": "https://aevion.studio/#organization"
         }

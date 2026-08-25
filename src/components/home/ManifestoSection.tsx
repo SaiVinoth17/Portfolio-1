@@ -1,9 +1,11 @@
 "use client";
 
-import React from "react";
-import { motion } from "framer-motion";
-import { Sparkles, Terminal, Cpu, Zap, Shield, ArrowUpRight, Code2 } from "lucide-react";
+import React, { useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { Sparkles, Terminal, Cpu, Zap, ArrowUpRight, Code2 } from "lucide-react";
 import Link from "next/link";
+import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 
 const PRINCIPLES = [
   {
@@ -41,48 +43,114 @@ const PRINCIPLES = [
 ];
 
 export default function ManifestoSection() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current || isReducedMotion()) return;
+
+      // Heading Reveal
+      gsap.fromTo(
+        ".manifesto-header-elem",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.12,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".manifesto-header",
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Principle Cards Stagger
+      gsap.fromTo(
+        ".manifesto-card",
+        { opacity: 0, y: 35, scale: 0.98 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.1,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".manifesto-cards-grid",
+            start: "top 82%",
+            once: true,
+          },
+        }
+      );
+
+      // Callout Banner
+      gsap.fromTo(
+        ".manifesto-banner",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".manifesto-banner",
+            start: "top 88%",
+            once: true,
+          },
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
+
   return (
-    <section id="manifesto" className="relative bg-[#030306] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="manifesto"
+      className="relative bg-[#030306] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+    >
       {/* Laser grid accents */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.02]"
         style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
           backgroundSize: "80px 80px",
         }}
       />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-20">
         {/* Top Manifesto Title */}
-        <div className="space-y-6 max-w-4xl">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono tracking-widest uppercase">
+        <div className="manifesto-header space-y-6 max-w-4xl">
+          <div className="manifesto-header-elem inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono tracking-widest uppercase">
             <Sparkles size={12} /> The Aevion Manifesto
           </div>
 
-          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02] text-white">
-            AEVION EXISTS TO TURN<br />
+          <h2 className="manifesto-header-elem text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02] text-white">
+            AEVION EXISTS TO TURN
+            <br />
             <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
               AMBITIOUS IDEAS INTO REAL TECHNOLOGY.
             </span>
           </h2>
 
-          <p className="text-base sm:text-xl text-zinc-400 font-light leading-relaxed max-w-3xl">
-            We don&apos;t build generic websites, copy startup trends, or assemble template stacks. We operate as an elite experimental laboratory and software foundry for founders and forward-thinking enterprises.
+          <p className="manifesto-header-elem text-base sm:text-xl text-zinc-400 font-light leading-relaxed max-w-3xl">
+            We don&apos;t build generic websites, copy startup trends, or assemble template stacks. We
+            operate as an elite experimental laboratory and software foundry for founders and
+            forward-thinking enterprises.
           </p>
         </div>
 
         {/* 4 Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {PRINCIPLES.map((p, i) => {
-            const Icon = p.icon;
+        <div className="manifesto-cards-grid grid grid-cols-1 md:grid-cols-2 gap-8">
+          {PRINCIPLES.map((p) => {
             return (
-              <motion.div
+              <div
                 key={p.num}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="p-8 sm:p-10 rounded-3xl border border-white/10 bg-white/[0.02] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] transition-all duration-300 group flex flex-col justify-between"
+                className="manifesto-card p-8 sm:p-10 rounded-3xl border border-white/10 bg-white/[0.02] hover:border-emerald-500/40 hover:bg-emerald-500/[0.03] transition-all duration-300 group flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-center justify-between mb-8">
@@ -105,15 +173,18 @@ export default function ManifestoSection() {
 
                 <div className="pt-6 mt-8 border-t border-white/5 flex items-center justify-between text-xs font-mono text-zinc-500 group-hover:text-zinc-300 transition-colors">
                   <span>DISCIPLINE VERIFIED</span>
-                  <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-emerald-400" />
+                  <ArrowUpRight
+                    size={14}
+                    className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform text-emerald-400"
+                  />
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Technology Laboratory Quote Block */}
-        <div className="p-8 sm:p-12 rounded-3xl border border-white/10 bg-gradient-to-r from-emerald-950/20 via-black to-cyan-950/20 flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div className="manifesto-banner p-8 sm:p-12 rounded-3xl border border-white/10 bg-gradient-to-r from-emerald-950/20 via-black to-cyan-950/20 flex flex-col lg:flex-row items-center justify-between gap-8">
           <div className="space-y-3 max-w-2xl text-center lg:text-left">
             <div className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
               LABORATORY EXPERIMENTATION
@@ -122,7 +193,8 @@ export default function ManifestoSection() {
               Pushing the boundaries of what browser engines can do.
             </div>
             <p className="text-sm text-zinc-400 font-mono">
-              From WebGL shaders to sub-50ms AI streaming architectures, we test new frontiers before they become industry standards.
+              From WebGL shaders to sub-50ms AI streaming architectures, we test new frontiers before
+              they become industry standards.
             </p>
           </div>
 

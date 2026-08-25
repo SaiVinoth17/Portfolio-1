@@ -79,7 +79,7 @@ export function PerformanceDashboard() {
           initial={{ opacity: 0, y: -20, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
-          className="fixed top-6 right-6 z-[99999] bg-black/85 backdrop-blur-md border border-white/20 text-white text-xs p-4 rounded-2xl shadow-2xl w-72 font-mono"
+          className="fixed top-6 right-6 z-50 bg-black/85 backdrop-blur-md border border-white/20 text-white text-xs p-4 rounded-2xl shadow-2xl w-72 font-mono"
         >
           <div className="flex items-center justify-between border-b border-white/15 pb-2 mb-3">
             <div className="flex items-center gap-2 font-semibold text-emerald-400">

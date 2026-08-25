@@ -7,30 +7,30 @@ export interface AIResponse {
   isFoundersCard?: boolean;
 }
 
-export function generateAIResponse(query: string, history: ConversationMessage[]): AIResponse {
+export function generateAIResponse(query: string, history: ConversationMessage[] = []): AIResponse {
   const clean = query.toLowerCase().trim();
 
-  // 1. Direct Pattern Interceptors for Verified Precision
+  // 1. Direct High-Precision Interceptors
   if (/^(who founded aevion|who created aevion|who is behind aevion|who are the founders|meet the founders|founders|founder)\b/i.test(clean)) {
     return {
-      text: "Aevion was founded by **Sai Rio** and **Edison** — two builders focused on turning ambitious ideas into real technology.\n\nBoth are co-founders of equal standing:\n\n**Sai Rio — Co-Founder**\n• Focus: Product, Engineering, AI, Systems, and Product Vision.\n• Directs autonomous AI architecture, Next.js 16 systems, and foundational studio strategy.\n\n**Edison — Co-Founder**\n• Focus: Development, Technology, Engineering, and Building.\n• Directs core software engineering, high-throughput pipelines, WebGL graphics, and production infrastructure.\n• Verified GitHub: https://github.com/edisonedi84431-art\n\n*\"Two builders. One vision. Technology without limits.\"*",
+      text: "Aevion was founded by **Sai Rio** and **Edison** — two builders focused on turning ambitious ideas into real technology.\n\nBoth are co-founders with equal standing:\n\n**Sai Rio — Co-Founder**\n• Product • Engineering • AI • Systems • Vision\n• Directs autonomous AI architecture, Next.js 16 frameworks, vector context pipelines, and foundational studio strategy.\n• Verified GitHub: https://github.com/SaiVinoth17\n\n**Edison — Co-Founder**\n• Development • Technology • Engineering • Building\n• Directs core software engineering, high-throughput pipelines, 120 FPS WebGL shaders, and production infrastructure.\n• Verified GitHub: https://github.com/edisonedi84431-art\n\n*\"Two builders. One vision. Technology without limits.\"*",
       suggestedFollowUps: [
-        "Who is Sai Rio?",
-        "Who is Edison?",
-        "What is Aevion?",
-        "What are you building?",
+        "What are we building?",
+        "Explain the technology",
+        "What's next for Aevion?",
+        "Explore our projects",
       ],
       isFoundersCard: true,
     };
   }
 
-  if (/\b(who is sai|who is sai rio|about sai|sai's role)\b/i.test(clean)) {
+  if (/\b(who is sai|who is sai rio|about sai|sai's role|sai github)\b/i.test(clean)) {
     return {
-      text: "**Sai Rio** is Co-Founder of Aevion.\n\nHe leads **Product, Engineering, AI, Systems, and Product Vision**.\n\n• **Core Disciplines**: Autonomous AI systems, Groq/LLM streaming inference, Next.js 16 App Router architectures, vector context pipelines, and foundational product direction.\n• **Philosophy**: *\"Software should be an extension of human will. Eliminate friction until only raw performance, intelligence, and clarity remain.\"*\n• Co-founded Aevion alongside Edison with an equal partnership to build technology without limits.",
+      text: "**Sai Rio** is Co-Founder of Aevion.\n\nHe leads **Product, Engineering, AI, Systems, and Product Vision**.\n\n• **Core Disciplines**: Autonomous AI systems, Groq/Gemini streaming inference, Next.js 16 App Router architectures, vector context pipelines, and product direction.\n• **Verified GitHub Profile**: https://github.com/SaiVinoth17\n• **Philosophy**: *\"Software should be an extension of human will. Eliminate friction until only raw performance, intelligence, and clarity remain.\"*\n• Co-founded Aevion alongside Edison with an equal partnership.",
       suggestedFollowUps: [
         "Who is Edison?",
-        "Who founded Aevion?",
-        "What are you building?",
+        "What are we building?",
+        "Explain the technology",
       ],
     };
   }
@@ -40,7 +40,7 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
       text: "**Edison** is Co-Founder of Aevion.\n\nHe leads **Development, Technology, Engineering, and Building**.\n\n• **Core Disciplines**: Core software development, distributed edge services, 120 FPS WebGL shaders, high-throughput data pipelines, and production engineering.\n• **Verified GitHub Profile**: https://github.com/edisonedi84431-art\n• **Philosophy**: *\"True craftsmanship lies in the invisible layers. When every byte is optimized and every transition is calculated, software becomes unforgettable.\"*\n• Co-founded Aevion alongside Sai Rio with equal founder status.",
       suggestedFollowUps: [
         "Who is Sai Rio?",
-        "Who founded Aevion?",
+        "What are we building?",
         "Explore our projects",
       ],
     };
@@ -48,11 +48,11 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (/\b(are sai and edison both founders|are both founders|are they co-founders|who is the main founder|is edison a founder)\b/i.test(clean)) {
     return {
-      text: "**Yes. Sai Rio and Edison are both co-founders of Aevion.**\n\nNeither founder is secondary or subordinate to the other. Aevion is built on a shared, equal foundation:\n\n• **Sai Rio** — Co-Founder (Product • Engineering • AI • Systems • Vision)\n• **Edison** — Co-Founder (Development • Technology • Engineering • Building)\n\nBoth work directly together to architect and engineer every system with zero middle layers.",
+      text: "**Yes. Sai Rio and Edison are both co-founders of Aevion with equal founder status.**\n\nNeither founder is secondary or subordinate to the other. Aevion is built on a shared, unified foundation:\n\n• **Sai Rio** — Co-Founder (Product • Engineering • AI • Systems • Vision)\n• **Edison** — Co-Founder (Development • Technology • Engineering • Building)\n\nBoth work directly together to architect and engineer every system with zero middle layers.",
       suggestedFollowUps: [
-        "Who is Sai Rio?",
-        "Who is Edison?",
-        "What is Aevion?",
+        "What are we building?",
+        "Enter the lab",
+        "Explore our projects",
       ],
       isFoundersCard: true,
     };
@@ -63,19 +63,30 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
       text: "This website and the entire Aevion Studio platform were designed, architected, and built by co-founders **Sai Rio** and **Edison**.\n\n• **Sai Rio**: Product architecture, system design, and AI pipelines.\n• **Edison**: Core technology development, WebGL performance, and production engineering.\n• **Stack**: Next.js 16 App Router, React 19, TypeScript, Three.js, GSAP 3, and Tailwind CSS v4.",
       suggestedFollowUps: [
         "Meet the founders",
-        "What is your tech stack?",
+        "Explain the technology",
         "Explore our projects",
       ],
     };
   }
 
-  if (/\b(what is aevion|tell me about aevion|about aevion|what does aevion do)\b/i.test(clean)) {
+  if (/\b(what is aevion|tell me about aevion|about aevion|what does aevion do|why aevion)\b/i.test(clean)) {
     return {
-      text: "**Aevion exists to turn ambitious ideas into real technology.**\n\nWe are an experimental technology and AI studio co-founded by **Sai Rio** and **Edison**.\n\n• **Autonomous AI**: Sub-50ms streaming LLM pipelines, contextual RAG, and reasoning agents.\n• **Kinetic Engineering**: 120 FPS fluid interaction, WebGL shaders, and tactile micro-physics.\n• **Zero-Compromise Scalability**: Strict TypeScript, edge-native cold starts, and distributed architectures.\n• **Direct Craftsmanship**: Every system is built directly by the founders with zero agency bloat.",
+      text: "**Aevion is a futuristic technology studio and experimental lab.**\n\nFounded by **Sai Rio** and **Edison** under a single principle: *\"Two builders. One vision. Technology without limits.\"*\n\n• **Autonomous AI Systems**: High-speed streaming LLM pipelines, contextual RAG, and reasoning engines.\n• **Kinetic Engineering**: 120 FPS fluid interaction, WebGL shaders, and tactile micro-physics.\n• **Zero-Compromise Scalability**: Strict TypeScript, edge-native cold starts, and distributed architectures.\n• **Direct Founder Craftsmanship**: Every system is built directly by the founders with zero agency bloat.",
       suggestedFollowUps: [
         "Meet the founders",
-        "What are you building?",
-        "Explore our projects",
+        "What are we building?",
+        "Enter the lab",
+      ],
+    };
+  }
+
+  if (/\b(what are you building|what are we building|current projects|what do you build|experiments|enter the lab)\b/i.test(clean)) {
+    return {
+      text: "At Aevion, **Sai Rio** and **Edison** are currently engineering autonomous intelligence layers, kinetic WebGL operating systems, and high-performance digital platforms:\n\n• **Aevion Studio OS**: The studio's motion operating system, GSAP scroll narrative engine, and WebGL sandbox.\n• **Nilgiris Explorers**: AI-powered geospatial travel discovery platform with real-time mountain trail mapping.\n• **Ooty Mistwings**: Luxury hospitality platform with cinematic WebGL previews and dynamic reservation flows.\n• **Gaming Kingdom**: Real-time multiplayer gaming hub with sub-15ms WebSockets and responsive arcade UI.",
+      suggestedFollowUps: [
+        "Explain the technology",
+        "Meet the founders",
+        "What's next for Aevion?",
       ],
     };
   }
@@ -84,12 +95,12 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (result.intent === "GREETING") {
     return {
-      text: "I'm Aevion's intelligence layer. Ask me about what we're building, the people behind it, or the experiments we're working on.",
+      text: "Aevion Intelligence online.\n\n\"Two builders. One vision. Technology without limits.\"\n\nWhat are we building?",
       suggestedFollowUps: [
+        "Explore Aevion",
         "Meet the founders",
-        "What is Aevion?",
-        "What are you building?",
-        "Explore our projects",
+        "What are we building?",
+        "Enter the lab",
       ],
     };
   }
@@ -104,9 +115,9 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
     return {
       text: fullText,
       suggestedFollowUps: result.topic.suggestedFollowUps || [
+        "Explore Aevion",
         "Meet the founders",
-        "What is Aevion?",
-        "Explore our projects",
+        "What are we building?",
       ],
       link: result.topic.link,
       isFoundersCard: result.topic.isFoundersCard,
@@ -115,12 +126,12 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   // Graceful unverified fallback with strict safety rule
   return {
-    text: `I don't have verified information about that yet.\n\nI can provide verified information on co-founders **Sai Rio** and **Edison**, Aevion Studio's mission, featured systems (*Nilgiris Explorers*, *Ooty Mistwings*, *Gaming Kingdom*, *Aevion Studio OS*), our Next.js 16 & WebGL technology stack, or collaboration options.`,
+    text: `I don't have verified data on that within the Aevion archives.\n\nI can provide verified technical insights on co-founders **Sai Rio** and **Edison**, our studio projects (*Nilgiris Explorers*, *Ooty Mistwings*, *Gaming Kingdom*, *Aevion Studio OS*), our Next.js 16 & WebGL technology stack, or collaboration options.`,
     suggestedFollowUps: [
       "Meet the founders",
-      "What is Aevion?",
-      "Explore our projects",
-      "What is your tech stack?",
+      "What are we building?",
+      "Explain the technology",
+      "What's next for Aevion?",
     ],
   };
 }

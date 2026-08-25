@@ -1,9 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Github, ArrowUpRight, Cpu, Layers, Sparkles, Network, Code2, Terminal, Activity } from "lucide-react";
+import React, { useState, useRef } from "react";
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import { Github, ArrowUpRight, Network, Sparkles, Activity } from "lucide-react";
 import Link from "next/link";
+import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
 
 interface FounderData {
   id: string;
@@ -37,7 +40,7 @@ const FOUNDERS: FounderData[] = [
     philosophy:
       "Software should be an extension of human will. We eliminate unnecessary friction until only raw performance, intelligence, and clarity remain.",
     specialties: ["Autonomous Agents", "Groq / LLM Streaming", "Distributed Architecture", "System Design"],
-    github: "https://github.com/aevionstudio",
+    github: "https://github.com/SaiVinoth17",
     accentColor: "#34d399",
     gradient: "from-emerald-400 to-teal-500",
     nodeIndex: "NODE_01 // ALPHA",
@@ -67,32 +70,116 @@ const FOUNDERS: FounderData[] = [
 
 export default function FoundersSection() {
   const [hoveredFounder, setHoveredFounder] = useState<string | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      if (!sectionRef.current || isReducedMotion()) return;
+
+      // Section Header
+      gsap.fromTo(
+        ".founders-header-elem",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.1,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".founders-header",
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Convergence Circuit line expand
+      gsap.fromTo(
+        ".founders-circuit-line",
+        { scaleX: 0, transformOrigin: "center" },
+        {
+          scaleX: 1,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.smooth,
+          scrollTrigger: {
+            trigger: ".founders-circuit",
+            start: "top 85%",
+            once: true,
+          },
+        }
+      );
+
+      // Founders Cards progressive reveal
+      gsap.fromTo(
+        ".founder-card",
+        { opacity: 0, y: 40, scale: 0.97 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.15,
+          duration: MOTION.duration.cinematic,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 80%",
+            once: true,
+          },
+        }
+      );
+
+      // Collaboration Banner
+      gsap.fromTo(
+        ".founders-collab-banner",
+        { opacity: 0, y: 25 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: MOTION.duration.standard,
+          ease: MOTION.ease.cinematic,
+          scrollTrigger: {
+            trigger: ".founders-collab-banner",
+            start: "top 88%",
+            once: true,
+          },
+        }
+      );
+    },
+    { scope: sectionRef }
+  );
 
   return (
-    <section id="founders" className="relative bg-[#06060a] text-white py-28 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden">
+    <section
+      ref={sectionRef}
+      id="founders"
+      className="relative bg-[#06060a] text-white py-28 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+    >
       {/* Background ambient lighting */}
       <div className="pointer-events-none absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 blur-[140px] rounded-full" />
       <div className="pointer-events-none absolute top-1/2 right-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-cyan-500/5 blur-[140px] rounded-full" />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-16">
         {/* Section Header */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
+        <div className="founders-header flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
           <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-emerald-400">
+            <div className="founders-header-elem inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-emerald-400">
               <Network size={13} />
               <span>CO-FOUNDERS ARCHITECTURE</span>
             </div>
-            <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
-              THE PEOPLE<br />
+            <h2 className="founders-header-elem text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
+              THE PEOPLE
+              <br />
               <span className="bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
                 BEHIND AEVION.
               </span>
             </h2>
           </div>
 
-          <div className="max-w-md">
+          <div className="founders-header-elem max-w-md">
             <p className="text-sm font-mono text-zinc-400 leading-relaxed">
-              Two equal co-founders with a shared conviction. Blending foundational product vision, deep engineering discipline, and cutting-edge artificial intelligence.
+              Two equal co-founders with a shared conviction. Blending foundational product vision, deep
+              engineering discipline, and cutting-edge artificial intelligence.
             </p>
             <div className="mt-3 text-xs font-mono text-emerald-400 flex items-center gap-2">
               <Activity size={12} className="animate-pulse" />
@@ -102,8 +189,8 @@ export default function FoundersSection() {
         </div>
 
         {/* Central Convergence Circuit visualization */}
-        <div className="relative py-4 hidden md:block">
-          <div className="h-px w-full bg-gradient-to-r from-emerald-500/30 via-white/40 to-cyan-500/30" />
+        <div className="founders-circuit relative py-4 hidden md:block">
+          <div className="founders-circuit-line h-px w-full bg-gradient-to-r from-emerald-500/30 via-white/40 to-cyan-500/30" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 rounded-full bg-[#06060a] border border-white/20 text-[10px] font-mono tracking-widest text-zinc-400 uppercase flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
             <span>AEVION DUAL-NEXUS CORE</span>
@@ -111,16 +198,16 @@ export default function FoundersSection() {
         </div>
 
         {/* Equal Founders Cards Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {FOUNDERS.map((founder, idx) => {
+        <div className="founders-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {FOUNDERS.map((founder) => {
             const isHovered = hoveredFounder === founder.id;
 
             return (
-              <motion.div
+              <div
                 key={founder.id}
                 onMouseEnter={() => setHoveredFounder(founder.id)}
                 onMouseLeave={() => setHoveredFounder(null)}
-                className="relative rounded-3xl border transition-all duration-500 p-8 sm:p-10 flex flex-col justify-between overflow-hidden group"
+                className="founder-card relative rounded-3xl border transition-all duration-500 p-8 sm:p-10 flex flex-col justify-between overflow-hidden group"
                 style={{
                   borderColor: isHovered ? founder.accentColor : "rgba(255, 255, 255, 0.1)",
                   background: isHovered
@@ -161,25 +248,25 @@ export default function FoundersSection() {
                     </div>
 
                     {founder.github && (
-                      <a
-                        href={founder.github}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.1] text-zinc-300 hover:text-white transition-all hover:scale-105 flex items-center gap-1.5 text-xs font-mono"
-                        title={`${founder.name} GitHub Profile`}
-                      >
-                        <Github size={16} />
-                        <span className="hidden sm:inline">GitHub</span>
-                        <ArrowUpRight size={13} className="text-zinc-500" />
-                      </a>
+                      <AevionMagnetic strength={0.3}>
+                        <a
+                          href={founder.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-3 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.1] text-zinc-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-mono"
+                          title={`${founder.name} GitHub Profile`}
+                        >
+                          <Github size={16} />
+                          <span className="hidden sm:inline">GitHub</span>
+                          <ArrowUpRight size={13} className="text-zinc-500" />
+                        </a>
+                      </AevionMagnetic>
                     )}
                   </div>
 
                   {/* Core Title / Focus Domain */}
                   <div className="pt-2 border-t border-white/5">
-                    <div className="text-xs font-mono text-zinc-400 font-medium">
-                      FOCUS DOMAIN:
-                    </div>
+                    <div className="text-xs font-mono text-zinc-400 font-medium">FOCUS DOMAIN:</div>
                     <div className="text-sm font-semibold text-zinc-200 mt-1 font-mono">
                       {founder.title}
                     </div>
@@ -231,13 +318,13 @@ export default function FoundersSection() {
                     ACTIVE BUILDER →
                   </div>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
 
         {/* Mutual Collaboration Banner */}
-        <div className="p-8 rounded-3xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+        <div className="founders-collab-banner p-8 rounded-3xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
           <div className="space-y-1">
             <div className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
               UNIFIED STUDIO MANIFESTO
@@ -250,12 +337,14 @@ export default function FoundersSection() {
             </div>
           </div>
 
-          <Link
-            href="/contact"
-            className="shrink-0 px-6 py-3.5 rounded-2xl bg-white text-black font-bold font-mono text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all hover:scale-105"
-          >
-            Start A Conversation
-          </Link>
+          <AevionMagnetic strength={0.25}>
+            <Link
+              href="/contact"
+              className="shrink-0 px-6 py-3.5 rounded-2xl bg-white text-black font-bold font-mono text-[11px] uppercase tracking-[0.1em] hover:bg-zinc-200 transition-all inline-block"
+            >
+              INITIATE CONTACT
+            </Link>
+          </AevionMagnetic>
         </div>
       </div>
     </section>
