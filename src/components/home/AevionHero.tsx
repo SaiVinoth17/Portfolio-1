@@ -105,12 +105,15 @@ export default function AevionHero() {
     { scope: heroRef }
   );
 
-  // ── 2. Interactive Canvas Particles ──────────────────────────────────────
+  // ── 2. Interactive Canvas Particles (O(n) — no line-drawing) ────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
+
+    // Skip entirely for reduced-motion preference
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let animationFrameId: number;
     let width = (canvas.width = window.innerWidth);
@@ -121,9 +124,10 @@ export default function AevionHero() {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
     };
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", handleResize, { passive: true });
 
-    const particleCount = Math.min(Math.floor(width / 24), 50);
+    // Fewer particles — the O(n²) line loop is removed entirely
+    const particleCount = Math.min(Math.floor(width / 30), 35);
     const particles: Array<{
       x: number;
       y: number;
@@ -137,10 +141,10 @@ export default function AevionHero() {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.25,
-        vy: (Math.random() - 0.5) * 0.25,
-        size: Math.random() * 2 + 1,
-        baseAlpha: Math.random() * 0.35 + 0.1,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        size: Math.random() * 1.8 + 0.8,
+        baseAlpha: Math.random() * 0.3 + 0.08,
       });
     }
 
@@ -153,10 +157,16 @@ export default function AevionHero() {
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
+    // Throttle to ~30fps — hero particles don't need 60fps
+    let skip = false;
+
     const render = () => {
+      animationFrameId = requestAnimationFrame(render);
+      skip = !skip;
+      if (skip) return;
+
       ctx.clearRect(0, 0, width, height);
 
-      // Draw and update particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         p.x += p.vx;
@@ -169,39 +179,30 @@ export default function AevionHero() {
 
         const dx = localMouseX - p.x;
         const dy = localMouseY - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const maxDist = 180;
+        const distSq = dx * dx + dy * dy;
+        const maxDistSq = 180 * 180;
 
         let alpha = p.baseAlpha;
-        if (dist < maxDist) {
-          alpha = p.baseAlpha + (1 - dist / maxDist) * 0.4;
-          p.x += (dx / dist) * 0.2;
-          p.y += (dy / dist) * 0.2;
+        if (distSq < maxDistSq) {
+          const dist = Math.sqrt(distSq);
+          alpha = p.baseAlpha + (1 - dist / 180) * 0.35;
+          // Gentle attraction — avoid divide-by-zero
+          if (dist > 0.1) {
+            p.x += (dx / dist) * 0.18;
+            p.y += (dy / dist) * 0.18;
+          }
         }
 
-        ctx.fillStyle = `rgba(52, 211, 153, ${alpha * 0.5})`;
+        ctx.globalAlpha = alpha * 0.5;
+        ctx.fillStyle = "#34d399";
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const distNodes = Math.hypot(p.x - p2.x, p.y - p2.y);
-          if (distNodes < 90) {
-            ctx.strokeStyle = `rgba(52, 211, 153, ${(1 - distNodes / 90) * 0.08})`;
-            ctx.lineWidth = 0.8;
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
       }
-
-      animationFrameId = requestAnimationFrame(render);
+      ctx.globalAlpha = 1;
     };
 
-    render();
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -241,7 +242,7 @@ export default function AevionHero() {
       </div>
 
       {/* Interactive Canvas Background Particles */}
-      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-[1]" />
+      <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-[1]" style={{ willChange: "transform" }} />
 
 
 

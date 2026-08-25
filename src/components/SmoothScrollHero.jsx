@@ -47,7 +47,7 @@ const SmoothScrollHero = () => {
                 trigger: mainContainer.current,
                 start: "top top",
                 end: "+=250%",
-                scrub: 1,
+                scrub: 0.6,
                 pin: true,
                 anticipatePin: 1,
             }
@@ -80,15 +80,14 @@ const SmoothScrollHero = () => {
         tl.fromTo(secondSectionRef.current,
             {
                 opacity: 0,
-                y: 150,
-                scale: 0.85,
-                filter: "blur(10px)"
+                y: 120,
+                scale: 0.88,
+                // No blur — filter:blur() forces GPU rasterization on every scrub frame
             },
             {
                 opacity: 1,
                 y: 0,
                 scale: 1,
-                filter: "blur(0px)",
                 duration: 7,
                 ease: "power3.out"
             },

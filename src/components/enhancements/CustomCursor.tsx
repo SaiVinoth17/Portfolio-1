@@ -52,6 +52,7 @@ export function CustomCursor() {
 
     let lastX = 0;
     let lastY = 0;
+    let lastInteractiveEl: HTMLElement | null = null;
 
     const handleMouseMove = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
@@ -63,37 +64,45 @@ export function CustomCursor() {
       lastX = e.clientX;
       lastY = e.clientY;
 
-      // Check magnetic target
+      // Walk DOM only when target changes
       const target = e.target as HTMLElement | null;
       const interactiveEl = target?.closest(
         "button, a, [data-cursor], [role='button'], .cursor-pointer"
       ) as HTMLElement | null;
 
       if (interactiveEl) {
-        setIsHovered(true);
-        const customLabel = interactiveEl.getAttribute("data-cursor");
-        if (customLabel) {
-          setHoverLabel(customLabel);
-        } else if (interactiveEl.tagName === "A") {
-          setHoverLabel("Link");
-        } else if (interactiveEl.tagName === "BUTTON") {
-          setHoverLabel("Action");
-        } else {
-          setHoverLabel("View");
+        // Only update state if the interactive element actually changed
+        if (interactiveEl !== lastInteractiveEl) {
+          lastInteractiveEl = interactiveEl;
+          setIsHovered(true);
+          const customLabel = interactiveEl.getAttribute("data-cursor");
+          if (customLabel) {
+            setHoverLabel(customLabel);
+          } else if (interactiveEl.tagName === "A") {
+            setHoverLabel("Link");
+          } else if (interactiveEl.tagName === "BUTTON") {
+            setHoverLabel("Action");
+          } else {
+            setHoverLabel("View");
+          }
         }
 
-        // Magnetic pull
+        // Magnetic pull — only call getBoundingClientRect when inside the target
         const rect = interactiveEl.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
-        const dist = Math.hypot(e.clientX - centerX, e.clientY - centerY);
+        const dx = e.clientX - centerX;
+        const dy = e.clientY - centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
         if (dist < 60) {
-          rawX.set(centerX + (e.clientX - centerX) * 0.35);
-          rawY.set(centerY + (e.clientY - centerY) * 0.35);
+          rawX.set(centerX + dx * 0.35);
+          rawY.set(centerY + dy * 0.35);
           return;
         }
-      } else {
+      } else if (lastInteractiveEl !== null) {
+        // Only clear state when leaving an interactive area
+        lastInteractiveEl = null;
         setIsHovered(false);
         setHoverLabel(null);
       }

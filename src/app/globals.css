@@ -57,8 +57,7 @@
 html {
   max-width: 100vw;
   overflow-x: clip;
-  scroll-behavior: smooth;
-  /* Improve text rendering across all browsers */
+  /* scroll-behavior: smooth removed — Lenis handles this; having both causes jank */
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
@@ -304,7 +303,8 @@ h1, h2, h3, h4, h5, h6, p, span, a, li {
     rgba(255, 255, 255, 0.03) 52%,
     transparent 75%
   );
-  animation: glass-shimmer 9s ease-in-out infinite;
+  /* Play once on load then stop — no continuous recomposite */
+  animation: glass-shimmer 2.2s ease-out 0.5s 1 forwards;
   pointer-events: none;
   z-index: 5;
 }

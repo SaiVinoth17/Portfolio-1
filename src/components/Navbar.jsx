@@ -84,8 +84,7 @@ function GlassPill({ children, className = "", style = {} }) {
           "inset 0 -1px 0 rgba(0,0,0,0.18)",
         ].join(", "),
 
-        /* 4. SVG liquid distortion on the border */
-        filter: `url(#${FILTER_ID})`,
+        /* 4. No SVG filter applied here — backdrop-filter already composites on GPU */
 
         ...style,
       }}
@@ -115,7 +114,7 @@ export default function Navbar() {
 
   return (
     <>
-      {/* ── SVG filter — animated liquid edge distortion ──────── */}
+      {/* ── SVG filter — static liquid edge (no animate — prevents continuous recomposite) ──── */}
       <svg
         aria-hidden="true"
         style={{ position: "absolute", width: 0, height: 0, overflow: "hidden" }}
@@ -129,22 +128,14 @@ export default function Navbar() {
             height="160%"
             colorInterpolationFilters="sRGB"
           >
-            {/* Slow-breathing noise for the "liquid" edge waver */}
+            {/* Static noise — one-time cost, no animation tick */}
             <feTurbulence
               type="fractalNoise"
               baseFrequency="0.008 0.006"
               numOctaves="2"
               seed="3"
               result="noise"
-            >
-              <animate
-                attributeName="baseFrequency"
-                values="0.006 0.004;0.010 0.008;0.006 0.004"
-                dur="10s"
-                repeatCount="indefinite"
-              />
-            </feTurbulence>
-            {/* Displace only pixels within ~4px of the edge */}
+            />
             <feDisplacementMap
               in="SourceGraphic"
               in2="noise"
