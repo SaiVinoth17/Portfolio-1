@@ -1,30 +1,205 @@
 export interface KnowledgeTopic {
   id: string;
-  category: "services" | "projects" | "technologies" | "workflow" | "studio" | "faq" | "contact";
+  category: "services" | "projects" | "technologies" | "workflow" | "studio" | "faq" | "contact" | "founders";
   title: string;
   keywords: string[];
   content: string;
   details?: string[];
   link?: { text: string; url: string };
   suggestedFollowUps?: string[];
+  isFoundersCard?: boolean;
 }
 
 export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
+  {
+    id: "founders-overview",
+    category: "founders",
+    title: "The Founders of Aevion",
+    keywords: [
+      "founder",
+      "founders",
+      "who founded",
+      "who created",
+      "who owns",
+      "who is behind",
+      "creator",
+      "creators",
+      "owner",
+      "team",
+      "meet the founders",
+      "people behind aevion",
+      "both founders",
+    ],
+    content:
+      "Aevion was founded by Sai Rio and Edison — two builders focused on turning ambitious ideas into real technology.\n\nBoth are co-founders with equal standing, combining foundational product strategy, systems engineering, AI pipelines, and high-performance software building.",
+    details: [
+      "Sai Rio — Co-Founder: Product • Engineering • AI • Systems • Product Vision.",
+      "Edison — Co-Founder: Development • Technology • Engineering • Building. (GitHub: https://github.com/edisonedi84431-art)",
+      "Core Ethos: 'Two builders. One vision. Technology without limits.'",
+    ],
+    suggestedFollowUps: [
+      "Who is Sai Rio?",
+      "Who is Edison?",
+      "What is Aevion building?",
+      "Explore our projects",
+    ],
+    isFoundersCard: true,
+  },
+  {
+    id: "founder-sai-rio",
+    category: "founders",
+    title: "About Co-Founder Sai Rio",
+    keywords: ["sai", "sai rio", "who is sai", "who is sai rio", "about sai", "about sai rio", "sai's role"],
+    content:
+      "Sai Rio is Co-Founder of Aevion. He focuses on Product, Engineering, AI, Systems, and Product Vision.",
+    details: [
+      "Role: Co-Founder of Aevion Studio alongside Edison.",
+      "Focus Areas: Autonomous AI systems architecture, Next.js 16 frameworks, vector context pipelines, streaming inference, and overall product vision.",
+      "Philosophy: 'Software should be an extension of human will. Eliminate friction until only raw performance, intelligence, and clarity remain.'",
+    ],
+    suggestedFollowUps: [
+      "Who is Edison?",
+      "Who founded Aevion?",
+      "What are you building?",
+    ],
+  },
+  {
+    id: "founder-edison",
+    category: "founders",
+    title: "About Co-Founder Edison",
+    keywords: ["edison", "who is edison", "about edison", "edison role", "edison github", "edison's role"],
+    content:
+      "Edison is Co-Founder of Aevion. He focuses on Development, Technology, Engineering, and Building.",
+    details: [
+      "Role: Co-Founder of Aevion Studio alongside Sai Rio.",
+      "Focus Areas: Core software engineering, high-throughput pipelines, WebGL graphics & shaders, edge infrastructure, and full-stack building.",
+      "Verified GitHub Profile: https://github.com/edisonedi84431-art",
+      "Philosophy: 'True craftsmanship lies in the invisible layers. When every byte is optimized and every transition is calculated, software becomes unforgettable.'",
+    ],
+    suggestedFollowUps: [
+      "Who is Sai Rio?",
+      "Who founded Aevion?",
+      "Explore our projects",
+    ],
+  },
+  {
+    id: "founders-equality",
+    category: "founders",
+    title: "Co-Founders Equality Verification",
+    keywords: [
+      "are sai and edison both founders",
+      "are both founders",
+      "are they co-founders",
+      "who is the main founder",
+      "is edison a founder",
+      "is sai a founder",
+    ],
+    content:
+      "Yes. Sai Rio and Edison are both co-founders of Aevion. Neither is secondary to the other. Aevion was created and built by the two of them with equal founder status and a unified vision.",
+    details: [
+      "Sai Rio: Co-Founder (Product • Engineering • AI • Systems • Vision)",
+      "Edison: Co-Founder (Development • Technology • Engineering • Building)",
+      "Founding Principle: Two builders working directly together without agency bloat or corporate layers.",
+    ],
+    suggestedFollowUps: [
+      "Who is Sai Rio?",
+      "Who is Edison?",
+      "What is Aevion?",
+    ],
+  },
+  {
+    id: "what-is-aevion",
+    category: "studio",
+    title: "About Aevion Studio",
+    keywords: [
+      "what is aevion",
+      "tell me about aevion",
+      "about aevion",
+      "mission",
+      "philosophy",
+      "manifesto",
+      "studio",
+      "what does aevion do",
+    ],
+    content:
+      "Aevion is a futuristic technology and AI creative studio co-founded by Sai Rio and Edison. Our mission is to turn ambitious ideas into real, production-grade technology.",
+    details: [
+      "Specialization: High-performance AI software, autonomous LLM pipelines, GPU-accelerated web experiences (WebGL/GSAP), and scalable SaaS platforms.",
+      "Core Values: Autonomous Intelligence, Kinetic Engineering, Zero-Compromise Scalability, and Direct Founder Craftsmanship.",
+      "Founders: Sai Rio & Edison.",
+    ],
+    suggestedFollowUps: [
+      "Meet the founders",
+      "What are you building?",
+      "Explore our projects",
+    ],
+  },
+  {
+    id: "who-built-website",
+    category: "studio",
+    title: "Website Creation & Authorship",
+    keywords: [
+      "who built this website",
+      "who made this website",
+      "who built this",
+      "who designed this",
+      "who created this portfolio",
+      "who made this",
+    ],
+    content:
+      "This website and the entire Aevion Studio platform were designed, architected, and built by co-founders Sai Rio and Edison.",
+    details: [
+      "Sai Rio: Product architecture, system design, and AI systems.",
+      "Edison: Core technology development, WebGL performance, and production engineering.",
+      "Stack: Next.js 16 App Router, React 19, TypeScript, Three.js, GSAP, and Tailwind CSS v4.",
+    ],
+    suggestedFollowUps: [
+      "Meet the founders",
+      "What is your tech stack?",
+      "Explore our projects",
+    ],
+  },
+  {
+    id: "what-are-you-building",
+    category: "projects",
+    title: "What We Are Building",
+    keywords: [
+      "what are you building",
+      "current projects",
+      "what do you build",
+      "experiments",
+      "active systems",
+    ],
+    content:
+      "At Aevion, Sai Rio and Edison are building autonomous AI systems, low-latency streaming inference pipelines, motion-first web operating systems, and bespoke digital platforms for ambitious founders.",
+    details: [
+      "Aevion Studio OS: Motion-first portfolio operating system and WebGL sandbox.",
+      "Nilgiris Explorers: Geospatial AI travel discovery engine.",
+      "Ooty Mistwings: Cinematic WebGL luxury hospitality platform.",
+      "Gaming Kingdom: High-concurrency WebSocket real-time multiplayer hub.",
+    ],
+    suggestedFollowUps: [
+      "Tell me about Nilgiris Explorers",
+      "Tell me about Ooty Mistwings",
+      "Meet the founders",
+    ],
+  },
   {
     id: "project-nilgiris-explorers",
     category: "projects",
     title: "Nilgiris Explorers",
     keywords: ["nilgiris", "explorers", "ooty", "tourism", "travel", "booking", "destination", "nilgiris explorers"],
-    content: "Nilgiris Explorers is a premium tourism and travel platform focused on the Nilgiris region, created to help travelers discover destinations, book experiences, and explore Ooty through a modern digital experience.",
+    content:
+      "Nilgiris Explorers is an AI-powered geospatial travel discovery platform for the Nilgiri Hills (Ooty), featuring real-time mountain trail mapping and personalized itineraries.",
     details: [
-      "Purpose: Solves fragmented travel discovery by providing an intuitive, interactive destination experience for Ooty.",
-      "Engineering Highlights: Modern React & Next.js architecture, performance-optimized, mobile-first design, SEO optimized, AI-powered enhancements, and premium motion design.",
-      "UX & Performance: Immersive UI with fluid transitions engineered for high mobile responsiveness and fast page loads.",
+      "Problem: Fragmented, static travel guidebooks and poor offline trail mapping.",
+      "Solution: Next.js 16 + MapboxGL with AI itinerary generation and high-speed offline caching.",
+      "Outcome: 100% Lighthouse SEO score and fluid 60 FPS mobile navigation.",
     ],
     suggestedFollowUps: [
       "Tell me about Ooty Mistwings",
       "Tell me about Gaming Kingdom",
-      "How do you approach web motion?",
+      "Meet the founders",
     ],
   },
   {
@@ -32,49 +207,51 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     category: "projects",
     title: "Ooty Mistwings",
     keywords: ["mistwings", "ooty mistwings", "storytelling", "travel website", "visuals", "destination discovery"],
-    content: "Ooty Mistwings is a travel and destination discovery platform showcasing the beauty of Ooty and the Nilgiris through cinematic UI and immersive storytelling.",
+    content:
+      "Ooty Mistwings is a luxury destination hospitality experience showcasing the Nilgiris through cinematic WebGL previews, GSAP scroll storytelling, and integrated reservation flows.",
     details: [
-      "Purpose: Built to present Ooty through rich visual storytelling, engaging web experiences, and seamless navigation.",
-      "Engineering Highlights: Cinematic UI, interactive animations, responsive experience, performance-focused frontend, and destination storytelling.",
-      "Engineering Lessons: Balancing high-resolution imagery with performance optimization and smooth scroll feel.",
+      "Architecture: Next.js, GSAP 3 ScrollTrigger, Three.js shaders, and Stripe integration.",
+      "Engineering Focus: Balancing high-resolution asset fidelity with sub-second page performance.",
     ],
     suggestedFollowUps: [
       "Tell me about Nilgiris Explorers",
       "Tell me about Gaming Kingdom",
-      "What tech stack do you use?",
+      "What is your tech stack?",
     ],
   },
   {
     id: "project-gaming-kingdom",
     category: "projects",
     title: "Gaming Kingdom",
-    keywords: ["gaming", "kingdom", "gaming kingdom", "interactive interface", "gaming website", "frontend"],
-    content: "Gaming Kingdom is a gaming-focused web platform built to demonstrate modern frontend engineering, high responsiveness, and visually engaging user experiences for gaming enthusiasts.",
+    keywords: ["gaming", "kingdom", "gaming kingdom", "interactive interface", "gaming website", "frontend", "websocket"],
+    content:
+      "Gaming Kingdom is a real-time multiplayer gaming hub powered by sub-15ms WebSockets, live score streaming, and an arcade-inspired responsive UI.",
     details: [
-      "Purpose: Engineered to deliver a fast, visually engaging, and responsive experience for gaming enthusiasts.",
-      "Engineering Highlights: Interactive UI, smooth animations, responsive design, modern frontend architecture, and performance optimization.",
+      "Stack: React 19, Node.js, Socket.io, and PostgreSQL.",
+      "Engineering Focus: Concurrency synchronization under high-frequency messaging with zero dropped frames.",
     ],
     suggestedFollowUps: [
       "Tell me about Nilgiris Explorers",
-      "Tell me about Ooty Mistwings",
-      "What services do you offer?",
+      "What is your tech stack?",
+      "Meet the founders",
     ],
   },
   {
     id: "services-overview",
     category: "services",
     title: "Core Studio Services",
-    keywords: ["service", "services", "offer", "build", "do", "capabilities", "solutions", "work"],
-    content: "Aevion Studio crafts high-end AI software, custom SaaS platforms, modern web applications, digital engineering, and interactive 3D motion experiences for high-growth businesses.",
+    keywords: ["service", "services", "offer", "build", "do", "capabilities", "solutions", "work", "hire"],
+    content:
+      "Aevion Studio crafts high-end AI software, custom SaaS platforms, modern web applications, and interactive 3D motion experiences.",
     details: [
-      "AI & Machine Learning Solutions (LLM Integration, Intelligent Automation)",
-      "Full-Stack Custom SaaS & Web Application Development",
-      "Interactive 3D Web Motion & Creative Engineering (GSAP, Framer Motion, WebGL)",
-      "High-Performance Edge Architecture & API Engineering",
+      "Autonomous AI Pipelines (LLM integration, contextual RAG, agentic workflows)",
+      "Full-Stack Web & SaaS Engineering (Next.js 16, TypeScript, Supabase, PostgreSQL)",
+      "Kinetic Motion & WebGL Shaders (GSAP, Three.js, 120 FPS performance)",
+      "Systems Architecture & Edge Infrastructure (Serverless, instant cold-starts)",
     ],
     suggestedFollowUps: [
-      "What tech stack do you use?",
-      "Can I see portfolio projects?",
+      "What is your tech stack?",
+      "Meet the founders",
       "How do I start a project?",
     ],
   },
@@ -83,100 +260,37 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     category: "technologies",
     title: "Technology Stack",
     keywords: ["tech", "technology", "stack", "react", "next", "tailwind", "typescript", "framework", "gsap", "lenis"],
-    content: "Our core production stack is engineered for smooth 60 FPS performance, strict type safety, and maximum scalability.",
+    content:
+      "Our core production stack is engineered for 120 FPS fluid performance, strict type safety, and edge scalability.",
     details: [
       "Frontend: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4",
-      "Motion & 3D: Framer Motion, GSAP 3 (ScrollTrigger), Lenis Smooth Scroll, WebGL Shaders",
-      "Backend & Edge: Node.js, Vercel Serverless Edge, Supabase, Web APIs",
-      "Performance: GPU hardware acceleration, Web Workers, Progressive Asset Preloading",
+      "Motion & 3D: Framer Motion, GSAP 3, Lenis Smooth Scroll, WebGL Shaders",
+      "Backend & AI: Node.js, Groq Llama, Supabase, PostgreSQL, Vector Retrievers",
+      "Quality Standard: 100% strict type safety and sub-50ms streaming latency",
     ],
     suggestedFollowUps: [
-      "Tell me about your motion engine",
-      "What services do you offer?",
-    ],
-  },
-  {
-    id: "projects-portfolio",
-    category: "projects",
-    title: "Portfolio & Featured Case Studies",
-    keywords: ["portfolio", "projects", "work", "case study", "showcase", "demo", "scroll morph", "hero"],
-    content: "Our portfolio showcases cutting-edge digital experiences, AI software, and featured platforms including Nilgiris Explorers, Ooty Mistwings, Gaming Kingdom, and our 3D Scroll Morph Hero!",
-    details: [
-      "Nilgiris Explorers: Premium tourism & travel discovery platform for the Nilgiris.",
-      "Ooty Mistwings: Destination discovery platform with cinematic UI and visual storytelling.",
-      "Gaming Kingdom: Fast, visually engaging web platform built for gaming enthusiasts.",
-      "3D Scroll Morph Hero: Interactive 20-card 3D radial morphing experience with Framer Motion spring physics.",
-    ],
-    suggestedFollowUps: [
-      "Tell me about Nilgiris Explorers",
-      "Tell me about Ooty Mistwings",
-      "How can we work together?",
-    ],
-  },
-  {
-    id: "workflow-process",
-    category: "workflow",
-    title: "Studio Engineering Workflow",
-    keywords: ["process", "workflow", "methodology", "timeline", "steps", "how you work", "phases"],
-    content: "We follow a 4-phase agile engineering methodology designed to take projects from concept to edge production smoothly.",
-    details: [
-      "1. Discovery & System Architecture: Requirements mapping and technical spec design.",
-      "2. Interactive Motion Prototype: Prototyping GPU-accelerated visual interactions.",
-      "3. Production Engineering: Strict TypeScript, Next.js App Router, and component building.",
-      "4. Edge Deployment & Optimization: Lighthouse audit, global CDN delivery, and continuous monitoring.",
-    ],
-    suggestedFollowUps: [
-      "How much does a project cost?",
-      "How do I contact Aevion Studio?",
-    ],
-  },
-  {
-    id: "studio-team",
-    category: "studio",
-    title: "About Aevion Studio & Team",
-    keywords: ["founder", "sai vinoth", "team", "studio", "about", "who", "location", "company", "culture"],
-    content: "Aevion Studio is an AI Software & Digital Engineering Studio founded by Sai Vinoth. We build products where engineering, design, and AI work together seamlessly.",
-    details: [
-      "Founder: Sai Vinoth (Software Engineer & Founder).",
-      "Philosophy: 'Build products people actually enjoy using.'",
-      "Specialization: High-performance AI software, SaaS products, and creative web engineering.",
-    ],
-    suggestedFollowUps: [
-      "What projects have you built?",
-      "What services do you offer?",
-      "How can I contact the studio?",
+      "Explore our projects",
+      "Meet the founders",
+      "How do I contact Aevion?",
     ],
   },
   {
     id: "contact-hire",
     category: "contact",
-    title: "Contact & Getting Started",
-    keywords: ["contact", "hire", "email", "reach", "start", "build", "quote", "get in touch", "pricing"],
-    content: "We are available for select AI software development, SaaS builds, and creative web engineering projects.",
+    title: "Contact & Collaboration",
+    keywords: ["contact", "hire", "email", "reach", "start", "quote", "get in touch", "pricing"],
+    content:
+      "Sai Rio and Edison are available for select AI software development, SaaS builds, and creative technology partnerships.",
     details: [
-      "Direct Email: hello@aevion.studio",
-      "Quick Action: Click the 'Build With Us' button in the floating bottom menu to initiate a prompt response.",
+      "Direct Uplink: hello@aevion.studio",
+      "Co-Founders: Sai Rio & Edison",
+      "Location: Nilgiris, India & Global Edge",
     ],
-    link: { text: "Email Us", url: "mailto:hello@aevion.studio" },
+    link: { text: "Email Studio", url: "mailto:hello@aevion.studio" },
     suggestedFollowUps: [
-      "What services do you offer?",
+      "Meet the founders",
       "What is your tech stack?",
-    ],
-  },
-  {
-    id: "faq-pricing",
-    category: "faq",
-    title: "Frequently Asked Questions",
-    keywords: ["faq", "cost", "pricing", "rate", "time", "how long", "estimate", "budget"],
-    content: "Project scope and timelines vary based on requirements. We offer fixed-scope project sprints and ongoing monthly engineering retainers.",
-    details: [
-      "Web Architecture & Motion Builds: Typically 2 to 4 weeks.",
-      "Custom SaaS & AI Software: Typically 4 to 8 weeks.",
-      "All projects include Lighthouse performance optimization, full source code ownership, and 30 days post-launch support.",
-    ],
-    suggestedFollowUps: [
-      "How do I contact you?",
-      "What services do you provide?",
+      "Explore our projects",
     ],
   },
 ];

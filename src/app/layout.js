@@ -18,29 +18,32 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Aevion Studio — AI Software & Digital Engineering Studio by Sai Vinoth",
-  description: "Aevion Studio is an AI software & digital engineering studio founded by Sai Vinoth. Building modern web applications, SaaS platforms, AI solutions, and custom software for high-growth businesses.",
+  title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
+  description: "Aevion is an AI & experimental technology studio founded by Sai Rio and Edison. Two builders. One vision. Technology without limits.",
   keywords: [
-    "AI Software Development",
-    "Digital Engineering Studio",
-    "Sai Vinoth",
+    "Aevion",
+    "Aevion Studio",
+    "Sai Rio",
+    "Edison",
+    "AI Software Studio",
+    "Futuristic Technology Lab",
+    "Digital Engineering",
     "Modern Web Applications",
     "SaaS Development",
-    "Business Automation",
-    "Custom Software Studio",
+    "Autonomous AI Systems",
+    "Creative Web Engineering",
     "Nilgiris Explorers",
     "Ooty Mistwings",
-    "Gaming Kingdom",
-    "Aevion Studio"
+    "Gaming Kingdom"
   ],
-  authors: [{ name: "Sai Vinoth" }, { name: "Aevion Studio" }],
+  authors: [{ name: "Sai Rio" }, { name: "Edison" }, { name: "Aevion Studio" }],
   metadataBase: new URL("https://aevion.studio"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Aevion Studio — AI Software & Digital Engineering Studio by Sai Vinoth",
-    description: "Building modern web applications, SaaS platforms, AI solutions, and custom software for high-growth businesses.",
+    title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
+    description: "Two builders. One vision. Technology without limits. Engineering autonomous AI, high-throughput systems, and next-generation software.",
     url: "https://aevion.studio",
     siteName: "Aevion Studio",
     locale: "en_US",
@@ -48,8 +51,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aevion Studio — AI Software & Digital Engineering Studio by Sai Vinoth",
-    description: "Building modern web applications, SaaS platforms, AI solutions, and custom software for high-growth businesses.",
+    title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
+    description: "Two builders. One vision. Technology without limits. Engineering autonomous AI, high-throughput systems, and next-generation software.",
   },
 };
 
@@ -63,32 +66,52 @@ export default function RootLayout({ children }) {
         "name": "Aevion Studio",
         "url": "https://aevion.studio",
         "email": "hello@aevion.studio",
-        "founder": {
-          "@type": "Person",
-          "name": "Sai Vinoth",
-          "jobTitle": "Founder & Software Engineer"
-        },
-        "description": "A premium AI Software & Digital Engineering Studio building modern websites, web applications, AI solutions, SaaS products, and custom software.",
-        "sameAs": ["https://twitter.com/aevionstudio", "https://github.com/aevionstudio"]
+        "founders": [
+          {
+            "@type": "Person",
+            "name": "Sai Rio",
+            "jobTitle": "Co-Founder",
+            "knowsAbout": ["Product", "Engineering", "AI", "Systems", "Vision"]
+          },
+          {
+            "@type": "Person",
+            "name": "Edison",
+            "jobTitle": "Co-Founder",
+            "sameAs": "https://github.com/edisonedi84431-art",
+            "knowsAbout": ["Development", "Technology", "Engineering", "Building"]
+          }
+        ],
+        "description": "A serious futuristic technology studio founded by Sai Rio and Edison. Two builders. One vision. Technology without limits.",
+        "sameAs": ["https://github.com/aevionstudio", "https://github.com/edisonedi84431-art"]
       },
       {
         "@type": "Person",
-        "@id": "https://aevion.studio/#saivinoth",
-        "name": "Sai Vinoth",
-        "jobTitle": "Software Engineer & Founder",
+        "@id": "https://aevion.studio/#sairio",
+        "name": "Sai Rio",
+        "jobTitle": "Co-Founder",
+        "worksFor": {
+          "@id": "https://aevion.studio/#organization"
+        }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://aevion.studio/#edison",
+        "name": "Edison",
+        "jobTitle": "Co-Founder",
+        "sameAs": "https://github.com/edisonedi84431-art",
         "worksFor": {
           "@id": "https://aevion.studio/#organization"
         }
       },
       {
         "@type": "SoftwareApplication",
-        "name": "Aevion Studio Motion OS",
+        "name": "Aevion Studio OS",
         "operatingSystem": "Web",
         "applicationCategory": "DeveloperApplication",
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "INR"
+          "priceCurrency": "USD"
         }
       },
       {

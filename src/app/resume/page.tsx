@@ -75,9 +75,9 @@ export default function ResumePage() {
           transition={{ delay: 0.1 }}
           className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans print:text-black print:text-3xl"
         >
-          Sai Vinoth <br />
+          Aevion Studio <br />
           <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent print:text-black print:bg-none">
-            Software Architect & Founder.
+            Technical Dossier &amp; Architecture.
           </span>
         </motion.h1>
 
@@ -87,7 +87,7 @@ export default function ResumePage() {
           transition={{ delay: 0.2 }}
           className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed print:text-zinc-700 print:text-xs print:mx-0"
         >
-          Specialized in Next.js 16 App Router, React 19, high-throughput AI LLM inference pipelines, and GPU-accelerated creative motion engineering. Contact: hello@aevion.studio • GitHub: github.com/aevionstudio
+          Co-Founded by Sai Rio &amp; Edison. Specialized in Next.js 16 App Router, React 19, high-throughput AI LLM inference pipelines, distributed edge architectures, and GPU-accelerated creative motion engineering.
         </motion.p>
 
         {/* Action Controls */}

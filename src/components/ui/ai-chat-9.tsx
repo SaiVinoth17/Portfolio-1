@@ -146,11 +146,12 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
     {
       id: "initial-1",
       sender: "ai",
-      text: "Hey! I'm Aevion AI powered by the AI Chat 9 engine. You can configure models, providers, context windows, and reasoning effort dynamically using the model picker below.",
+      text: "I'm Aevion's intelligence layer. Ask me about what we're building, the people behind it, or the experiments we're working on.",
       suggestedFollowUps: [
-        "Who is Sai Vinoth?",
-        "Tell me about Nilgiris Explorers",
-        "What is your tech stack?",
+        "Meet the founders",
+        "What is Aevion?",
+        "What are you building?",
+        "Explore our projects",
       ],
     },
   ]);
@@ -257,7 +258,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
         } else {
           fullResponse = `⚠️ **Error (${res.status})**: ${data.details || data.error || "Unable to generate response."}`;
         }
-        followUps = ["Who is Sai Vinoth?", "What is your tech stack?"];
+        followUps = ["Who are the founders?", "What is your tech stack?"];
       } else {
         fullResponse = data.text || "I'm here! What would you like to explore next?";
         followUps = data.suggestedFollowUps || [

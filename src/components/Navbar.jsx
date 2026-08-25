@@ -19,20 +19,18 @@ import aevionLogo from "@/assets/images/logo.svg";
 const FILTER_ID = "ios26-glass";
 
 const navLinks = [
-  { text: "Home",        href: "/" },
-  { text: "About",       href: "/about" },
-  { text: "Projects",    href: "/projects" },
+  { text: "Work",        href: "/projects" },
+  { text: "Founders",    href: "/#founders" },
+  { text: "Manifesto",   href: "/#manifesto" },
+  { text: "Lab",         href: "/showcase" },
+  { text: "Studio",      href: "/studio" },
   { text: "Stack",       href: "/tech-stack" },
   { text: "Process",     href: "/process" },
-  { text: "Showcase",    href: "/showcase" },
-  { text: "Services",    href: "/services" },
-  { text: "Resume",      href: "/resume" },
-  { text: "Blog",        href: "/blog" },
 ];
 
 const contactLinks = [
-  { text: "Contact",             href: "/contact" },
-  { text: "saivinothdeveloper@gmail.com", href: "mailto:saivinothdeveloper@gmail.com" },
+  { text: "Contact",     href: "/contact" },
+  { text: "hello@aevion.studio", href: "mailto:hello@aevion.studio" },
 ];
 
 /* Nav link — minimal, clean, white */

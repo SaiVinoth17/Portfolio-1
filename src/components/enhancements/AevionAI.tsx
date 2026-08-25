@@ -28,10 +28,14 @@ import {
   Sparkles,
   PanelLeftClose,
   PanelLeft,
+  Users,
+  Github,
+  ExternalLink,
+  ShieldCheck,
 } from "lucide-react";
 
 // ─────────────────────────────────────────────
-//  Types (UNCHANGED)
+//  Types
 // ─────────────────────────────────────────────
 interface ProjectCardData {
   title: string;
@@ -46,37 +50,38 @@ interface Message {
   suggestedFollowUps?: string[];
   link?: { text: string; url: string };
   projectCard?: ProjectCardData;
+  isFoundersCard?: boolean;
   isStreaming?: boolean;
 }
 
 // ─────────────────────────────────────────────
-//  Quick Action Chips (replaces large cards)
+//  Quick Action Chips
 // ─────────────────────────────────────────────
 const QUICK_CHIPS = [
-  { icon: Code2,     label: "Build",    query: "Help me architect a new product from scratch" },
-  { icon: Terminal,  label: "Analyze",  query: "Analyze the architecture and tech stack of Aevion Studio" },
-  { icon: Sparkles,  label: "Design",   query: "What design system principles does Aevion follow?" },
-  { icon: Cpu,       label: "Code",     query: "Show me a Next.js 16 App Router pattern with server actions" },
-  { icon: Search,    label: "Research", query: "Research: What is the best AI stack for a new SaaS product?" },
-  { icon: Zap,       label: "Explore",  query: "Tell me about all of Aevion Studio's featured projects" },
+  { icon: Users,      label: "Meet the founders",     query: "Meet the founders" },
+  { icon: Sparkles,   label: "What is Aevion?",       query: "What is Aevion?" },
+  { icon: Terminal,   label: "What are you building?", query: "What are you building?" },
+  { icon: FolderGit2, label: "Explore our projects",   query: "Explore our projects" },
+  { icon: Cpu,        label: "Tech Stack",            query: "What is your tech stack?" },
 ];
 
 // Action cards still used for sidebar history references
 const ACTION_CARDS = [
-  { icon: FolderGit2, title: "Nilgiris Explorers", subtitle: "Explore tourism & travel platform", query: "Tell me about Nilgiris Explorers" },
-  { icon: Code2,      title: "Engineering Philosophy", subtitle: "Architecture & trade-offs",       query: "What is your engineering philosophy?" },
-  { icon: Terminal,   title: "Tech Stack & Motion",    subtitle: "Next.js 16, GSAP, Framer Motion", query: "What technology stack do you use?" },
-  { icon: Zap,        title: "Book a Project",         subtitle: "Collaborate with Aevion Studio",  query: "How can we work together with Aevion Studio?" },
+  { icon: Users,      title: "The Founders",          subtitle: "Sai Rio & Edison",                 query: "Meet the founders" },
+  { icon: Sparkles,   title: "Aevion Manifesto",      subtitle: "Turning ambition into technology", query: "What is Aevion?" },
+  { icon: FolderGit2, title: "Nilgiris Explorers",    subtitle: "Explore tourism & travel platform", query: "Tell me about Nilgiris Explorers" },
+  { icon: Terminal,   title: "Tech Stack & Motion",   subtitle: "Next.js 16, GSAP, WebGL",           query: "What technology stack do you use?" },
 ];
 
 const INITIAL_MESSAGE: Message = {
   id: "1",
   sender: "ai",
-  text: "Hey! I'm Aevion AI, the official AI assistant for Aevion Studio. Ask me about our featured projects (Nilgiris Explorers, Ooty Mistwings), founder Sai Vinoth, engineering architecture, or general technical questions.",
+  text: "I'm Aevion's intelligence layer. Ask me about what we're building, the people behind it, or the experiments we're working on.",
   suggestedFollowUps: [
-    "Who is Sai Vinoth?",
-    "Tell me about Nilgiris Explorers",
-    "What is your tech stack?",
+    "Meet the founders",
+    "What is Aevion?",
+    "What are you building?",
+    "Explore our projects",
   ],
 };
 
@@ -408,11 +413,12 @@ export function AevionAI() {
         body: JSON.stringify({ prompt: fullPrompt, history: historyForAI }),
       });
 
-      let data: { text?: string; suggestedFollowUps?: string[]; error?: string; details?: string } = {};
+      let data: { text?: string; suggestedFollowUps?: string[]; isFoundersCard?: boolean; error?: string; details?: string } = {};
       try { data = await res.json(); } catch (jsonErr) { console.error("[Aevion AI] JSON parse error:", jsonErr); }
 
       let responseText = "";
       let followUps: string[] = [];
+      let isFounders = false;
 
       if (!res.ok) {
         if (res.status === 401) {
@@ -424,10 +430,11 @@ export function AevionAI() {
             ? `⚠️ **${data.error}**: ${data.details || "Please try again in a moment."}`
             : `⚠️ **AI Service Notice**: Server returned status ${res.status}. Please try again.`;
         }
-        followUps = ["Who is Sai Vinoth", "Tell me about Nilgiris Explorers", "What is your tech stack?"];
+        followUps = ["Meet the founders", "What is Aevion?", "What are you building?"];
       } else {
-        responseText = data.text || "I'm here! Feel free to ask me anything about Aevion Studio projects or software engineering.";
-        followUps = data.suggestedFollowUps || ["Tell me about Nilgiris Explorers", "What is your tech stack?"];
+        responseText = data.text || "I'm Aevion's intelligence layer. What would you like to explore?";
+        followUps = data.suggestedFollowUps || ["Meet the founders", "What is Aevion?", "Explore our projects"];
+        isFounders = Boolean(data.isFoundersCard || (responseText.includes("Sai Rio") && responseText.includes("Edison")) || /founder|founders|meet the founders/i.test(fullPrompt));
       }
 
       let charIndex = 0;
@@ -438,7 +445,15 @@ export function AevionAI() {
           setIsGenerating(false);
           setMessages((prev) =>
             prev.map((m) =>
-              m.id === streamMsgId ? { ...m, text: responseText, suggestedFollowUps: followUps, isStreaming: false } : m
+              m.id === streamMsgId
+                ? {
+                    ...m,
+                    text: responseText,
+                    suggestedFollowUps: followUps,
+                    isFoundersCard: isFounders,
+                    isStreaming: false,
+                  }
+                : m
             )
           );
         } else {
@@ -471,6 +486,109 @@ export function AevionAI() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) setAttachedFile(file.name);
+  };
+
+  // ── Interactive Founders Panel ─────────────
+  const FoundersInteractivePanel = () => {
+    const [activeId, setActiveId] = useState<string | null>(null);
+
+    const founders = [
+      {
+        id: "sai-rio",
+        name: "Sai Rio",
+        role: "CO-FOUNDER",
+        tagline: "Product • Engineering • AI • Systems • Vision",
+        bio: "Directs autonomous AI systems, Next.js 16 frameworks, vector context pipelines, streaming inference, and product vision.",
+        disciplines: ["Autonomous AI", "Next.js 16", "Vector Context", "Systems Vision"],
+        color: "#34d399",
+        accentBg: "rgba(52, 211, 153, 0.08)",
+        accentBorder: "rgba(52, 211, 153, 0.25)",
+      },
+      {
+        id: "edison",
+        name: "Edison",
+        role: "CO-FOUNDER",
+        tagline: "Development • Technology • Engineering • Building",
+        bio: "Directs core software engineering, high-throughput pipelines, 120 FPS WebGL shaders, and edge infrastructure.",
+        disciplines: ["Core Software", "120 FPS Shaders", "Edge Infra", "Building"],
+        github: "https://github.com/edisonedi84431-art",
+        color: "#38bdf8",
+        accentBg: "rgba(56, 189, 248, 0.08)",
+        accentBorder: "rgba(56, 189, 248, 0.25)",
+      },
+    ];
+
+    return (
+      <div className="mt-3 p-3.5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-mono tracking-widest text-emerald-400 uppercase font-bold flex items-center gap-1.5">
+            <Users size={12} /> Aevion Co-Founders Matrix
+          </span>
+          <span className="text-[9px] font-mono text-zinc-500 uppercase">Equal Standing</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {founders.map((f) => {
+            const isExpanded = activeId === f.id;
+            return (
+              <div
+                key={f.id}
+                onClick={() => setActiveId(isExpanded ? null : f.id)}
+                className="p-3 rounded-xl border transition-all duration-300 cursor-pointer space-y-1.5 group"
+                style={{
+                  background: isExpanded ? f.accentBg : "rgba(255, 255, 255, 0.02)",
+                  borderColor: isExpanded ? f.accentBorder : "rgba(255, 255, 255, 0.08)",
+                }}
+              >
+                <div className="flex items-start justify-between">
+                  <div>
+                    <span
+                      className="text-[9px] font-mono font-bold tracking-widest px-1.5 py-0.5 rounded uppercase inline-block"
+                      style={{ background: f.accentBg, color: f.color, border: `1px solid ${f.accentBorder}` }}
+                    >
+                      {f.role}
+                    </span>
+                    <div className="text-xs font-bold text-white mt-1 group-hover:text-zinc-100">{f.name}</div>
+                  </div>
+
+                  {f.github && (
+                    <a
+                      href={f.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="p-1 rounded-lg border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
+                      title="GitHub Profile"
+                    >
+                      <Github size={11} />
+                    </a>
+                  )}
+                </div>
+
+                <div className="text-[10px] font-mono text-zinc-400 leading-tight">
+                  {f.tagline}
+                </div>
+
+                <p className="text-[10px] text-zinc-400 font-light leading-relaxed">
+                  {f.bio}
+                </p>
+
+                <div className="flex flex-wrap gap-1 pt-1">
+                  {f.disciplines.map((d) => (
+                    <span
+                      key={d}
+                      className="text-[8px] font-mono px-1 py-0.5 rounded bg-white/[0.03] border border-white/10 text-zinc-400"
+                    >
+                      {d}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
   };
 
   // ── Text Formatter (ALL PRESERVED) ────────
@@ -884,6 +1002,17 @@ export function AevionAI() {
                                     />
                                   )}
                                 </div>
+
+                                {/* Interactive Founders Panel */}
+                                {msg.isFoundersCard && !msg.isStreaming && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 8 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.15 }}
+                                  >
+                                    <FoundersInteractivePanel />
+                                  </motion.div>
+                                )}
 
                                 {/* Project card */}
                                 {msg.projectCard && !msg.isStreaming && (
