@@ -1,4 +1,10 @@
+# PROPRIETARY — Copyright © 2026 Sai Rio. All rights reserved.
+# Aevion and all associated software, source code, designs, systems, and intellectual
+# property are proprietary to Sai Rio. Unauthorized use is strictly prohibited.
+# See https://aevion.studio for details.
+
 # Aevion Studio — Creative Technology & AI Software Studio
+
 
 > Aevion Studio is an AI software & digital engineering studio founded by Sai Vinoth. We engineer high-performance web applications, autonomous AI pipelines, SaaS platforms, and GPU-accelerated creative motion systems.
 

@@ -1,0 +1,65 @@
+PROPRIETARY SOFTWARE LICENSE
+
+Copyright © 2026 Sai Rio. All rights reserved.
+
+Aevion and all associated software, source code, designs, systems,
+and intellectual property are proprietary to Sai Rio.
+
+Unauthorized copying, reproduction, modification, distribution,
+redistribution, or commercial use of any part of Aevion is strictly
+prohibited without prior written permission from Sai Rio.
+
+================================================================================
+
+PERMITTED USES
+
+  Personal viewing of the deployed website at https://aevion.studio is
+  permitted without restriction.
+
+  No other use, reproduction, or distribution of this software or its
+  source code is permitted without prior written permission from Sai Rio.
+
+================================================================================
+
+CONTACT
+
+  For licensing inquiries, written permission requests, or business
+  collaboration, contact:
+
+    hello@aevion.studio
+    https://aevion.studio/contact
+
+================================================================================
+
+THIRD-PARTY NOTICES
+
+  This software makes use of third-party open-source libraries. Those
+  libraries retain their own respective licenses (MIT, Apache-2.0, LGPL,
+  etc.) as documented in package-lock.json and their respective source
+  repositories. This proprietary notice does not supersede, modify, or
+  claim ownership over any third-party library or its license.
+
+  Key third-party dependencies and their licenses:
+    - Next.js          — MIT License  (https://github.com/vercel/next.js)
+    - React            — MIT License  (https://github.com/facebook/react)
+    - GSAP             — GSAP Standard License (https://gsap.com/standard-license)
+    - Framer Motion    — MIT License  (https://github.com/framer/motion)
+    - Lenis            — MIT License  (https://github.com/darkroomengineering/lenis)
+    - Tailwind CSS     — MIT License  (https://github.com/tailwindlabs/tailwindcss)
+    - Lucide React     — ISC License  (https://github.com/lucide-icons/lucide)
+    - Three.js         — MIT License  (https://github.com/mrdoob/three.js)
+    - OGL              — MIT License  (https://github.com/oframe/ogl)
+
+  Full dependency license information is available in package-lock.json.
+
+================================================================================
+
+DISCLAIMER
+
+  THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED. IN NO EVENT SHALL SAI RIO BE LIABLE FOR ANY
+  CLAIM, DAMAGES, OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN
+  CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+
+================================================================================
