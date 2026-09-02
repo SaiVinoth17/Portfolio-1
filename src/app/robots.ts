@@ -5,8 +5,8 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/api/",
+      disallow: ["/admin/", "/api/admin/", "/api/auth/"],
     },
-    sitemap: "https://aevion.studio/sitemap.xml",
+    sitemap: "https://aevionstudio.in/sitemap.xml",
   };
 }

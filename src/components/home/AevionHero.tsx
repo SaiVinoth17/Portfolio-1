@@ -259,13 +259,13 @@ export default function AevionHero() {
         {/* Monolithic Brand Heading */}
         <div className="space-y-4">
           <div className="hero-eyebrow text-[12px] sm:text-sm font-mono uppercase tracking-[0.25em] text-emerald-400 font-semibold">
-            AEVION STUDIO
+            AEVION STUDIO // FOUNDERS: SAI RIO &amp; EDISON
           </div>
 
-          <h1 className="text-5xl sm:text-7xl lg:text-[90px] xl:text-[106px] font-extrabold tracking-tighter leading-[0.92] text-white">
-            <span className="hero-heading-line block">SYSTEM ONLINE.</span>
+          <h1 className="text-5xl sm:text-7xl lg:text-[88px] xl:text-[104px] font-extrabold tracking-tighter leading-[0.92] text-white">
+            <span className="hero-heading-line block">WE BUILD</span>
             <span className="hero-heading-line block bg-gradient-to-r from-white via-zinc-200 to-zinc-500 bg-clip-text text-transparent">
-              TECHNOLOGY<br className="hidden md:block"/>WITHOUT LIMITS.
+              SYSTEMS THAT<br className="hidden md:block"/>FEEL IMPOSSIBLE.
             </span>
           </h1>
         </div>
@@ -274,10 +274,11 @@ export default function AevionHero() {
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
           <div className="lg:col-span-7 space-y-4">
             <p className="hero-narrative text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-2xl">
-              An experimental AI software and high-performance technology studio founded by{" "}
+              An elite technology studio building autonomous AI systems, software products,
+              high-performance web experiences, and experimental digital architectures. Founded by{" "}
               <strong className="text-white font-semibold">Sai Rio</strong> and{" "}
-              <strong className="text-white font-semibold">Edison</strong>. We turn complex computational
-              challenges into ultra-fast, cinematic digital reality.
+              <strong className="text-white font-semibold">Edison</strong> — two builders executing directly
+              with zero corporate nonsense.
             </p>
 
             {/* Dual Founder Micro-Badges */}
@@ -285,12 +286,12 @@ export default function AevionHero() {
               <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span className="text-white font-semibold">Sai Rio</span>
-                <span className="text-zinc-500">/ Product • Engineering • AI</span>
+                <span className="text-zinc-500">/ Product • Engineering • AI • Systems • Vision</span>
               </div>
               <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                 <span className="text-white font-semibold">Edison</span>
-                <span className="text-zinc-500">/ Technology • Systems • Building</span>
+                <span className="text-zinc-500">/ Development • Technology • Engineering • Building</span>
               </div>
             </div>
           </div>
@@ -302,16 +303,16 @@ export default function AevionHero() {
                 href="/projects"
                 className="hero-cta-button inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-white text-black font-bold text-[11px] uppercase font-mono tracking-[0.1em] hover:bg-zinc-200 transition-all shadow-[0_0_30px_rgba(255,255,255,0.2)] hover:scale-[1.02]"
               >
-                EXPLORE THE WORK <ArrowUpRight size={16} />
+                EXPLORE OUR WORK <ArrowUpRight size={16} />
               </Link>
             </AevionMagnetic>
 
             <AevionMagnetic strength={0.25}>
               <Link
-                href="/showcase"
+                href="/contact"
                 className="hero-cta-button inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/15 text-white font-mono text-[11px] uppercase tracking-[0.1em] transition-all"
               >
-                ENTER THE LAB
+                BUILD WITH US <ArrowUpRight size={14} className="text-emerald-400" />
               </Link>
             </AevionMagnetic>
           </div>
@@ -322,10 +323,10 @@ export default function AevionHero() {
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-8 border-t border-white/10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: "FOUNDING CORES", value: "2 Equal Builders", detail: "Sai Rio & Edison" },
-            { label: "ENGINEERING STACK", value: "Next.js 16 • GSAP", detail: "TypeScript • Three.js" },
-            { label: "COMPUTE ARCHITECTURE", value: "Edge Distributed", detail: "< 24ms Cold Start" },
-            { label: "SYSTEM STATUS", value: "Production Operational", detail: "100% Zero Bloat" },
+            { label: "FOUNDER CORE", value: "2 Equal Builders", detail: "Sai Rio & Edison" },
+            { label: "ENGINEERING STACK", value: "Next.js 16 • React 19", detail: "TypeScript • Three.js • GSAP" },
+            { label: "COMPUTE ARCHITECTURE", value: "Edge & Serverless", detail: "Vercel Distributed Runtimes" },
+            { label: "DISCIPLINE SPECTRUM", value: "AI + Systems + Motion", detail: "Production Verified" },
           ].map((m, i) => (
             <div
               key={i}

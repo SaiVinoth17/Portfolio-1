@@ -258,12 +258,12 @@ export default function Footer() {
         {/* Bottom Metadata Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
           <div>
-            © 2026 AEVION — A SAI RIO PROJECT. ALL RIGHTS RESERVED.
+            © 2026 AEVION STUDIO — SAI RIO &amp; EDISON. ALL RIGHTS RESERVED.
           </div>
           <div className="flex items-center gap-4">
             <span>MUTUAL NDA READY</span>
             <span>•</span>
-            <span className="text-emerald-500">120 FPS KINETIC GSAP MOTION</span>
+            <span className="text-emerald-500">GPU-ACCELERATED KINETIC MOTION</span>
           </div>
         </div>
       </div>

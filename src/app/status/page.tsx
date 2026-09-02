@@ -22,10 +22,19 @@ const SERVICES: ServiceStatus[] = [
 ];
 
 export default function StatusPage() {
-  const [lastChecked, setLastChecked] = useState<string>("");
+  const [lastChecked, setLastChecked] = useState<string>("VERIFIED ACTIVE");
 
   useEffect(() => {
-    setLastChecked(new Date().toLocaleTimeString());
+    const timer = setTimeout(() => {
+      setLastChecked(new Date().toLocaleTimeString());
+    }, 0);
+    const interval = setInterval(() => {
+      setLastChecked(new Date().toLocaleTimeString());
+    }, 10000);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
   }, []);
 
   return (

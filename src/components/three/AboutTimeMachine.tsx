@@ -11,7 +11,10 @@ interface AboutTimeMachineProps {
 export default function AboutTimeMachine({ activeEra, onSelectEra }: AboutTimeMachineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeEraRef = useRef(activeEra);
-  activeEraRef.current = activeEra;
+
+  useEffect(() => {
+    activeEraRef.current = activeEra;
+  }, [activeEra]);
 
   useEffect(() => {
     const container = containerRef.current;

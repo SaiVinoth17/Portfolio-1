@@ -7,11 +7,9 @@ import { DynamicLightingEngine } from "./DynamicLightingEngine";
 import { PerformanceDashboard } from "./PerformanceDashboard";
 import { EasterEggs } from "./EasterEggs";
 import { AevionAI } from "./AevionAI";
-import { CinematicPreloader } from "./CinematicPreloader";
 import { CommandPalette } from "./CommandPalette";
 import { DeveloperTerminal } from "./DeveloperTerminal";
 import { StudioMetrics } from "./StudioMetrics";
-import { AchievementSystem } from "./AchievementSystem";
 
 interface EnhancementProviderProps {
   children: ReactNode;
@@ -23,14 +21,12 @@ export default function EnhancementProvider({ children }: EnhancementProviderPro
 
   return (
     <>
-      <CinematicPreloader />
       <CustomCursor />
       <AmbientBackground />
       <DynamicLightingEngine />
       <PerformanceDashboard />
       <EasterEggs />
       <AevionAI />
-      <AchievementSystem />
       <CommandPalette
         onOpenTerminal={() => setTerminalOpen(true)}
         onOpenMetrics={() => setMetricsOpen(true)}

@@ -23,7 +23,10 @@ export default function GeoTerrainEngine() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeWp, setActiveWp] = useState<Waypoint>(WAYPOINTS[0]);
   const activeWpRef = useRef(activeWp);
-  activeWpRef.current = activeWp;
+
+  useEffect(() => {
+    activeWpRef.current = activeWp;
+  }, [activeWp]);
 
   useEffect(() => {
     const container = containerRef.current;

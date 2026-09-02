@@ -20,15 +20,15 @@ const PRINCIPLES = [
     num: "02",
     title: "Kinetic Engineering",
     summary:
-      "Fluid 120 FPS motion, GPU shaders, and tactile micro-physics are not decorative afterthoughts. They communicate system state, reduce cognitive load, and turn software into an extension of thought.",
+      "Hardware-composited GPU shaders, fluid physics, and tactile micro-interactions are not decorative afterthoughts. They communicate system state, reduce cognitive load, and turn software into an extension of thought.",
     icon: Zap,
-    tag: "120 FPS / WEBGL",
+    tag: "GPU SHADERS / WEBGL",
   },
   {
     num: "03",
     title: "Zero-Compromise Scalability",
     summary:
-      "Clean TypeScript architecture, strict type boundaries, edge-native cold starts, and distributed database models. We build infrastructure that survives real-world chaos.",
+      "Clean TypeScript architecture, strict type boundaries, edge-native distributed runtimes, and resilient database models. We build infrastructure that survives real-world scale.",
     icon: Terminal,
     tag: "SYSTEMS ARCHITECTURE",
   },
@@ -193,7 +193,7 @@ export default function ManifestoSection() {
               Pushing the boundaries of what browser engines can do.
             </div>
             <p className="text-sm text-zinc-400 font-mono">
-              From WebGL shaders to sub-50ms AI streaming architectures, we test new frontiers before
+              From WebGL shaders to low-latency AI streaming architectures, we test new frontiers before
               they become industry standards.
             </p>
           </div>

@@ -69,49 +69,6 @@ export function FrameSequenceHero({
   // Triple-safe pinning state: "top" | "fixed" | "bottom"
   const [pinMode, setPinMode] = useState<"top" | "fixed" | "bottom">("top");
 
-  // Load a single frame asynchronously
-  const loadFrame = useCallback(
-    (index: number) => {
-      if (index < 0 || index >= frameCount) return;
-      if (requestedRef.current.has(index)) return;
-
-      requestedRef.current.add(index);
-      const img = new Image();
-      img.decoding = "async";
-      img.src = framePath(index + 1);
-
-      img.onload = () => {
-        cacheRef.current[index] = img;
-        loadedCountRef.current += 1;
-        setLoadPct(Math.round((loadedCountRef.current / Math.min(frameCount, 120)) * 100));
-
-        if (lastDrawnFrameRef.current === -1 && index === 0) {
-          setLoaderDone(true);
-          drawFrame(0);
-        } else if (Math.abs(index - Math.round(displayFrameRef.current)) <= 1) {
-          drawFrame(index);
-        }
-      };
-
-      img.onerror = () => {
-        cacheRef.current[index] = null;
-      };
-    },
-    [frameCount, framePath]
-  );
-
-  // Windowed prefetching around active scroll target
-  const prefetchWindow = useCallback(
-    (center: number, radius = 25) => {
-      const start = Math.max(0, center - radius);
-      const end = Math.min(frameCount - 1, center + radius);
-      for (let i = start; i <= end; i++) {
-        loadFrame(i);
-      }
-    },
-    [frameCount, loadFrame]
-  );
-
   // High-performance canvas draw function (zero DOM thrashing, zero flicker)
   const drawFrame = useCallback(
     (frameIndex: number) => {
@@ -160,6 +117,49 @@ export function FrameSequenceHero({
       lastDrawnFrameRef.current = frameIndex;
     },
     [frameCount]
+  );
+
+  // Progressive frame loader with caching
+  const loadFrame = useCallback(
+    (index: number) => {
+      if (index < 0 || index >= frameCount) return;
+      if (requestedRef.current.has(index)) return;
+
+      requestedRef.current.add(index);
+      const img = new Image();
+      img.decoding = "async";
+      img.src = framePath(index + 1);
+
+      img.onload = () => {
+        cacheRef.current[index] = img;
+        loadedCountRef.current += 1;
+        setLoadPct(Math.round((loadedCountRef.current / Math.min(frameCount, 120)) * 100));
+
+        if (lastDrawnFrameRef.current === -1 && index === 0) {
+          setLoaderDone(true);
+          drawFrame(0);
+        } else if (Math.abs(index - Math.round(displayFrameRef.current)) <= 1) {
+          drawFrame(index);
+        }
+      };
+
+      img.onerror = () => {
+        cacheRef.current[index] = null;
+      };
+    },
+    [frameCount, framePath, drawFrame]
+  );
+
+  // Windowed prefetching around active scroll target
+  const prefetchWindow = useCallback(
+    (center: number, radius = 25) => {
+      const start = Math.max(0, center - radius);
+      const end = Math.min(frameCount - 1, center + radius);
+      for (let i = start; i <= end; i++) {
+        loadFrame(i);
+      }
+    },
+    [frameCount, loadFrame]
   );
 
   // Smooth animation loop using velocity interpolation
@@ -256,9 +256,10 @@ export function FrameSequenceHero({
   useEffect(() => {
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-    onScroll();
+    const rafId = requestAnimationFrame(() => onScroll());
 
     return () => {
+      cancelAnimationFrame(rafId);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };

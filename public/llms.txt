@@ -1,32 +1,33 @@
-# PROPRIETARY — Copyright © 2026 Sai Rio. All rights reserved.
+# PROPRIETARY — Copyright © 2026 Aevion Studio. All rights reserved.
 # Aevion and all associated software, source code, designs, systems, and intellectual
-# property are proprietary to Sai Rio. Unauthorized use is strictly prohibited.
-# See https://aevion.studio for details.
+# property are proprietary to Aevion Studio (Founders: Sai Rio & Edison).
+# See https://aevionstudio.in for details.
 
-# Aevion Studio — Creative Technology & AI Software Studio
+# Aevion Studio — Elite Technology & AI Systems Studio
 
-
-> Aevion Studio is an AI software & digital engineering studio founded by Sai Vinoth. We engineer high-performance web applications, autonomous AI pipelines, SaaS platforms, and GPU-accelerated creative motion systems.
+> Aevion Studio is an elite technology studio founded by Sai Rio and Edison. We build autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures.
+> "Two builders. One vision. Technology without limits."
 
 ## Official Canonical URLs
-- Website: https://aevion.studio
-- Studio: https://aevion.studio/studio
-- Work & Case Studies: https://aevion.studio/projects
-- First-Party Products: https://aevion.studio/products
-- Open Source: https://aevion.studio/open-source
-- Services & Capabilities: https://aevion.studio/services
-- 3D & WebGL Lab: https://aevion.studio/showcase
-- Process & Methodology: https://aevion.studio/process
-- Contact & Configurator: https://aevion.studio/contact
+- Website: https://aevionstudio.in
+- Studio: https://aevionstudio.in/studio
+- Work & Case Studies: https://aevionstudio.in/projects
+- Products: https://aevionstudio.in/products
+- Open Source: https://aevionstudio.in/open-source
+- Services & Capabilities: https://aevionstudio.in/services
+- 3D & WebGL Lab: https://aevionstudio.in/showcase
+- Process & Methodology: https://aevionstudio.in/process
+- Contact / Build With Us: https://aevionstudio.in/contact
 
 ## Core Disciplines & Services
-- Autonomous AI & LLM Systems (Groq Llama 3.3, Streaming SSE, Vector RAG)
-- Modern Web Applications (Next.js 16 App Router, React 19, TypeScript)
-- GPU-Accelerated Motion & WebGL (GSAP 3 ScrollTrigger, Three.js, Shaders)
-- Full-Stack SaaS Engineering (PostgreSQL, Supabase, Stripe, Edge CDN)
-- High-Performance UI/UX & Design Systems (Tailwind CSS v4, Zero-CLS)
+- AI Systems (Autonomous AI agents, RAG, LLM applications, streaming inference, intelligent workflows)
+- Software Engineering (Full-stack applications, scalable backend systems, APIs, distributed databases)
+- Immersive Web (Three.js, WebGL & OGL fragment shaders, interactive 3D interfaces)
+- Product Engineering (Production SaaS, MVPs, internal tools, platforms, product architecture)
+- Real-Time Systems (WebSockets, collaboration, live telemetry dashboards, high-frequency state)
 
-## Founder & Leadership
-- Founder & Software Architect: Sai Vinoth (Sai Rio)
-- Location: Global / India (Ooty, Nilgiris)
-- Contact: hello@aevion.studio
+## Founders & Engineering Leadership
+- Sai Rio — Co-Founder: Product, Engineering, AI, Systems, Vision (GitHub: https://github.com/SaiVinoth17)
+- Edison — Co-Founder: Development, Technology, Engineering, Building (GitHub: https://github.com/edisonedi84431-art)
+- Studio GitHub: https://github.com/aevionstudio
+- Contact: hello@aevionstudio.in

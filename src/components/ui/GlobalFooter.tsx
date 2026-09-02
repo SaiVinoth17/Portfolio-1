@@ -19,7 +19,7 @@ export default function GlobalFooter() {
               </span>
             </div>
             <p className="text-zinc-500 text-xs leading-relaxed max-w-md font-sans">
-              Autonomous AI software, high-throughput streaming systems, and 120 FPS creative web engineering. Founded by Sai Vinoth.
+              Autonomous AI software, high-throughput systems, and creative web engineering. Founded by Sai Rio and Edison.
             </p>
           </div>
 
@@ -56,10 +56,10 @@ export default function GlobalFooter() {
                 <Linkedin size={12} /> LinkedIn
               </a>
               <a
-                href="mailto:hello@aevion.studio"
+                href="mailto:hello@aevionstudio.in"
                 className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
               >
-                <Mail size={12} /> hello@aevion.studio
+                <Mail size={12} /> hello@aevionstudio.in
               </a>
               <Link href="/resume" className="hover:text-emerald-400 transition-colors">
                 Resume Dossier
@@ -71,7 +71,7 @@ export default function GlobalFooter() {
         {/* Bottom Tier */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
           <div>
-            © {new Date().getFullYear()} Aevion Studio • Sai Vinoth. All rights reserved.
+            © {new Date().getFullYear()} Aevion Studio • Sai Rio &amp; Edison. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
             <span>TypeScript • Next.js 16 • Three.js</span>

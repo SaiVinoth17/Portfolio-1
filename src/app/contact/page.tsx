@@ -63,23 +63,47 @@ export default function ContactPage() {
   const [formState, setFormState] = useState({
     name: "",
     email: "",
+    company: "",
     projectType: "AI Application",
     budget: "$5k – $15k",
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
   const [transmitting, setTransmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [referenceId, setReferenceId] = useState<string | null>(null);
 
   const selectedType = PROJECT_TYPES.find((t) => t.label === formState.projectType) || PROJECT_TYPES[0];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formState.name || !formState.email || !formState.message) return;
+    setErrorMessage(null);
+
+    if (!formState.name.trim() || !formState.email.trim() || !formState.message.trim()) {
+      setErrorMessage("Please enter your name, email, and mission brief.");
+      return;
+    }
+
     setTransmitting(true);
-    setTimeout(() => {
-      setTransmitting(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formState),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Transmission rejected.");
+      }
+
+      setReferenceId(data.referenceId || "AEV-CONFIRMED");
       setSubmitted(true);
-    }, 1800);
+    } catch (err: any) {
+      setErrorMessage(err?.message || "Transmission interrupted. You can email hello@aevionstudio.in directly.");
+    } finally {
+      setTransmitting(false);
+    }
   };
 
   return (
@@ -157,8 +181,8 @@ export default function ContactPage() {
                 {
                   icon: Mail,
                   label: "UPLINK ADDRESS",
-                  value: "hello@aevion.studio",
-                  href: "mailto:hello@aevion.studio",
+                  value: "hello@aevionstudio.in",
+                  href: "mailto:hello@aevionstudio.in",
                 },
                 {
                   icon: MapPin,
@@ -242,39 +266,69 @@ export default function ContactPage() {
                     exit={{ opacity: 0 }}
                     className="space-y-5"
                   >
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                      {[
-                        {
-                          label: "CALLSIGN (NAME)",
-                          key: "name",
-                          type: "text",
-                          placeholder: "Your name",
-                        },
-                        {
-                          label: "FREQUENCY (EMAIL)",
-                          key: "email",
-                          type: "email",
-                          placeholder: "your@email.com",
-                        },
-                      ].map(({ label, key, type, placeholder }) => (
-                        <div key={key}>
-                          <label className="block text-[10px] font-mono font-bold tracking-widest text-cyan-600 mb-2">
-                            {label}
-                          </label>
-                          <input
-                            type={type}
-                            placeholder={placeholder}
-                            value={formState[key as keyof typeof formState]}
-                            onChange={(e) =>
-                              setFormState((prev) => ({ ...prev, [key]: e.target.value }))
-                            }
-                            className="w-full px-4 py-3 rounded-xl text-base sm:text-sm text-white placeholder-zinc-600 border outline-none transition-colors bg-transparent focus:border-cyan-500"
-                            style={{ borderColor: "#06b6d425", background: "#ffffff05" }}
-                            required
-                          />
-                        </div>
-                      ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-mono font-bold tracking-widest text-cyan-600 mb-2">
+                          CALLSIGN (NAME) *
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Your name"
+                          value={formState.name}
+                          onChange={(e) =>
+                            setFormState((prev) => ({ ...prev, name: e.target.value }))
+                          }
+                          className="w-full px-4 py-3 rounded-xl text-base sm:text-sm text-white placeholder-zinc-600 border outline-none transition-colors bg-transparent focus:border-cyan-500"
+                          style={{ borderColor: "#06b6d425", background: "#ffffff05" }}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-mono font-bold tracking-widest text-cyan-600 mb-2">
+                          FREQUENCY (EMAIL) *
+                        </label>
+                        <input
+                          type="email"
+                          placeholder="your@email.com"
+                          value={formState.email}
+                          onChange={(e) =>
+                            setFormState((prev) => ({ ...prev, email: e.target.value }))
+                          }
+                          className="w-full px-4 py-3 rounded-xl text-base sm:text-sm text-white placeholder-zinc-600 border outline-none transition-colors bg-transparent focus:border-cyan-500"
+                          style={{ borderColor: "#06b6d425", background: "#ffffff05" }}
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-mono font-bold tracking-widest text-cyan-600 mb-2">
+                          COMPANY / PROJECT
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Company name"
+                          value={formState.company}
+                          onChange={(e) =>
+                            setFormState((prev) => ({ ...prev, company: e.target.value }))
+                          }
+                          className="w-full px-4 py-3 rounded-xl text-base sm:text-sm text-white placeholder-zinc-600 border outline-none transition-colors bg-transparent focus:border-cyan-500"
+                          style={{ borderColor: "#06b6d425", background: "#ffffff05" }}
+                        />
+                      </div>
                     </div>
+
+                    {errorMessage && (
+                      <div className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 text-xs font-mono text-red-300 flex items-center justify-between">
+                        <span>{errorMessage}</span>
+                        <a
+                          href="mailto:hello@aevionstudio.in"
+                          className="underline hover:text-white"
+                        >
+                          Email directly
+                        </a>
+                      </div>
+                    )}
 
                     <div>
                       <label className="block text-[10px] font-mono font-bold tracking-widest text-cyan-600 mb-2">
@@ -333,10 +387,10 @@ export default function ContactPage() {
 
                     <div>
                       <label className="block text-[10px] font-mono font-bold tracking-widest text-cyan-600 mb-2">
-                        MISSION BRIEF
+                        MISSION BRIEF *
                       </label>
                       <textarea
-                        placeholder="Describe your project, goals, and any technical requirements..."
+                        placeholder="Describe your project, goals, and technical requirements..."
                         rows={4}
                         value={formState.message}
                         onChange={(e) =>
@@ -366,7 +420,7 @@ export default function ContactPage() {
                             animate={{ rotate: 360 }}
                             transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
                           />
-                          Transmitting...
+                          Transmitting to Studio Core...
                         </>
                       ) : (
                         <>
@@ -380,19 +434,22 @@ export default function ContactPage() {
                     key="success"
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
-                    className="py-16 text-center"
+                    className="py-16 text-center space-y-4"
                   >
                     <motion.div
-                      className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
+                      className="w-16 h-16 mx-auto rounded-full flex items-center justify-center"
                       style={{ background: "#06b6d420", border: "2px solid #06b6d460" }}
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
                     >
                       <ArrowUpRight className="text-cyan-400" size={24} />
                     </motion.div>
-                    <h3 className="text-2xl font-bold text-white mb-2">TRANSMISSION SUCCESSFUL.</h3>
-                    <p className="text-cyan-400 font-mono text-sm">
-                      Uplink established · System architecture response incoming
+                    <h3 className="text-2xl font-bold text-white tracking-tight">TRANSMISSION CONFIRMED.</h3>
+                    <p className="text-cyan-400 font-mono text-sm max-w-md mx-auto">
+                      Brief logged under <strong className="text-white">{referenceId}</strong>.
+                    </p>
+                    <p className="text-zinc-400 text-xs font-mono max-w-md mx-auto leading-relaxed">
+                      Sai Rio and Edison personally review incoming project briefs. You will receive an architectural response within 24 hours.
                     </p>
                   </motion.div>
                 )}

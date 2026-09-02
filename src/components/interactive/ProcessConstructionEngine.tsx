@@ -10,7 +10,10 @@ interface ProcessConstructionEngineProps {
 export default function ProcessConstructionEngine({ currentStage }: ProcessConstructionEngineProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef(currentStage);
-  stageRef.current = currentStage;
+
+  useEffect(() => {
+    stageRef.current = currentStage;
+  }, [currentStage]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -158,7 +161,7 @@ export default function ProcessConstructionEngine({ currentStage }: ProcessConst
       <div ref={containerRef} className="w-full h-full" />
       <div className="absolute top-4 left-4 flex items-center gap-2 text-xs font-mono text-emerald-400 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10">
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-        <span>LIVE SOFTWARE CONSTRUCTION ENGINE // STAGE {stageRef.current + 1} OF 6</span>
+        <span>LIVE SOFTWARE CONSTRUCTION ENGINE // STAGE {currentStage + 1} OF 6</span>
       </div>
     </div>
   );

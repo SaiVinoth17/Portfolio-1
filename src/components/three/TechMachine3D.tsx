@@ -12,7 +12,10 @@ interface TechMachine3DProps {
 export default function TechMachine3D({ activeTechId, onSelectTech, techNodes }: TechMachine3DProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const activeTechRef = useRef(activeTechId);
-  activeTechRef.current = activeTechId;
+
+  useEffect(() => {
+    activeTechRef.current = activeTechId;
+  }, [activeTechId]);
 
   useEffect(() => {
     const container = containerRef.current;

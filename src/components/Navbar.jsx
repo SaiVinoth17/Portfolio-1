@@ -30,7 +30,7 @@ const navLinks = [
 
 const contactLinks = [
   { text: "Contact",     href: "/contact" },
-  { text: "hello@aevion.studio", href: "mailto:hello@aevion.studio" },
+  { text: "hello@aevionstudio.in", href: "mailto:hello@aevionstudio.in" },
 ];
 
 /* Nav link — minimal, clean, white */

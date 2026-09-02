@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Plane, ArrowUpRight } from 'lucide-react';
+import { Layers, ArrowUpRight } from 'lucide-react';
 
 const FloatingButton = () => {
     const pathname = usePathname();
@@ -28,7 +28,7 @@ const FloatingButton = () => {
                     className="w-8 h-8 bg-zinc-900 border border-white/10 rounded-full text-zinc-300 hover:text-white hover:bg-zinc-800 transition-colors flex items-center justify-center select-none"
                     title="View Projects"
                 >
-                    <Plane size={15} />
+                    <Layers size={14} />
                 </Link>
             </div>
         </div>

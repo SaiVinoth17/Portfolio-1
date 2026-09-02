@@ -35,9 +35,9 @@ const CASE_STUDIES: CaseStudy[] = [
     problem:
       "Travelers visiting the Nilgiris (Ooty) struggled with fragmented, static guidebooks and poor real-time trail data across rugged mountainous terrain.",
     solution:
-      "Engineered an immersive discovery platform featuring dynamic terrain mapping, AI-curated personalized itineraries, high-speed cached offline support, and 60 FPS scroll transitions.",
+      "Engineered an immersive discovery platform featuring dynamic terrain mapping, AI-curated personalized itineraries, high-speed cached offline support, and fluid momentum scroll transitions.",
     outcome:
-      "Fast sub-second initial page loads, 100% Lighthouse SEO score, and seamless exploration across mobile and desktop devices.",
+      "Optimized initial page loads with structured metadata, interactive geospatial maps, and responsive layouts across mobile and desktop devices.",
     technologies: ["Next.js 16", "TypeScript", "GSAP", "Supabase", "MapboxGL", "Tailwind CSS"],
     demoUrl: "/projects/nilgiris-explorers",
     githubUrl: "https://github.com/aevionstudio",
@@ -56,7 +56,7 @@ const CASE_STUDIES: CaseStudy[] = [
     solution:
       "Designed a cinematic digital experience powered by GSAP scroll triggers, WebGL visual storytelling, smooth ambient audio, and instant friction-free booking flows.",
     outcome:
-      "Achieved high user session durations and elevated brand perception through bespoke visual atmosphere.",
+      "Elevated brand perception and extended user session engagement through bespoke visual storytelling and GPU-accelerated motion.",
     technologies: ["Next.js", "GSAP 3", "Three.js", "WebGL Shaders", "Tailwind CSS", "Stripe API"],
     demoUrl: "/projects/ooty-mistwings",
     githubUrl: "https://github.com/aevionstudio",
@@ -69,13 +69,13 @@ const CASE_STUDIES: CaseStudy[] = [
     number: "03",
     name: "Gaming Kingdom",
     category: "Real-Time WebSocket Gaming Portal",
-    tagline: "High-concurrency multiplayer hub with sub-15ms socket sync.",
+    tagline: "High-concurrency multiplayer hub with bi-directional socket sync.",
     problem:
       "Web gaming hubs frequently suffered from socket latency spikes, UI stutter during high player concurrency, and clunky social leaderboard updates.",
     solution:
       "Architected a low-latency socket engine paired with an aggressive frontend caching layer, live score streaming, and an arcade-inspired responsive UI.",
     outcome:
-      "Demonstrated real-time synchronization under high-frequency WebSocket messaging with zero dropped frames.",
+      "Demonstrated resilient real-time state synchronization under concurrent WebSocket messaging with responsive client rendering.",
     technologies: ["React 19", "Node.js", "Socket.io", "PostgreSQL", "Tailwind CSS", "Web Audio API"],
     demoUrl: "/projects/gaming-kingdom",
     githubUrl: "https://github.com/aevionstudio",

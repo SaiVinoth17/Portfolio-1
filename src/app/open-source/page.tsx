@@ -77,12 +77,13 @@ const REPOS = [
 // Simulated contribution graph
 const WEEKS = 52;
 const DAYS = 7;
-function ContribGraph() {
-  const cells = Array.from({ length: WEEKS * DAYS }, () => {
-    const r = Math.random();
-    return r < 0.3 ? 0 : r < 0.5 ? 1 : r < 0.7 ? 2 : r < 0.85 ? 3 : 4;
-  });
+const CONTRIB_CELLS = Array.from({ length: WEEKS * DAYS }, (_, i) => {
+  const pseudo = ((i * 37 + 19) % 100) / 100;
+  return pseudo < 0.35 ? 0 : pseudo < 0.55 ? 1 : pseudo < 0.75 ? 2 : pseudo < 0.9 ? 3 : 4;
+});
 
+function ContribGraph() {
+  const cells = CONTRIB_CELLS;
   const colors = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"];
 
   return (
