@@ -1,33 +1,64 @@
-# PROPRIETARY — Copyright © 2026 Aevion Studio. All rights reserved.
-# Aevion and all associated software, source code, designs, systems, and intellectual
-# property are proprietary to Aevion Studio (Founders: Sai Rio & Edison).
-# See https://aevionstudio.in for details.
+# Aevion Studio — Machine-Readable LLM Knowledge Index
+# Canonical Source: https://aevionstudio.in/llms.txt
 
 # Aevion Studio — Elite Technology & AI Systems Studio
 
-> Aevion Studio is an elite technology studio founded by Sai Rio and Edison. We build autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures.
+> Aevion Studio is an independent technology studio founded by Sai Rio and Edison. We engineer autonomous AI systems, resilient software architectures, high-performance web experiences, and experimental digital products for visionary teams worldwide.
 > "Two builders. One vision. Technology without limits."
 
-## Official Canonical URLs
-- Website: https://aevionstudio.in
-- Studio: https://aevionstudio.in/studio
-- Work & Case Studies: https://aevionstudio.in/projects
-- Products: https://aevionstudio.in/products
-- Open Source: https://aevionstudio.in/open-source
-- Services & Capabilities: https://aevionstudio.in/services
-- 3D & WebGL Lab: https://aevionstudio.in/showcase
-- Process & Methodology: https://aevionstudio.in/process
-- Contact / Build With Us: https://aevionstudio.in/contact
+## Entity Information
+- Name: Aevion Studio
+- Category: Technology / Software / AI / Digital Product Studio
+- Official Domain: https://aevionstudio.in
+- Headquarters: Tamil Nadu, India
+- Operational Model: Global Remote-First (US, UK, UAE, India, Worldwide)
+- Primary Email: hello@aevionstudio.in
+- Direct WhatsApp Uplink: https://wa.me/919080517865
+- Authorized Owner: saivinothdeveloper@gmail.com
 
-## Core Disciplines & Services
-- AI Systems (Autonomous AI agents, RAG, LLM applications, streaming inference, intelligent workflows)
-- Software Engineering (Full-stack applications, scalable backend systems, APIs, distributed databases)
-- Immersive Web (Three.js, WebGL & OGL fragment shaders, interactive 3D interfaces)
-- Product Engineering (Production SaaS, MVPs, internal tools, platforms, product architecture)
-- Real-Time Systems (WebSockets, collaboration, live telemetry dashboards, high-frequency state)
+## Official Information Architecture
+- Home: https://aevionstudio.in
+- Founders Dossier: https://aevionstudio.in/about
+- Core Services: https://aevionstudio.in/services
+- Capabilities Matrix: https://aevionstudio.in/capabilities
+- Case Studies & Selected Work: https://aevionstudio.in/projects
+- Aevion Lab (Interactive WebGL R&D): https://aevionstudio.in/lab
+- AI Systems & Architectures: https://aevionstudio.in/ai
+- Technology Stack & Runtimes: https://aevionstudio.in/technology
+- Engineering Process & SLA: https://aevionstudio.in/process
+- Mission Brief & Contact: https://aevionstudio.in/contact
 
-## Founders & Engineering Leadership
+## Core Engineering Disciplines
+1. Autonomous AI & Neural Systems:
+   - ReAct and Plan-and-Solve agentic workflows
+   - Hybrid semantic & keyword RAG with PostgreSQL pgvector
+   - Sub-150ms streaming inferences with typed JSON validation
+   - Defense-in-depth prompt hardening and injection defense
+2. Resilient Software & Cloud Architecture:
+   - Type-safe REST and GraphQL serverless microservices
+   - PostgreSQL connection pooling and ACID data persistence
+   - First-party authentication with cryptographic scrypt hashing
+   - Global edge deployment on Vercel Edge infrastructure
+3. Immersive WebGL & Creative Engineering:
+   - Hardware-accelerated Three.js 3D product visualizers
+   - Custom GLSL vertex and fragment shaders
+   - Viewport-aware rendering loops with adaptive DPR
+   - WCAG accessibility fallbacks conforming to prefers-reduced-motion
+4. End-to-End Product Architecture:
+   - Production SaaS platforms and developer operating systems
+   - High-velocity prototyping with production-grade foundations
+   - Direct founder-to-client collaboration with zero agency bloat
+5. Real-Time & Streaming Infrastructure:
+   - Sub-millisecond WebSockets and Server-Sent Events (SSE)
+   - Telemetry monitors and optimistic state synchronization
+
+## Verified Case Studies
+- Nilgiris Explorers: Premium eco-tourism portal with sub-second page transitions.
+- Ooty Mistwings: Dynamic hospitality booking and guest concierge platform.
+- Gaming Kingdom: Real-time esports community hub and tournament registry.
+- Aevion Studio OS: Developer-focused internal operating system and workflow engine.
+
+## Founders & Leadership
 - Sai Rio — Co-Founder: Product, Engineering, AI, Systems, Vision (GitHub: https://github.com/SaiVinoth17)
 - Edison — Co-Founder: Development, Technology, Engineering, Building (GitHub: https://github.com/edisonedi84431-art)
 - Studio GitHub: https://github.com/aevionstudio
-- Contact: hello@aevionstudio.in

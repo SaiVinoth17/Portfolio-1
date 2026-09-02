@@ -5,6 +5,7 @@ import { generateRandomToken, hashToken } from "@/lib/auth/crypto";
 import { checkRateLimit, recordFailedAttempt } from "@/lib/auth/rateLimit";
 import { logAuditEvent } from "@/lib/auth/audit";
 import { getClientIp } from "@/lib/auth/session";
+import { normalizeEmail, isAuthorizedOwner } from "@/lib/auth/constants";
 
 export async function POST(req: Request) {
   try {
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email is required." }, { status: 400 });
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail = normalizeEmail(email);
     const ip = getClientIp(req) || "unknown_ip";
     const rateKey = `forgot:${ip}:${normalizedEmail}`;
 

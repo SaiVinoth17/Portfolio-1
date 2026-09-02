@@ -3,35 +3,40 @@ import crypto from "crypto";
 import fs from "fs";
 import path from "path";
 
+const AUTHORIZED_OWNER_EMAIL = "saivinothdeveloper@gmail.com";
+
 // Support both .env and .env.local
 const envLocalPath = path.join(process.cwd(), ".env.local");
 const envPath = path.join(process.cwd(), ".env");
 
-if (fs.existsSync(envLocalPath)) {
-  const content = fs.readFileSync(envLocalPath, "utf-8");
-  for (const line of content.split("\n")) {
-    const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-    if (match && !process.env[match[1]]) {
-      process.env[match[1]] = (match[2] || "").trim().replace(/^['"]|['"]$/g, "");
-    }
-  }
-} else if (fs.existsSync(envPath)) {
-  const content = fs.readFileSync(envPath, "utf-8");
-  for (const line of content.split("\n")) {
-    const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
-    if (match && !process.env[match[1]]) {
-      process.env[match[1]] = (match[2] || "").trim().replace(/^['"]|['"]$/g, "");
+function loadEnvFile(filePath) {
+  if (fs.existsSync(filePath)) {
+    const content = fs.readFileSync(filePath, "utf-8");
+    for (const line of content.split("\n")) {
+      const match = line.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match && !process.env[match[1]]) {
+        process.env[match[1]] = (match[2] || "").trim().replace(/^['"]|['"]$/g, "");
+      }
     }
   }
 }
 
+loadEnvFile(envLocalPath);
+loadEnvFile(envPath);
+
 async function hashPassword(password) {
   return new Promise((resolve, reject) => {
     const salt = crypto.randomBytes(16).toString("hex");
-    crypto.scrypt(password, salt, 64, { N: 16384, r: 8, p: 1, maxmem: 32 * 1024 * 1024 }, (err, derivedKey) => {
-      if (err) return reject(err);
-      resolve(`scrypt$${salt}$${derivedKey.toString("hex")}`);
-    });
+    crypto.scrypt(
+      password,
+      salt,
+      64,
+      { N: 16384, r: 8, p: 1, maxmem: 32 * 1024 * 1024 },
+      (err, derivedKey) => {
+        if (err) return reject(err);
+        resolve(`scrypt$${salt}$${derivedKey.toString("hex")}`);
+      }
+    );
   });
 }
 
@@ -43,7 +48,15 @@ function getStore() {
     fs.mkdirSync(LOCAL_DATA_DIR, { recursive: true });
   }
   if (!fs.existsSync(LOCAL_DATA_FILE)) {
-    return { users: [], sessions: [], password_resets: [], audit_logs: [], rate_limits: [], messages: [], projects: [] };
+    return {
+      users: [],
+      sessions: [],
+      password_resets: [],
+      audit_logs: [],
+      rate_limits: [],
+      messages: [],
+      projects: [],
+    };
   }
   return JSON.parse(fs.readFileSync(LOCAL_DATA_FILE, "utf-8"));
 }
@@ -54,33 +67,34 @@ function saveStore(store) {
 
 async function main() {
   console.log("\n==================================================");
-  console.log("  AEVION STUDIO — FIRST-ADMIN BOOTSTRAP WIZARD");
+  console.log("  AEVION STUDIO — OWNER INITIALIZATION WIZARD");
+  console.log("  Single Admin Policy: saivinothdeveloper@gmail.com");
   console.log("==================================================\n");
 
   const args = process.argv.slice(2);
-  let emailArg, passwordArg, nameArg;
+  let passwordArg;
 
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--email" && args[i + 1]) emailArg = args[i + 1];
     if (args[i] === "--password" && args[i + 1]) passwordArg = args[i + 1];
-    if (args[i] === "--name" && args[i + 1]) nameArg = args[i + 1];
   }
 
-  // Check if owner already exists
+  // 1. Check if owner already exists
   const store = getStore();
   const existingOwner = store.users.find((u) => u.role === "OWNER" && u.is_active);
 
   if (existingOwner) {
-    console.error("❌ BOOTSTRAP ABORTED: An active OWNER account already exists (" + existingOwner.email + ").");
+    console.error(
+      "❌ BOOTSTRAP ABORTED: An active OWNER account already exists (" +
+        existingOwner.email +
+        ")."
+    );
     console.error("   The bootstrap mechanism is permanently locked.");
     process.exit(1);
   }
 
-  let email = emailArg;
   let password = passwordArg;
-  let name = nameArg || "Sai Rio";
 
-  if (!email || !password) {
+  if (!password) {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -88,41 +102,28 @@ async function main() {
 
     const ask = (query) => new Promise((resolve) => rl.question(query, resolve));
 
-    if (!email) {
-      email = await ask("Enter Owner Email (e.g. hello@aevionstudio.in): ");
-    }
-    if (!nameArg) {
-      const inputName = await ask("Enter Owner Full Name [Sai Rio]: ");
-      if (inputName.trim()) name = inputName.trim();
-    }
-    if (!password) {
-      password = await ask("Enter Strong Password (min 10 characters): ");
-    }
+    console.log(`Authorized Administrator Email: ${AUTHORIZED_OWNER_EMAIL}`);
+    console.log("Role                         : OWNER\n");
 
+    password = await ask("Enter Strong Password for OWNER (min 10 characters): ");
     rl.close();
   }
 
-  email = email.trim().toLowerCase();
-  password = password.trim();
-
-  if (!email || !email.includes("@")) {
-    console.error("❌ Invalid email address provided.");
-    process.exit(1);
-  }
+  password = (password || "").trim();
 
   if (password.length < 10) {
     console.error("❌ Password must be at least 10 characters long.");
     process.exit(1);
   }
 
-  console.log("\n🔐 Computing cryptographic scrypt hash...");
+  console.log("\n🔐 Computing cryptographic memory-hard scrypt hash...");
   const hashedPassword = await hashPassword(password);
 
   const newOwner = {
     id: crypto.randomUUID(),
-    email,
+    email: AUTHORIZED_OWNER_EMAIL,
     password_hash: hashedPassword,
-    name,
+    name: "Sai Vinoth (Sai Rio)",
     role: "OWNER",
     is_active: true,
     email_verified: true,
@@ -144,12 +145,12 @@ async function main() {
 
   saveStore(store);
 
-  console.log("✅ OWNER account created successfully!");
+  console.log("\n✅ OWNER account created successfully!");
   console.log(`   User ID : ${newOwner.id}`);
   console.log(`   Email   : ${newOwner.email}`);
   console.log(`   Role    : ${newOwner.role}`);
   console.log("\n🚀 Bootstrap mechanism has now permanently locked.");
-  console.log("   You can sign in at: http://localhost:3000/admin/login\n");
+  console.log("   Sign in at: http://localhost:3000/admin/login\n");
 }
 
 main().catch((err) => {

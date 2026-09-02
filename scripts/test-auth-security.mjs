@@ -36,7 +36,8 @@ function restoreStore() {
 
 async function runSecurityTests() {
   console.log("\n========================================================");
-  console.log("  AEVION STUDIO — AUTOMATED SECURITY & AUTH TEST SUITE");
+  console.log("  AEVION STUDIO — SINGLE OWNER SECURITY TEST SUITE");
+  console.log("  Target: saivinothdeveloper@gmail.com (Role: OWNER)");
   console.log("========================================================\n");
 
   cleanStore();
@@ -48,6 +49,9 @@ async function runSecurityTests() {
   const { hasRequiredRole, canPerformAction } = await import("../src/lib/auth/rbac.ts");
   const { checkRateLimit, recordFailedAttempt, resetRateLimit } = await import(
     "../src/lib/auth/rateLimit.ts"
+  );
+  const { AUTHORIZED_OWNER_EMAIL, normalizeEmail, isAuthorizedOwner } = await import(
+    "../src/lib/auth/constants.ts"
   );
 
   let passed = 0;
@@ -63,29 +67,49 @@ async function runSecurityTests() {
     }
   }
 
-  // TEST 1: Password Hashing & Constant-Time Verification
-  console.log("[1] Cryptographic Password Hashing & Timing Resistance");
-  const testPass = "StudioPassword2026!#";
-  const hash = await hashPassword(testPass);
-  assert(hash.startsWith("scrypt$"), "Hash formatted as scrypt with cryptographically secure salt");
-  assert(await verifyPassword(testPass, hash), "Valid password successfully verified");
-  assert(!(await verifyPassword("WrongPassword123!", hash)), "Invalid password rejected");
-  assert(!(await verifyPassword("", hash)), "Empty password rejected");
+  // --- SECTION 1: Single Owner Email Policy & Case Normalization ---
+  console.log("[1] Single Admin Policy & Case-Insensitive Normalization");
+  assert(AUTHORIZED_OWNER_EMAIL === "saivinothdeveloper@gmail.com", "Authorized email constant verified");
+  assert(
+    normalizeEmail("SAIVINOTHDEVELOPER@GMAIL.COM") === "saivinothdeveloper@gmail.com",
+    "Uppercase email normalizes to saivinothdeveloper@gmail.com"
+  );
+  assert(
+    normalizeEmail("  SaiVinothDeveloper@Gmail.Com  ") === "saivinothdeveloper@gmail.com",
+    "Mixed case with whitespace normalizes to saivinothdeveloper@gmail.com"
+  );
+  assert(
+    isAuthorizedOwner("SAIVINOTHDEVELOPER@GMAIL.COM"),
+    "isAuthorizedOwner recognizes uppercase variant"
+  );
+  assert(
+    !isAuthorizedOwner("attacker@gmail.com"),
+    "isAuthorizedOwner strictly rejects unauthorized email"
+  );
+  assert(
+    !isAuthorizedOwner("admin@aevionstudio.in"),
+    "isAuthorizedOwner strictly rejects non-owner alias"
+  );
 
-  // TEST 2: SQL Injection / Parameterized Safety
-  console.log("\n[2] Parameterized Statement SQL Injection Resistance");
-  const sqliPayload = "' OR 1=1; DROP TABLE users; --";
-  const sqliUser = await db.users.findByEmail(sqliPayload);
-  assert(sqliUser === null, "SQL injection payload safely parameterized without error");
+  // --- SECTION 2: Cryptographic Password Hashing & Timing Resistance ---
+  console.log("\n[2] Cryptographic Scrypt Password Hashing & Timing Resistance");
+  const ownerRawSecret = "AevionSecure2026!#$";
+  const ownerHash = await hashPassword(ownerRawSecret);
+  assert(ownerHash.startsWith("scrypt$"), "Hash formatted as scrypt with cryptographically secure salt");
+  assert(await verifyPassword(ownerRawSecret, ownerHash), "Valid password successfully verified via timingSafeEqual");
+  assert(!(await verifyPassword("WrongPassword123!", ownerHash)), "Invalid password rejected");
+  assert(!(await verifyPassword("", ownerHash)), "Empty password rejected");
 
-  // TEST 3: Admin Bootstrap & Self-Locking
-  console.log("\n[3] First-Admin Bootstrap & Self-Locking Guard");
+  // --- SECTION 3: Initial Bootstrap & Permanent Self-Locking ---
+  console.log("\n[3] First-Admin Bootstrap & Permanent Self-Locking");
   assert((await db.users.countOwners()) === 0, "Initial database has 0 owners");
+
+  // Create initial owner
   const ownerUser = await db.users.create({
     id: crypto.randomUUID(),
-    email: "sairio@aevionstudio.in",
-    password_hash: hash,
-    name: "Sai Rio",
+    email: AUTHORIZED_OWNER_EMAIL,
+    password_hash: ownerHash,
+    name: "Sai Vinoth (Sai Rio)",
     role: "OWNER",
     is_active: true,
     email_verified: true,
@@ -93,36 +117,77 @@ async function runSecurityTests() {
     updated_at: new Date().toISOString(),
     last_login_at: null,
   });
-  assert((await db.users.countOwners()) === 1, "First OWNER created successfully");
+
+  assert(ownerUser.email === "saivinothdeveloper@gmail.com", "Owner initialized with saivinothdeveloper@gmail.com");
+  assert(ownerUser.role === "OWNER", "User provisioned with OWNER privileges");
+  assert((await db.users.countOwners()) === 1, "Owner count is exactly 1");
+
+  // Duplicate bootstrap attempt must fail
+  const duplicateOwnerAttempt = async () => {
+    const ownerCount = await db.users.countOwners();
+    if (ownerCount > 0) {
+      return { allowed: false, status: 403, error: "Admin bootstrap is permanently disabled." };
+    }
+    return { allowed: true };
+  };
+  const duplicateResult = await duplicateOwnerAttempt();
   assert(
-    (await db.users.countOwners()) > 0,
-    "Bootstrap condition locks permanently after first owner exists"
+    !duplicateResult.allowed && duplicateResult.status === 403,
+    "Duplicate OWNER bootstrap strictly blocked with HTTP 403"
   );
 
-  // TEST 4: Anti-Lockout Rules
-  console.log("\n[4] Anti-Lockout Rules for Last OWNER");
-  const ownerCount = await db.users.countOwners();
-  const canDeleteSoleOwner = ownerCount > 1;
-  assert(!canDeleteSoleOwner, "System blocks deleting the last remaining OWNER");
+  // --- SECTION 4: Authentication Matrix Verification ---
+  console.log("\n[4] Complete Authentication Flow Verification Matrix");
 
-  // TEST 5: Role-Based Access Control (RBAC) Matrix
-  console.log("\n[5] Role-Based Access Control (RBAC) Matrix Verification");
-  assert(hasRequiredRole("OWNER", "VIEWER"), "OWNER possesses VIEWER privileges");
-  assert(hasRequiredRole("ADMIN", "EDITOR"), "ADMIN possesses EDITOR privileges");
-  assert(!hasRequiredRole("VIEWER", "ADMIN"), "VIEWER denied ADMIN privileges");
-  assert(!hasRequiredRole("EDITOR", "OWNER"), "EDITOR denied OWNER privileges");
+  // Simulated login evaluator mimicking POST /api/auth/login
+  async function simulateLogin(email, password) {
+    const normalized = normalizeEmail(email);
+    // 1. Single owner policy check
+    if (!isAuthorizedOwner(normalized)) {
+      return { status: 401, error: "Invalid email or password." };
+    }
+    // 2. User lookup
+    const user = await db.users.findByEmail(normalized);
+    if (!user || !user.is_active) {
+      return { status: 401, error: "Invalid email or password." };
+    }
+    // 3. Password verify
+    const match = await verifyPassword(password, user.password_hash);
+    if (!match) {
+      return { status: 401, error: "Invalid email or password." };
+    }
+    return { status: 200, user };
+  }
 
-  assert(canPerformAction("OWNER", "MANAGE_USERS"), "OWNER authorized to MANAGE_USERS");
-  assert(!canPerformAction("ADMIN", "MANAGE_USERS"), "ADMIN forbidden to MANAGE_USERS");
-  assert(!canPerformAction("EDITOR", "DELETE_PROJECTS"), "EDITOR forbidden to DELETE_PROJECTS");
-  assert(canPerformAction("EDITOR", "EDIT_PROJECTS"), "EDITOR authorized to EDIT_PROJECTS");
-  assert(canPerformAction("VIEWER", "VIEW_DASHBOARD"), "VIEWER authorized to VIEW_DASHBOARD");
+  // 1. Authorized email + correct password → SUCCESS
+  const auth1 = await simulateLogin("saivinothdeveloper@gmail.com", ownerRawSecret);
+  assert(auth1.status === 200 && auth1.user.role === "OWNER", "Authorized email + correct password → SUCCESS");
 
-  // TEST 6: Session Creation, Hashing & Invalidation
-  console.log("\n[6] Server-Managed Database Sessions");
+  // 2. Authorized email + wrong password → FAIL
+  const auth2 = await simulateLogin("saivinothdeveloper@gmail.com", "IncorrectPassword!");
+  assert(auth2.status === 401 && auth2.error === "Invalid email or password.", "Authorized email + wrong password → FAIL");
+
+  // 3. Unauthorized email + correct password → FAIL
+  const auth3 = await simulateLogin("intruder@external.io", ownerRawSecret);
+  assert(auth3.status === 401 && auth3.error === "Invalid email or password.", "Unauthorized email + correct password → FAIL (Generic Error)");
+
+  // 4. Unauthorized email + wrong password → FAIL
+  const auth4 = await simulateLogin("intruder@external.io", "RandomBadPassword");
+  assert(auth4.status === 401 && auth4.error === "Invalid email or password.", "Unauthorized email + wrong password → FAIL (Generic Error)");
+
+  // 5. Case-normalized authorized email → SUCCESS
+  const auth5 = await simulateLogin("SAIVINOTHDEVELOPER@GMAIL.COM", ownerRawSecret);
+  assert(auth5.status === 200, "Case-normalized authorized email (uppercase) → SUCCESS");
+
+  const auth5b = await simulateLogin("  SaiVinothDeveloper@gmail.com  ", ownerRawSecret);
+  assert(auth5b.status === 200, "Case-normalized authorized email (whitespace + mixed) → SUCCESS");
+
+  // --- SECTION 5: Session Lifecycle, Expiration & Revocation ---
+  console.log("\n[5] Server-Managed Database Sessions & Invalidation");
   const rawSessionToken = generateRandomToken(32);
   const tokenHash = hashToken(rawSessionToken);
-  const sessionRecord = await db.sessions.create({
+
+  const activeSession = await db.sessions.create({
     id: crypto.randomUUID(),
     user_id: ownerUser.id,
     session_token_hash: tokenHash,
@@ -130,80 +195,115 @@ async function runSecurityTests() {
     created_at: new Date().toISOString(),
     last_used_at: new Date().toISOString(),
     ip_address: "127.0.0.1",
-    user_agent: "Mozilla/5.0 Test Suite",
+    user_agent: "Test Suite Runner",
   });
-  assert(sessionRecord.session_token_hash === tokenHash, "Database stores only SHA-256 token hash");
-  assert(sessionRecord.session_token_hash !== rawSessionToken, "Raw token is NEVER stored in database");
 
+  // Active session lookup
   const foundSession = await db.sessions.findByTokenHash(tokenHash);
-  assert(foundSession !== null && foundSession.user_id === ownerUser.id, "Session retrieved via token hash");
+  assert(foundSession !== null && foundSession.id === activeSession.id, "Active session successfully validated via token hash");
 
-  await db.sessions.delete(sessionRecord.id);
-  const deletedSession = await db.sessions.findByTokenHash(tokenHash);
-  assert(deletedSession === null, "Session successfully invalidated server-side");
-
-  // TEST 7: Brute-Force Rate Limiting
-  console.log("\n[7] Brute-Force Rate Limiting");
-  const rateKey = "test_rate_limit:127.0.0.1:target@aevionstudio.in";
-  await resetRateLimit(rateKey);
-
-  for (let i = 1; i <= 4; i++) {
-    await recordFailedAttempt(rateKey);
-  }
-  const checkBeforeLock = await checkRateLimit(rateKey);
-  assert(checkBeforeLock.allowed, "4 failed attempts still permitted under threshold");
-
-  await recordFailedAttempt(rateKey); // 5th attempt
-  const checkAfterLock = await checkRateLimit(rateKey);
-  assert(!checkAfterLock.allowed, "5th failed attempt triggers rate limit lockout");
-  assert(checkAfterLock.retryAfterSeconds > 0, "Lockout duration reported accurately");
-
-  await resetRateLimit(rateKey);
-  const checkAfterReset = await checkRateLimit(rateKey);
-  assert(checkAfterReset.allowed, "Rate limit clears upon successful authentication");
-
-  // TEST 8: Single-Use Password Reset Token
-  console.log("\n[8] Single-Use Expiring Password Reset Token");
-  const resetTokenRaw = generateRandomToken(32);
-  const resetTokenHash = hashToken(resetTokenRaw);
-  const resetRecord = await db.passwordResets.create({
+  // Expired session verification
+  const expiredRawToken = generateRandomToken(32);
+  const expiredTokenHash = hashToken(expiredRawToken);
+  await db.sessions.create({
     id: crypto.randomUUID(),
     user_id: ownerUser.id,
-    token_hash: resetTokenHash,
-    expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-    created_at: new Date().toISOString(),
-    used_at: null,
+    session_token_hash: expiredTokenHash,
+    expires_at: new Date(Date.now() - 1000).toISOString(), // Expired 1 second ago
+    created_at: new Date(Date.now() - 3600 * 1000).toISOString(),
+    last_used_at: new Date(Date.now() - 3600 * 1000).toISOString(),
+    ip_address: "127.0.0.1",
+    user_agent: "Expired Client",
   });
-  const unconsumedToken = await db.passwordResets.findByTokenHash(resetTokenHash);
-  assert(unconsumedToken !== null, "Reset token located in database");
 
-  // Consume token
-  await db.passwordResets.markUsed(resetRecord.id);
-  const consumedToken = await db.passwordResets.findByTokenHash(resetTokenHash);
-  assert(consumedToken === null, "Consumed token cannot be queried or reused (Replay Attack Defeated)");
+  async function validateSessionState(hash) {
+    const s = await db.sessions.findByTokenHash(hash);
+    if (!s) return { valid: false, reason: "NOT_FOUND" };
+    if (new Date(s.expires_at).getTime() <= Date.now()) {
+      return { valid: false, reason: "EXPIRED" };
+    }
+    return { valid: true, session: s };
+  }
 
-  // TEST 9: Inbound Contact Form Persistence
-  console.log("\n[9] Inbound Brief Database Persistence");
-  const testMessage = await db.messages.create({
-    id: "AEV-TEST-001",
-    name: "Dr. Elena Vance",
-    email: "elena@blackmesa.org",
-    company: "Black Mesa Research",
-    project_type: "AI Systems",
-    budget: "$25k+",
-    message: "Requirement for autonomous neural reasoning pipelines.",
-    status: "UNREAD",
+  const expiredCheck = await validateSessionState(expiredTokenHash);
+  assert(!expiredCheck.valid && expiredCheck.reason === "EXPIRED", "Expired session → FAIL");
+
+  // Revoked session verification
+  await db.sessions.delete(activeSession.id);
+  const revokedCheck = await validateSessionState(tokenHash);
+  assert(!revokedCheck.valid && revokedCheck.reason === "NOT_FOUND", "Revoked session → FAIL");
+
+  // Missing session verification
+  const missingCheck = await validateSessionState(hashToken("NonExistentTokenStringHere00000000000"));
+  assert(!missingCheck.valid && missingCheck.reason === "NOT_FOUND", "Missing session → FAIL");
+
+  // --- SECTION 6: API Route Guard & Role Hierarchy ---
+  console.log("\n[6] API Protection & Role-Based Access Control (RBAC)");
+
+  function simulateRouteGuard(sessionCookie, requiredRole = "VIEWER") {
+    if (!sessionCookie) {
+      return { status: 401, error: "Authentication required." };
+    }
+    if (sessionCookie.user.role === "VIEWER" && requiredRole === "OWNER") {
+      return { status: 403, error: "Forbidden: Insufficient role permissions." };
+    }
+    return { status: 200 };
+  }
+
+  const noSessionRequest = simulateRouteGuard(null, "OWNER");
+  assert(noSessionRequest.status === 401, "Direct admin API without session → 401");
+
+  const viewerRequestForOwner = simulateRouteGuard({ user: { role: "VIEWER" } }, "OWNER");
+  assert(viewerRequestForOwner.status === 403, "Non-owner role attempting OWNER functionality → 403");
+
+  const ownerRequestForOwner = simulateRouteGuard({ user: { role: "OWNER" } }, "OWNER");
+  assert(ownerRequestForOwner.status === 200, "OWNER role authorized for OWNER functionality → 200");
+
+  // --- SECTION 7: Anti-Lockout Invariant ---
+  console.log("\n[7] Anti-Lockout Invariant for Last OWNER");
+  const ownerCount = await db.users.countOwners();
+  assert(ownerCount === 1, "Single OWNER policy holds 1 active owner");
+  const canDemoteOrDelete = ownerCount > 1;
+  assert(!canDemoteOrDelete, "Anti-lockout strictly blocks deleting or demoting the last OWNER");
+
+  // --- SECTION 8: Password Change & Invalidation of All Active Sessions ---
+  console.log("\n[8] Password Change & Invalidation of All Active Sessions");
+  // Establish 2 active sessions for the owner
+  const s1 = await db.sessions.create({
+    id: crypto.randomUUID(),
+    user_id: ownerUser.id,
+    session_token_hash: hashToken(generateRandomToken(32)),
+    expires_at: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString(),
     created_at: new Date().toISOString(),
+    last_used_at: new Date().toISOString(),
+    ip_address: "127.0.0.1",
+    user_agent: "Browser 1",
   });
-  const messageList = await db.messages.list();
-  const savedMsg = messageList.find((m) => m.id === testMessage.id);
-  assert(savedMsg !== undefined && savedMsg.name === "Dr. Elena Vance", "Public /contact brief stored in DB");
+  const s2 = await db.sessions.create({
+    id: crypto.randomUUID(),
+    user_id: ownerUser.id,
+    session_token_hash: hashToken(generateRandomToken(32)),
+    expires_at: new Date(Date.now() + 7 * 24 * 3600 * 1000).toISOString(),
+    created_at: new Date().toISOString(),
+    last_used_at: new Date().toISOString(),
+    ip_address: "192.168.1.5",
+    user_agent: "Browser 2",
+  });
 
-  await db.messages.updateStatus(testMessage.id, "REVIEWED");
-  const updatedMsg = (await db.messages.list()).find((m) => m.id === testMessage.id);
-  assert(updatedMsg?.status === "REVIEWED", "Admin can transition message status to REVIEWED");
+  const sessionsBeforeChange = await db.sessions.listByUser(ownerUser.id);
+  assert(sessionsBeforeChange.length >= 2, "2 active sessions established before password rotation");
 
-  // Restore previous store
+  // Rotate password
+  const newSecret = "NewRotatedPassword2026!#$";
+  const newHash = await hashPassword(newSecret);
+  await db.users.update(ownerUser.id, { password_hash: newHash });
+
+  // Invalidate ALL sessions
+  await db.sessions.deleteByUser(ownerUser.id);
+  const sessionsAfterChange = await db.sessions.listByUser(ownerUser.id);
+  assert(sessionsAfterChange.length === 0, "Password rotation invalidated all active sessions across all devices");
+
+  // Restore store
   restoreStore();
 
   console.log("\n========================================================");

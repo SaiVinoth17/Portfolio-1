@@ -179,12 +179,12 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/services" className="hover:text-emerald-400 transition-colors">
-                  Services
+                  Core Services
                 </Link>
               </li>
               <li>
-                <Link href="/tech-stack" className="hover:text-emerald-400 transition-colors">
-                  Tech Stack
+                <Link href="/capabilities" className="hover:text-emerald-400 transition-colors">
+                  Capabilities Matrix
                 </Link>
               </li>
               <li>
@@ -197,27 +197,32 @@ export default function Footer() {
 
           <div className="footer-col space-y-4">
             <div className="text-xs font-mono tracking-widest text-zinc-500 uppercase font-bold">
-              Laboratory &amp; R&amp;D
+              Technology &amp; Lab
             </div>
             <ul className="space-y-2.5 text-sm text-zinc-400 font-mono">
               <li>
-                <Link href="/showcase" className="hover:text-emerald-400 transition-colors">
-                  3D Shader Lab
+                <Link href="/ai" className="hover:text-emerald-400 transition-colors">
+                  AI Systems
                 </Link>
               </li>
               <li>
-                <Link href="/showcase/ripple-distortion" className="hover:text-emerald-400 transition-colors">
-                  Ripple Shader
+                <Link href="/technology" className="hover:text-emerald-400 transition-colors">
+                  Tech Architecture
+                </Link>
+              </li>
+              <li>
+                <Link href="/lab" className="hover:text-emerald-400 transition-colors">
+                  Aevion Lab R&amp;D
+                </Link>
+              </li>
+              <li>
+                <Link href="/lab/ripple-distortion" className="hover:text-emerald-400 transition-colors">
+                  Fluid Shaders
                 </Link>
               </li>
               <li>
                 <Link href="/open-source" className="hover:text-emerald-400 transition-colors">
                   Open Source
-                </Link>
-              </li>
-              <li>
-                <Link href="/status" className="hover:text-emerald-400 transition-colors">
-                  System Status
                 </Link>
               </li>
             </ul>
@@ -229,8 +234,18 @@ export default function Footer() {
             </div>
             <ul className="space-y-2.5 text-sm text-zinc-400 font-mono">
               <li>
+                <a
+                  href="https://wa.me/919080517865?text=Hi%20Aevion%20Studio%2C%20I%20would%20like%20to%20discuss%20a%20project."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-400 transition-colors text-emerald-400/90 font-bold flex items-center gap-1"
+                >
+                  WhatsApp Uplink ↗
+                </a>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-emerald-400 transition-colors">
-                  Establish Contact
+                  Submit Brief
                 </Link>
               </li>
               <li>

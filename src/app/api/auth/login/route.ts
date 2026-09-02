@@ -4,6 +4,7 @@ import { verifyPassword } from "@/lib/auth/crypto";
 import { createSession, getClientIp } from "@/lib/auth/session";
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from "@/lib/auth/rateLimit";
 import { logAuditEvent } from "@/lib/auth/audit";
+import { normalizeEmail, isAuthorizedOwner } from "@/lib/auth/constants";
 
 export async function POST(req: Request) {
   try {
@@ -23,7 +24,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedEmail = normalizeEmail(email);
     const ip = getClientIp(req) || "unknown_ip";
     const rateLimitKey = `login:${ip}:${normalizedEmail}`;
 
@@ -45,11 +46,27 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Lookup user
+    // 2. Single Admin Policy Verification:
+    // Only saivinothdeveloper@gmail.com is authorized to authenticate as OWNER.
+    // If unauthorized, return the identical generic error to prevent account enumeration.
+    if (!isAuthorizedOwner(normalizedEmail)) {
+      const updatedRate = await recordFailedAttempt(rateLimitKey);
+      await logAuditEvent({
+        action: "LOGIN_FAILURE",
+        resource: normalizedEmail,
+        req,
+        metadata: { reason: "UNAUTHORIZED_EMAIL", remainingAttempts: updatedRate.remainingAttempts },
+      });
+      return NextResponse.json(
+        { error: "Invalid email or password." },
+        { status: 401 }
+      );
+    }
+
+    // 3. Lookup authorized user in database
     const user = await db.users.findByEmail(normalizedEmail);
 
     if (!user) {
-      // Record failed attempt and return generic message
       const updatedRate = await recordFailedAttempt(rateLimitKey);
       await logAuditEvent({
         action: "LOGIN_FAILURE",
@@ -63,7 +80,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 3. Check if account is disabled
+    // 4. Check if account is active
     if (!user.is_active) {
       await logAuditEvent({
         userId: user.id,
@@ -73,12 +90,12 @@ export async function POST(req: Request) {
         metadata: { reason: "ACCOUNT_DEACTIVATED" },
       });
       return NextResponse.json(
-        { error: "This administrator account has been disabled. Contact an owner." },
+        { error: "This administrator account has been disabled. Contact system administrator." },
         { status: 403 }
       );
     }
 
-    // 4. Verify password in constant time
+    // 5. Verify password in constant time using scrypt
     const passwordMatch = await verifyPassword(password, user.password_hash);
     if (!passwordMatch) {
       const updatedRate = await recordFailedAttempt(rateLimitKey);
@@ -95,18 +112,18 @@ export async function POST(req: Request) {
       );
     }
 
-    // 5. Successful authentication: Reset rate limits
+    // 6. Successful authentication: Reset rate limits
     await resetRateLimit(rateLimitKey);
 
-    // 6. Update user's last login timestamp
+    // 7. Update user's last login timestamp
     await db.users.update(user.id, {
       last_login_at: new Date().toISOString(),
     });
 
-    // 7. Create server-side session and set secure cookie
+    // 8. Create server-side session and set secure HttpOnly cookie
     await createSession(user.id, req);
 
-    // 8. Record audit log
+    // 9. Record audit log
     await logAuditEvent({
       userId: user.id,
       action: "LOGIN_SUCCESS",

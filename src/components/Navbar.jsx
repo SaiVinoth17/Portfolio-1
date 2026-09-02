@@ -19,13 +19,14 @@ import aevionLogo from "@/assets/images/logo.svg";
 const FILTER_ID = "ios26-glass";
 
 const navLinks = [
-  { text: "Work",        href: "/projects" },
-  { text: "Founders",    href: "/#founders" },
-  { text: "Manifesto",   href: "/#manifesto" },
-  { text: "Lab",         href: "/showcase" },
-  { text: "Studio",      href: "/studio" },
-  { text: "Stack",       href: "/tech-stack" },
-  { text: "Process",     href: "/process" },
+  { text: "Work",         href: "/projects" },
+  { text: "About",        href: "/about" },
+  { text: "Services",     href: "/services" },
+  { text: "Capabilities", href: "/capabilities" },
+  { text: "Lab",          href: "/lab" },
+  { text: "AI",           href: "/ai" },
+  { text: "Technology",   href: "/technology" },
+  { text: "Process",      href: "/process" },
 ];
 
 const contactLinks = [

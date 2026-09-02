@@ -24,6 +24,18 @@ export async function POST(req: Request) {
   const guard = await requireAuth(req, "OWNER");
   if (!guard.success) return guard.response;
 
+  // Enforce Single Owner Policy: Additional admin accounts cannot be created
+  const ownerCount = await db.users.countOwners();
+  if (ownerCount >= 1) {
+    return NextResponse.json(
+      {
+        error:
+          "Forbidden: Single Owner Policy is active. Provisioning additional administrator accounts is disabled.",
+      },
+      { status: 403 }
+    );
+  }
+
   try {
     let body: any;
     try {

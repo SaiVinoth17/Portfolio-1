@@ -84,7 +84,19 @@ export default function RootLayout({ children }) {
           }
         ],
         "description": "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Founded by Sai Rio and Edison.",
-        "sameAs": ["https://github.com/SaiVinoth17", "https://github.com/edisonedi84431-art", "https://github.com/aevionstudio"]
+        "sameAs": ["https://github.com/SaiVinoth17", "https://github.com/edisonedi84431-art", "https://github.com/aevionstudio"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressRegion": "Tamil Nadu",
+          "addressCountry": "India"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer service & project inquiry",
+          "email": "hello@aevionstudio.in",
+          "url": "https://aevionstudio.in/contact",
+          "availableLanguage": ["English", "Tamil"]
+        }
       },
       {
         "@type": "Person",

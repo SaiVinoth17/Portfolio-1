@@ -149,23 +149,28 @@ export default function UsersSettingsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-6">
         <div>
-          <div className="flex items-center gap-2 text-sky-400 font-mono text-xs uppercase tracking-widest font-bold">
-            <UserCheck size={13} /> OWNER PRIVILEGES
+          <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase tracking-widest font-bold">
+            <UserCheck size={13} /> SINGLE OWNER POLICY ACTIVE
           </div>
           <h1 className="text-3xl font-bold font-mono text-white tracking-tight mt-1">
-            ADMINISTRATOR MANAGEMENT
+            ADMINISTRATOR ACCOUNT
           </h1>
           <p className="text-xs text-zinc-500 font-mono mt-0.5">
-            Role-based access control, privilege delegation, and anti-lockout protection
+            Single authorized administrator: saivinothdeveloper@gmail.com
           </p>
         </div>
 
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="self-start sm:self-auto px-4 py-2 rounded-xl bg-white text-black hover:bg-zinc-200 text-xs font-mono font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
-        >
-          <UserPlus size={14} /> Provision Admin
-        </button>
+        <div className="px-3.5 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono text-xs flex items-center gap-2">
+          <Shield size={14} /> Single Admin Policy Enforced
+        </div>
+      </div>
+
+      {/* Policy Banner */}
+      <div className="p-4 rounded-xl bg-zinc-900/60 border border-white/10 text-xs font-mono text-zinc-400 space-y-1">
+        <span className="text-white font-bold block">SINGLE OWNER SECURITY POLICY:</span>
+        <p className="leading-relaxed">
+          Aevion Studio enforces a single administrator policy. Only <code className="text-emerald-400">saivinothdeveloper@gmail.com</code> is authorized to authenticate with OWNER privileges. Arbitrary public registration and additional sub-admin creation are disabled.
+        </p>
       </div>
 
       {statusMessage && (

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, MapPin, Send, Clock, Activity, ArrowUpRight, ShieldCheck } from "lucide-react";
+import { getWhatsAppUrl } from "@/lib/config/studio";
 
 const PROJECT_TYPES = [
   { id: "ai", label: "AI Application", timeline: "3–5 Weeks", complexity: "High" },
@@ -238,6 +239,44 @@ export default function ContactPage() {
               <p className="text-xs text-zinc-400 leading-relaxed font-sans">
                 All project conversations are protected under mutual NDA by default. Your IP is safe.
               </p>
+            </div>
+
+            {/* Primary Conversion: WhatsApp Instant Uplink */}
+            <div
+              className="p-5 rounded-2xl border border-emerald-500/30 space-y-3 font-mono"
+              style={{ background: "#10b98108" }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
+                  <span>DIRECT WHATSAPP UPLINK</span>
+                </div>
+                <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20 font-bold">
+                  FASTEST
+                </span>
+              </div>
+              <p className="text-xs text-zinc-400 font-sans leading-relaxed">
+                Connect directly with Sai Rio and Edison via prefilled WhatsApp templates:
+              </p>
+              <div className="space-y-1.5 pt-1">
+                {[
+                  { label: "New Website / Web App", type: "website" as const },
+                  { label: "Custom AI Application", type: "ai" as const },
+                  { label: "Software Architecture", type: "software" as const },
+                  { label: "3D / Digital Experience", type: "3d" as const },
+                  { label: "General Project Enquiry", type: "general" as const },
+                ].map((tpl) => (
+                  <a
+                    key={tpl.type}
+                    href={getWhatsAppUrl(tpl.type)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-2.5 rounded-xl bg-white/[0.03] border border-white/10 hover:border-emerald-500/40 hover:bg-emerald-500/10 text-xs text-zinc-300 hover:text-white transition-all group"
+                  >
+                    <span>{tpl.label}</span>
+                    <ArrowUpRight size={13} className="text-zinc-500 group-hover:text-emerald-400 transition-colors" />
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 

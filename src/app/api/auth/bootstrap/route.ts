@@ -3,10 +3,11 @@ import crypto from "crypto";
 import { db } from "@/lib/db";
 import { hashPassword } from "@/lib/auth/crypto";
 import { logAuditEvent } from "@/lib/auth/audit";
+import { AUTHORIZED_OWNER_EMAIL, normalizeEmail, isAuthorizedOwner } from "@/lib/auth/constants";
 
 export async function POST(req: Request) {
   try {
-    // 1. Check if ANY owner account already exists
+    // 1. Strict Self-Locking: Check if ANY owner account already exists
     const ownerCount = await db.users.countOwners();
     if (ownerCount > 0) {
       return NextResponse.json(
@@ -18,7 +19,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // 2. Validate bootstrap secret if configured
+    // 2. Validate bootstrap secret if configured in environment
     const bootstrapSecret = process.env.BOOTSTRAP_SECRET;
     const providedSecret = req.headers.get("x-bootstrap-secret");
 
@@ -38,9 +39,9 @@ export async function POST(req: Request) {
 
     const { email, password, name } = body;
 
-    if (!email || typeof email !== "string" || !password || typeof password !== "string") {
+    if (!password || typeof password !== "string") {
       return NextResponse.json(
-        { error: "Email and password are required to create the first OWNER." },
+        { error: "A strong password is required to initialize the OWNER account." },
         { status: 400 }
       );
     }
@@ -52,14 +53,32 @@ export async function POST(req: Request) {
       );
     }
 
-    const normalizedEmail = email.trim().toLowerCase();
+    // 3. Single Admin Policy:
+    // Only saivinothdeveloper@gmail.com is authorized to be initialized as OWNER.
+    const requestedEmail = email ? normalizeEmail(email) : AUTHORIZED_OWNER_EMAIL;
+    if (!isAuthorizedOwner(requestedEmail)) {
+      return NextResponse.json(
+        { error: "Unauthorized: Only the designated studio owner email may be bootstrapped." },
+        { status: 403 }
+      );
+    }
+
+    // Check if account already exists for this email
+    const existing = await db.users.findByEmail(AUTHORIZED_OWNER_EMAIL);
+    if (existing) {
+      return NextResponse.json(
+        { error: "Owner account already initialized." },
+        { status: 409 }
+      );
+    }
+
     const hashedPassword = await hashPassword(password);
 
     const ownerUser = await db.users.create({
       id: crypto.randomUUID(),
-      email: normalizedEmail,
+      email: AUTHORIZED_OWNER_EMAIL,
       password_hash: hashedPassword,
-      name: (name && typeof name === "string" ? name.trim() : "System Owner"),
+      name: name && typeof name === "string" ? name.trim() : "Sai Vinoth (Sai Rio)",
       role: "OWNER",
       is_active: true,
       email_verified: true,
@@ -79,7 +98,8 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         status: "success",
-        message: "First OWNER account successfully initialized. Bootstrap is now permanently locked.",
+        message:
+          "Owner account successfully initialized for saivinothdeveloper@gmail.com. Bootstrap is now permanently locked.",
         user: {
           id: ownerUser.id,
           email: ownerUser.email,
