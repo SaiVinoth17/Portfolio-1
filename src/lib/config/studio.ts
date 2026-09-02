@@ -5,7 +5,11 @@ export const STUDIO_CONFIG = {
     "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Founded by Sai Rio and Edison.",
   domain: "https://aevionstudio.in",
   email: "hello@aevionstudio.in",
-  whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "919080517865",
+  whatsappNumber: (() => {
+    const raw = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "917604904217";
+    const cleaned = raw.replace(/\D/g, "");
+    return cleaned.length === 10 ? `91${cleaned}` : cleaned;
+  })(),
   location: {
     region: "Tamil Nadu",
     country: "India",

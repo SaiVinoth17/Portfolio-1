@@ -7,6 +7,7 @@ import { useGSAP } from "@gsap/react";
 import { ArrowUpRight, Github, Activity, Sparkles, Cpu } from "lucide-react";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
+import { getWhatsAppUrl } from "@/lib/config/studio";
 
 export default function Footer() {
   const footerRef = useRef(null);
@@ -235,7 +236,7 @@ export default function Footer() {
             <ul className="space-y-2.5 text-sm text-zinc-400 font-mono">
               <li>
                 <a
-                  href="https://wa.me/919080517865?text=Hi%20Aevion%20Studio%2C%20I%20would%20like%20to%20discuss%20a%20project."
+                  href={getWhatsAppUrl("general")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-emerald-400 transition-colors text-emerald-400/90 font-bold flex items-center gap-1"

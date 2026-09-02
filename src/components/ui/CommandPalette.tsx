@@ -19,6 +19,7 @@ import {
   X,
   Layers,
 } from "lucide-react";
+import { getWhatsAppUrl } from "@/lib/config/studio";
 
 interface CommandItem {
   id: string;
@@ -111,7 +112,7 @@ export default function CommandPalette() {
       category: "Actions",
       icon: Mail,
       shortcut: "W",
-      action: () => window.open("https://wa.me/919080517865", "_blank"),
+      action: () => window.open(getWhatsAppUrl("general"), "_blank"),
     },
     {
       id: "contact",

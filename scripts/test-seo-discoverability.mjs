@@ -162,10 +162,10 @@ async function runSeoTests() {
   const { getWhatsAppUrl, STUDIO_CONFIG } = await import(
     "../src/lib/config/studio.ts"
   );
-  assert(STUDIO_CONFIG.whatsappNumber.length >= 10, "WhatsApp destination number configured");
+  assert(STUDIO_CONFIG.whatsappNumber === "917604904217", "WhatsApp destination number matches 917604904217");
 
   const generalUrl = getWhatsAppUrl("general");
-  assert(generalUrl.startsWith("https://wa.me/"), "WhatsApp URL generator returns wa.me protocol");
+  assert(generalUrl.startsWith("https://wa.me/917604904217"), "WhatsApp URL generator targets 917604904217");
   assert(generalUrl.includes("text="), "WhatsApp URL includes prefilled message query");
 
   const aiUrl = getWhatsAppUrl("ai");
