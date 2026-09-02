@@ -17,15 +17,15 @@ export const STUDIO_CONFIG = {
   },
   founders: [
     {
-      name: "Sai Rio",
+      name: "Sai Vinoth",
       role: "Co-Founder",
-      discipline: "Product · Engineering · AI · Systems · Vision",
+      discipline: "Full Stack Developer & AI/ML Engineer",
       github: "https://github.com/SaiVinoth17",
     },
     {
       name: "Edison",
       role: "Co-Founder",
-      discipline: "Development · Technology · Engineering · Building",
+      discipline: "Front End Developer",
       github: "https://github.com/edisonedi84431-art",
     },
   ],

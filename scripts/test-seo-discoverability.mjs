@@ -123,7 +123,9 @@ async function runSeoTests() {
 
   const orgSchema = getOrganizationSchema();
   assert(orgSchema["@type"] === "Organization", "Organization schema type valid");
-  assert(orgSchema.founders.length === 2, "Organization schema reflects founder parity (Sai Rio & Edison)");
+  assert(orgSchema.founders.length === 2, "Organization schema reflects founder parity (Sai Vinoth & Edison)");
+  assert(orgSchema.founders[0].jobTitle.includes("Full Stack Developer"), "Sai Vinoth is Full Stack Developer and AI/ML Engineer");
+  assert(orgSchema.founders[1].jobTitle.includes("Front End Developer"), "Edison is Front End Developer");
   assert(orgSchema.url === "https://aevionstudio.in", "Organization schema points to production domain");
   assert(orgSchema.contactPoint !== undefined, "Organization schema provides verified contact point");
 

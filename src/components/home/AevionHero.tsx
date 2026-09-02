@@ -276,7 +276,7 @@ export default function AevionHero() {
             <p className="hero-narrative text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-2xl">
               An elite technology studio building autonomous AI systems, software products,
               high-performance web experiences, and experimental digital architectures. Founded by{" "}
-              <strong className="text-white font-semibold">Sai Rio</strong> and{" "}
+              <strong className="text-white font-semibold">Sai Vinoth</strong> and{" "}
               <strong className="text-white font-semibold">Edison</strong> — two builders executing directly
               with zero corporate nonsense.
             </p>
@@ -285,13 +285,13 @@ export default function AevionHero() {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                <span className="text-white font-semibold">Sai Rio</span>
-                <span className="text-zinc-500">/ Product • Engineering • AI • Systems • Vision</span>
+                <span className="text-white font-semibold">Sai Vinoth</span>
+                <span className="text-zinc-500">/ Full Stack Developer &amp; AI/ML Engineer</span>
               </div>
               <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
                 <span className="text-white font-semibold">Edison</span>
-                <span className="text-zinc-500">/ Development • Technology • Engineering • Building</span>
+                <span className="text-zinc-500">/ Front End Developer</span>
               </div>
             </div>
           </div>
@@ -323,7 +323,7 @@ export default function AevionHero() {
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-8 border-t border-white/10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: "FOUNDER CORE", value: "2 Equal Builders", detail: "Sai Rio & Edison" },
+            { label: "FOUNDER CORE", value: "2 Equal Builders", detail: "Sai Vinoth & Edison" },
             { label: "ENGINEERING STACK", value: "Next.js 16 • React 19", detail: "TypeScript • Three.js • GSAP" },
             { label: "COMPUTE ARCHITECTURE", value: "Edge & Serverless", detail: "Vercel Distributed Runtimes" },
             { label: "DISCIPLINE SPECTRUM", value: "AI + Systems + Motion", detail: "Production Verified" },

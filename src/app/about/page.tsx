@@ -7,12 +7,12 @@ import Link from "next/link";
 
 const FOUNDERS_INFO = [
   {
-    id: "sai-rio",
-    name: "Sai Rio",
+    id: "sai-vinoth",
+    name: "Sai Vinoth",
     role: "Co-Founder",
-    title: "Product • Engineering • AI • Systems • Vision",
-    bio: "Focusing on autonomous AI architectures, streaming LLM pipelines, next-generation frameworks, and overall product vision. Believes that modern software must feel as fluid and intelligent as thought itself.",
-    specialties: ["Autonomous Agents", "Groq / LLM Streaming", "Next.js 16 Systems", "Vector & Context RAG", "System Design"],
+    title: "Full Stack Developer & AI/ML Engineer",
+    bio: "Focusing on full-stack cloud architectures, autonomous AI systems, streaming inference pipelines, and scalable platforms. Dedicated to building software with mathematical precision and zero friction.",
+    specialties: ["Full-Stack Engineering", "AI/ML Systems", "Autonomous Agents", "Next.js Systems", "Vector RAG"],
     github: "https://github.com/SaiVinoth17",
     accent: "#34d399",
   },
@@ -20,9 +20,9 @@ const FOUNDERS_INFO = [
     id: "edison",
     name: "Edison",
     role: "Co-Founder",
-    title: "Development • Technology • Engineering • Building",
-    bio: "Focusing on core software engineering, distributed systems, WebGL rendering, and zero-compromise building. Dedicated to squeezing maximum performance out of every compute cycle and byte.",
-    specialties: ["Core Software Engineering", "120 FPS WebGL Shaders", "High-Concurrency State", "Edge Infrastructure", "Full-Stack Systems"],
+    title: "Front End Developer",
+    bio: "Focusing on high-performance front-end engineering, interactive 3D WebGL graphics, custom shaders, and butter-smooth client interactions. Dedicated to squeezing maximum performance out of every render frame.",
+    specialties: ["Front End Development", "Three.js & WebGL", "UI/UX Engineering", "Kinetic Motion & GSAP", "React 19"],
     github: "https://github.com/edisonedi84431-art",
     accent: "#38bdf8",
   },
@@ -36,7 +36,7 @@ const ERAS = [
     org: "Aevion Studio Core",
     focus: "Autonomous AI & High-Throughput Web Systems",
     summary:
-      "Sai Rio and Edison united to create Aevion Studio, bridging strict full-stack engineering and fluid creative motion. Architecting high-throughput Groq LLM pipelines, serverless Next.js 16 platforms, and custom SaaS products.",
+      "Sai Vinoth and Edison united to create Aevion Studio, bridging strict full-stack engineering and fluid creative motion. Architecting high-throughput Groq LLM pipelines, serverless Next.js 16 platforms, and custom SaaS products.",
     stack: ["Next.js 16", "React 19", "Groq Llama", "TypeScript", "Three.js", "GSAP"],
     icon: Cpu,
     color: "#34d399",
@@ -82,7 +82,7 @@ const PRINCIPLES = [
   },
   {
     title: "Two Builders. One Vision.",
-    body: "Direct craftsmanship by Sai Rio and Edison. No account managers, no layers, no diluted execution.",
+    body: "Direct craftsmanship by Sai Vinoth and Edison. No account managers, no layers, no diluted execution.",
   },
 ];
 

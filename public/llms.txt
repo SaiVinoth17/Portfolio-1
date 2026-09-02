@@ -3,7 +3,7 @@
 
 # Aevion Studio — Elite Technology & AI Systems Studio
 
-> Aevion Studio is an independent technology studio founded by Sai Rio and Edison. We engineer autonomous AI systems, resilient software architectures, high-performance web experiences, and experimental digital products for visionary teams worldwide.
+> Aevion Studio is an independent technology studio founded by Sai Vinoth (Full Stack Developer & AI/ML Engineer) and Edison (Front End Developer). We engineer autonomous AI systems, resilient software architectures, high-performance web experiences, and experimental digital products for visionary teams worldwide.
 > "Two builders. One vision. Technology without limits."
 
 ## Entity Information
@@ -59,6 +59,6 @@
 - Aevion Studio OS: Developer-focused internal operating system and workflow engine.
 
 ## Founders & Leadership
-- Sai Rio — Co-Founder: Product, Engineering, AI, Systems, Vision (GitHub: https://github.com/SaiVinoth17)
-- Edison — Co-Founder: Development, Technology, Engineering, Building (GitHub: https://github.com/edisonedi84431-art)
+- Sai Vinoth — Co-Founder: Full Stack Developer & AI/ML Engineer (GitHub: https://github.com/SaiVinoth17)
+- Edison — Co-Founder: Front End Developer (GitHub: https://github.com/edisonedi84431-art)
 - Studio GitHub: https://github.com/aevionstudio

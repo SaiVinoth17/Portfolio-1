@@ -49,7 +49,7 @@ export function constructMetadata({
     description,
     keywords: mergedKeywords,
     authors: [
-      { name: "Sai Rio", url: "https://github.com/SaiVinoth17" },
+      { name: "Sai Vinoth", url: "https://github.com/SaiVinoth17" },
       { name: "Edison", url: "https://github.com/edisonedi84431-art" },
       { name: "Aevion Studio", url: PRODUCTION_DOMAIN },
     ],

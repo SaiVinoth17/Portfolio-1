@@ -25,21 +25,21 @@ interface FounderData {
 
 const FOUNDERS: FounderData[] = [
   {
-    id: "sai-rio",
-    name: "SAI RIO",
+    id: "sai-vinoth",
+    name: "SAI VINOTH",
     role: "FOUNDER",
-    title: "Product • Engineering • AI • Systems • Vision",
-    tagline: "Architecting autonomous intelligence and high-velocity systems.",
+    title: "Full Stack Developer & AI/ML Engineer",
+    tagline: "Architecting end-to-end full stack systems and autonomous AI/ML intelligence.",
     focus: [
-      "Product Strategy",
-      "AI Systems Architecture",
-      "Next.js 16 Frameworks",
+      "Full Stack Development",
+      "AI/ML Systems Architecture",
+      "Next.js App Router Frameworks",
       "Vector & RAG Pipelines",
-      "Foundational Vision",
+      "Distributed Cloud Systems",
     ],
     philosophy:
       "Software should be an extension of human will. We eliminate unnecessary friction until only raw performance, intelligence, and clarity remain.",
-    specialties: ["Autonomous Agents", "Groq / LLM Streaming", "Distributed Architecture", "System Design"],
+    specialties: ["Full Stack Engineering", "AI/ML Pipelines", "Autonomous Agents", "System Architecture"],
     github: "https://github.com/SaiVinoth17",
     accentColor: "#34d399",
     gradient: "from-emerald-400 to-teal-500",
@@ -49,18 +49,18 @@ const FOUNDERS: FounderData[] = [
     id: "edison",
     name: "EDISON",
     role: "FOUNDER",
-    title: "Development • Technology • Engineering • Building",
-    tagline: "Engineering resilient infrastructure and high-throughput software.",
+    title: "Front End Developer",
+    tagline: "Engineering butter-smooth client interfaces, 3D WebGL graphics, and tactile interactions.",
     focus: [
-      "Core Software Development",
-      "Advanced Web Technologies",
-      "High-Throughput Engineering",
-      "Interactive Graphics",
-      "Production Building",
+      "Front End Development",
+      "Interactive 3D WebGL",
+      "Custom GLSL Shaders",
+      "Responsive UI/UX Engineering",
+      "Kinetic Motion & GSAP",
     ],
     philosophy:
       "True craftsmanship lies in the invisible layers. When every byte is optimized and every transition is calculated, software becomes unforgettable.",
-    specialties: ["Full-Stack Engineering", "WebGL Shaders", "High-Concurrency State", "Edge Optimization"],
+    specialties: ["Front End Development", "Three.js & Shaders", "Fluid Interaction", "High-FPS Graphics"],
     github: "https://github.com/edisonedi84431-art",
     accentColor: "#22d3ee",
     gradient: "from-cyan-400 to-blue-500",
@@ -330,7 +330,7 @@ export default function FoundersSection() {
               UNIFIED STUDIO MANIFESTO
             </div>
             <div className="text-lg sm:text-xl font-bold text-white">
-              Every project is personally architected and engineered by Sai Rio and Edison.
+              Every project is personally architected and engineered by Sai Vinoth and Edison.
             </div>
             <div className="text-xs text-zinc-400 font-mono">
               Zero outsourced middlemen. Zero generic templates. Direct builder-to-builder collaboration.

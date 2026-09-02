@@ -120,10 +120,8 @@ export default function Footer() {
                 <Cpu size={12} /> Co-Founders Matrix
               </div>
               <p className="text-xs text-zinc-300 leading-relaxed">
-                Founded by <strong className="text-white font-semibold">Sai Rio</strong> (Product •
-                Engineering • AI • Systems • Vision) and{" "}
-                <strong className="text-white font-semibold">Edison</strong> (Development • Technology
-                • Engineering • Building).
+                Founded by <strong className="text-white font-semibold">Sai Vinoth</strong> (Full Stack Developer &amp; AI/ML Engineer) and{" "}
+                <strong className="text-white font-semibold">Edison</strong> (Front End Developer).
               </p>
               <div className="text-[11px] font-mono text-zinc-400 italic pt-1">
                 &ldquo;Two builders. One vision. Technology without limits.&rdquo;
@@ -137,9 +135,9 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white rounded-xl text-xs font-mono transition-colors"
-                title="Sai Rio GitHub Profile"
+                title="Sai Vinoth GitHub Profile"
               >
-                <Github size={13} /> Sai Rio GitHub
+                <Github size={13} /> Sai Vinoth GitHub
               </a>
               <a
                 href="https://github.com/edisonedi84431-art"
@@ -274,7 +272,7 @@ export default function Footer() {
         {/* Bottom Metadata Bar */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
           <div>
-            © 2026 AEVION STUDIO — SAI RIO &amp; EDISON. ALL RIGHTS RESERVED.
+            © 2026 AEVION STUDIO — SAI VINOTH &amp; EDISON. ALL RIGHTS RESERVED.
           </div>
           <div className="flex items-center gap-4">
             <span>MUTUAL NDA READY</span>
