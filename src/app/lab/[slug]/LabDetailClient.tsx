@@ -35,6 +35,10 @@ const RippleDistortion = dynamic(
   () => import("@/components/ui/RippleDistortion"),
   { ssr: false, loading: () => <CanvasLoader /> }
 );
+const ClickSparkLab = dynamic(
+  () => import("@/components/ui/ClickSparkLab"),
+  { ssr: false, loading: () => <CanvasLoader /> }
+);
 
 function CanvasLoader() {
   return (
@@ -78,6 +82,8 @@ export default function LabDetailClient({ experiment }: { experiment: LabExperim
             <RippleDistortion />
           </div>
         );
+      case "click-spark":
+        return <ClickSparkLab />;
       default:
         return <CanvasLoader />;
     }

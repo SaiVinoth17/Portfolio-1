@@ -153,4 +153,26 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     ],
     controls: ["Move cursor over canvas to propagate water ripples", "Click to drop large droplet"],
   },
+  {
+    slug: "click-spark",
+    title: "Click Spark Particle Engine",
+    subtitle: "High-performance procedural radial spark emitter",
+    category: "Physics & Dynamics",
+    renderer: "Canvas 2D GPU",
+    status: "PUBLISHED",
+    performanceProfile: "Microsecond timestamp interpolation, vector pooling, 60fps",
+    mobileSupport: "Fully Responsive",
+    description:
+      "A radial kinetic particle emitter that computes multi-vector spark trajectories using customizable easing curves, scalable velocity multipliers, and hardware-accelerated canvas 2D rendering.",
+    technicalDetails: [
+      "Procedural radial velocity vectors computed via trigonometry Math.cos/sin distribution",
+      "Dynamic easing curves (linear, ease-in, ease-in-out, ease-out) for realistic deceleration",
+      "Decoupled ResizeObserver loop with debounce protection for zero layout thrashing",
+      "Pointer-events transparent overlay for seamless UX wrapping over any interactive DOM elements",
+    ],
+    controls: [
+      "Click or tap anywhere on the canvas or interactive target to ignite radial sparks",
+      "Configure spark color, size, radius, count, and duration in real time",
+    ],
+  },
 ];
