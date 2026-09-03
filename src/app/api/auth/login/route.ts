@@ -1,10 +1,8 @@
 import { NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { verifyPassword } from "@/lib/auth/crypto";
-import { createSession, getClientIp } from "@/lib/auth/session";
+import crypto from "crypto";
+import { createAdminSession, getClientIp, AEVION_ADMIN_USER } from "@/lib/auth/session";
 import { checkRateLimit, recordFailedAttempt, resetRateLimit } from "@/lib/auth/rateLimit";
 import { logAuditEvent } from "@/lib/auth/audit";
-import { normalizeEmail, isAuthorizedOwner } from "@/lib/auth/constants";
 
 export async function POST(req: Request) {
   try {
@@ -15,139 +13,100 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid JSON payload." }, { status: 400 });
     }
 
-    const { email, password } = body;
+    const { code } = body || {};
 
-    if (!email || typeof email !== "string" || !password || typeof password !== "string") {
+    if (!code || typeof code !== "string") {
       return NextResponse.json(
-        { error: "Email and password are required." },
+        { error: "Secret authorization code is required." },
         { status: 400 }
       );
     }
 
-    const normalizedEmail = normalizeEmail(email);
     const ip = getClientIp(req) || "unknown_ip";
-    const rateLimitKey = `login:${ip}:${normalizedEmail}`;
+    const rateLimitKey = `login:secret_code:${ip}`;
 
-    // 1. Check Rate Limiting
+    // 1. Check Rate Limiting to prevent brute-force attacks
     const rateCheck = await checkRateLimit(rateLimitKey);
     if (!rateCheck.allowed) {
       await logAuditEvent({
         action: "LOGIN_FAILURE",
-        resource: normalizedEmail,
+        resource: "RESTRICTED_CODE_ACCESS",
         req,
         metadata: { reason: "RATE_LIMITED", ip },
       });
       return NextResponse.json(
         {
-          error: `Too many sign-in attempts. Access is locked for ${rateCheck.retryAfterSeconds} seconds.`,
+          error: `Too many authorization attempts. Access is locked for ${rateCheck.retryAfterSeconds} seconds.`,
           retryAfterSeconds: rateCheck.retryAfterSeconds,
         },
         { status: 429 }
       );
     }
 
-    // 2. Single Admin Policy Verification:
-    // Only saivinothdeveloper@gmail.com is authorized to authenticate as OWNER.
-    // If unauthorized, return the identical generic error to prevent account enumeration.
-    if (!isAuthorizedOwner(normalizedEmail)) {
+    // 2. Server-side validation against environment variable
+    const configuredCode = (process.env.AEVION_ADMIN_CODE || "Code Red").trim();
+    const providedCode = code.trim();
+
+    const bufProvided = Buffer.from(providedCode);
+    const bufConfigured = Buffer.from(configuredCode);
+
+    const isMatch =
+      bufProvided.length === bufConfigured.length &&
+      crypto.timingSafeEqual(bufProvided, bufConfigured);
+
+    if (!isMatch) {
       const updatedRate = await recordFailedAttempt(rateLimitKey);
       await logAuditEvent({
         action: "LOGIN_FAILURE",
-        resource: normalizedEmail,
+        resource: "RESTRICTED_CODE_ACCESS",
         req,
-        metadata: { reason: "UNAUTHORIZED_EMAIL", remainingAttempts: updatedRate.remainingAttempts },
+        metadata: {
+          reason: "INVALID_SECRET_CODE",
+          remainingAttempts: updatedRate.remainingAttempts,
+          ip,
+        },
       });
+
       return NextResponse.json(
-        { error: "Invalid email or password." },
+        {
+          error: "Invalid authorization code. Access denied.",
+          remainingAttempts: updatedRate.remainingAttempts,
+        },
         { status: 401 }
       );
     }
 
-    // 3. Lookup authorized user in database
-    const user = await db.users.findByEmail(normalizedEmail);
-
-    if (!user) {
-      const updatedRate = await recordFailedAttempt(rateLimitKey);
-      await logAuditEvent({
-        action: "LOGIN_FAILURE",
-        resource: normalizedEmail,
-        req,
-        metadata: { reason: "USER_NOT_FOUND", attempts: updatedRate.remainingAttempts },
-      });
-      return NextResponse.json(
-        { error: "Invalid email or password." },
-        { status: 401 }
-      );
-    }
-
-    // 4. Check if account is active
-    if (!user.is_active) {
-      await logAuditEvent({
-        userId: user.id,
-        action: "LOGIN_FAILURE",
-        resource: normalizedEmail,
-        req,
-        metadata: { reason: "ACCOUNT_DEACTIVATED" },
-      });
-      return NextResponse.json(
-        { error: "This administrator account has been disabled. Contact system administrator." },
-        { status: 403 }
-      );
-    }
-
-    // 5. Verify password in constant time using scrypt
-    const passwordMatch = await verifyPassword(password, user.password_hash);
-    if (!passwordMatch) {
-      const updatedRate = await recordFailedAttempt(rateLimitKey);
-      await logAuditEvent({
-        userId: user.id,
-        action: "LOGIN_FAILURE",
-        resource: normalizedEmail,
-        req,
-        metadata: { reason: "PASSWORD_MISMATCH", remainingAttempts: updatedRate.remainingAttempts },
-      });
-      return NextResponse.json(
-        { error: "Invalid email or password." },
-        { status: 401 }
-      );
-    }
-
-    // 6. Successful authentication: Reset rate limits
+    // 3. Successful authentication: Reset rate limits
     await resetRateLimit(rateLimitKey);
 
-    // 7. Update user's last login timestamp
-    await db.users.update(user.id, {
-      last_login_at: new Date().toISOString(),
-    });
+    // 4. Create server-side session and set secure HttpOnly cookie
+    await createAdminSession(req);
 
-    // 8. Create server-side session and set secure HttpOnly cookie
-    await createSession(user.id, req);
-
-    // 9. Record audit log
+    // 5. Record audit log
     await logAuditEvent({
-      userId: user.id,
+      userId: AEVION_ADMIN_USER.id,
       action: "LOGIN_SUCCESS",
       resource: "/admin/dashboard",
       req,
-      metadata: { role: user.role, email: user.email },
+      metadata: { method: "SECRET_CODE_AUTH", role: AEVION_ADMIN_USER.role },
     });
 
     return NextResponse.json(
       {
         status: "success",
+        message: "Clearance confirmed. Access granted.",
         user: {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          role: user.role,
+          id: AEVION_ADMIN_USER.id,
+          name: AEVION_ADMIN_USER.name,
+          role: AEVION_ADMIN_USER.role,
         },
       },
       { status: 200 }
     );
   } catch (err: any) {
-    console.error("[Login API Error]:", err);
+    console.error("[Secret Code Login API Error]:", err);
     return NextResponse.json(
-      { error: "Authentication system encountered an error." },
+      { error: "Authentication system encountered an internal error." },
       { status: 500 }
     );
   }

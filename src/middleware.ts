@@ -9,16 +9,21 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const sessionCookie = request.cookies.get("aevion_session");
-  const isAuthPage =
-    pathname === "/admin/login" ||
-    pathname === "/admin/forgot-password" ||
-    pathname === "/admin/reset-password";
+  // Redirect legacy password recovery endpoints directly to login
+  if (pathname === "/admin/forgot-password" || pathname === "/admin/reset-password") {
+    const loginUrl = new URL("/admin/login", request.url);
+    return NextResponse.redirect(loginUrl);
+  }
 
-  // 1. If trying to access protected admin pages without a session cookie -> redirect to login
+  const sessionCookie = request.cookies.get("aevion_session");
+  const isAuthPage = pathname === "/admin/login";
+
+  // 1. If trying to access protected admin pages without a session cookie -> redirect to restricted login
   if (!sessionCookie && !isAuthPage) {
     const loginUrl = new URL("/admin/login", request.url);
-    loginUrl.searchParams.set("redirect", pathname);
+    if (pathname !== "/admin") {
+      loginUrl.searchParams.set("redirect", pathname);
+    }
     const res = NextResponse.redirect(loginUrl);
     res.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
     return res;
@@ -26,6 +31,14 @@ export function middleware(request: NextRequest) {
 
   // 2. If already logged in and visiting login page -> redirect to dashboard
   if (sessionCookie && isAuthPage) {
+    const dashboardUrl = new URL("/admin/dashboard", request.url);
+    const res = NextResponse.redirect(dashboardUrl);
+    res.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+    return res;
+  }
+
+  // 3. If accessing /admin directly while authenticated -> redirect to dashboard
+  if (sessionCookie && pathname === "/admin") {
     const dashboardUrl = new URL("/admin/dashboard", request.url);
     const res = NextResponse.redirect(dashboardUrl);
     res.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");

@@ -2,6 +2,7 @@ export interface LabExperiment {
   slug: string;
   title: string;
   subtitle: string;
+  image: string;
   category: "GLSL Shader" | "3D Hardware" | "Physics & Dynamics" | "Kinetic Typography" | "Fluid Simulation";
   renderer: "Three.js (WebGL)" | "Custom GLSL Fragment" | "Canvas 2D GPU";
   status: "PUBLISHED" | "DRAFT";
@@ -17,6 +18,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "threejs-master",
     title: "Three.js Master · Complete 588 Examples & 3D Suite",
     subtitle: "Official Three.js Master build featuring all 588 examples, 3D Editor, API Documentation, and Keyframe Metropolis",
+    image: "/images/lab/threejs-master.jpg",
     category: "3D Hardware",
     renderer: "Three.js (WebGL)",
     status: "PUBLISHED",
@@ -43,6 +45,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "macbook-neo",
     title: "MacBook Neo 3D",
     subtitle: "Hardware-accelerated photorealistic device model",
+    image: "/images/lab/macbook-neo.jpg",
     category: "3D Hardware",
     renderer: "Three.js (WebGL)",
     status: "PUBLISHED",
@@ -62,6 +65,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "molten-metal",
     title: "Molten Metal Shader",
     subtitle: "Real-time liquid chrome surface deformation",
+    image: "/images/lab/molten-metal.jpg",
     category: "GLSL Shader",
     renderer: "Custom GLSL Fragment",
     status: "PUBLISHED",
@@ -81,6 +85,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "scroll-morph",
     title: "Scroll Morph Kinetic Engine",
     subtitle: "Inertial scroll-driven geometric topology deformation",
+    image: "/images/lab/scroll-morph.jpg",
     category: "Kinetic Typography",
     renderer: "Three.js (WebGL)",
     status: "PUBLISHED",
@@ -100,6 +105,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "ballpit",
     title: "Ballpit Matter Simulation",
     subtitle: "Interactive 2D/3D rigid body collision matrix",
+    image: "/images/lab/ballpit.jpg",
     category: "Physics & Dynamics",
     renderer: "Canvas 2D GPU",
     status: "PUBLISHED",
@@ -119,6 +125,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "drift-wall",
     title: "Drift Wall Typography",
     subtitle: "Perspective camera parallax typography wall",
+    image: "/images/lab/drift-wall.jpg",
     category: "Kinetic Typography",
     renderer: "Three.js (WebGL)",
     status: "PUBLISHED",
@@ -138,6 +145,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "ripple-distortion",
     title: "Ripple Distortion Refraction",
     subtitle: "Interactive water droplet refraction shader",
+    image: "/images/lab/ripple-distortion.jpg",
     category: "Fluid Simulation",
     renderer: "Custom GLSL Fragment",
     status: "PUBLISHED",
@@ -157,6 +165,7 @@ export const LAB_EXPERIMENTS: LabExperiment[] = [
     slug: "click-spark",
     title: "Click Spark Particle Engine",
     subtitle: "High-performance procedural radial spark emitter",
+    image: "/images/lab/click-spark.jpg",
     category: "Physics & Dynamics",
     renderer: "Canvas 2D GPU",
     status: "PUBLISHED",

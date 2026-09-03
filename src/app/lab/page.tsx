@@ -4,7 +4,8 @@ import { Metadata } from "next";
 import { constructMetadata } from "@/lib/seo/metadata";
 import { getBreadcrumbSchema, getFAQSchema } from "@/lib/seo/schema";
 import { LAB_EXPERIMENTS } from "@/lib/data/labExperiments";
-import { FlaskConical, Sparkles, ArrowRight, Cpu, Activity } from "lucide-react";
+import { FlaskConical, Sparkles, ArrowRight, Cpu, Activity, LayoutGrid } from "lucide-react";
+import LabDepthShowcase from "@/components/lab/LabDepthShowcase";
 
 export const metadata: Metadata = constructMetadata({
   title: "Aevion Lab · Interactive WebGL & Computational R&D",
@@ -74,38 +75,61 @@ export default function LabIndexPage() {
         </p>
       </header>
 
+      {/* 3D Depth Carousel Showcase */}
+      <div className="pt-12 pb-6">
+        <LabDepthShowcase experiments={LAB_EXPERIMENTS} />
+      </div>
+
       {/* Experiments Grid */}
       <section className="py-16 space-y-8">
+        <div className="flex items-center justify-between border-b border-white/10 pb-4">
+          <div className="flex items-center gap-2 font-mono text-xs text-zinc-400 uppercase tracking-widest">
+            <LayoutGrid size={14} className="text-purple-400" />
+            <span>Complete Experimental Index ({LAB_EXPERIMENTS.length})</span>
+          </div>
+          <span className="text-[11px] font-mono text-zinc-500">SORTED BY ARCHITECTURE</span>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {LAB_EXPERIMENTS.map((exp) => (
             <Link
               key={exp.slug}
               href={`/lab/${exp.slug}`}
-              className="group p-6 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-purple-500/40 transition-all flex flex-col justify-between space-y-6 shadow-xl hover:-translate-y-1 duration-200"
+              className="group p-5 rounded-2xl bg-zinc-950/80 border border-white/10 hover:border-purple-500/40 transition-all flex flex-col justify-between space-y-5 shadow-xl hover:-translate-y-1 duration-200"
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-zinc-300">
+                {/* 4:5 Cinematic Visual Banner */}
+                <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden border border-white/10 group-hover:border-purple-500/30 transition-colors bg-zinc-900">
+                  <img
+                    src={exp.image}
+                    alt={exp.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <div className="absolute bottom-2.5 left-2.5 right-2.5 flex items-center justify-between text-[10px] font-mono">
+                    <span className="px-2 py-0.5 rounded bg-black/70 backdrop-blur border border-white/10 text-white font-bold">
                       {exp.category}
                     </span>
+                    <span className="px-2 py-0.5 rounded bg-black/70 backdrop-blur border border-emerald-500/30 text-emerald-400 font-bold flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      {exp.status}
+                    </span>
+                  </div>
+                </div>
+
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
                     {exp.slug === "threejs-master" && (
                       <span className="px-2 py-0.5 rounded text-[9px] font-mono font-extrabold bg-purple-500/20 text-purple-300 border border-purple-500/40">
                         OFFICIAL MASTER
                       </span>
                     )}
                   </div>
-                  <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    {exp.status}
-                  </span>
-                </div>
-
-                <div>
-                  <h2 className="text-xl font-bold font-mono text-white group-hover:text-purple-300 transition-colors">
+                  <h2 className="text-lg font-bold font-mono text-white group-hover:text-purple-300 transition-colors">
                     {exp.title}
                   </h2>
-                  <p className="text-xs text-zinc-400 font-sans mt-1.5 leading-relaxed">
+                  <p className="text-xs text-zinc-400 font-sans mt-1.5 leading-relaxed line-clamp-2">
                     {exp.description}
                   </p>
                 </div>
