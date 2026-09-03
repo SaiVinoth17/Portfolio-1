@@ -106,5 +106,13 @@ export function constructMetadata({
       images: [image.startsWith("http") ? image : `${PRODUCTION_DOMAIN}${image}`],
       creator: "@aevionstudio",
     },
+    icons: {
+      icon: [
+        { url: "/favicon.png", type: "image/png" },
+        { url: "/favicon.ico", sizes: "any" },
+      ],
+      apple: [{ url: "/favicon.png", type: "image/png" }],
+      shortcut: "/favicon.png",
+    },
   };
 }

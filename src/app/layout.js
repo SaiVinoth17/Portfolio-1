@@ -49,11 +49,30 @@ export const metadata = {
     siteName: "Aevion Studio",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Aevion Studio",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
     description: "Two builders. One vision. Technology without limits. Engineering autonomous AI, high-throughput systems, and next-generation software.",
+    images: ["/og-image.jpg"],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/favicon.png", type: "image/png" },
+    ],
+    shortcut: "/favicon.png",
   },
 };
 
@@ -66,6 +85,7 @@ export default function RootLayout({ children }) {
         "@id": "https://aevionstudio.in/#organization",
         "name": "Aevion Studio",
         "url": "https://aevionstudio.in",
+        "logo": "https://aevionstudio.in/images/aevion-logo.png",
         "email": "hello@aevionstudio.in",
         "founders": [
           {

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Search, Menu, X, ArrowUpRight, Sparkles } from "lucide-react";
+import AevionLogo from "./AevionLogo";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -31,13 +32,22 @@ export default function GlobalNavbar() {
         <Link
           href="/"
           className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl hover:bg-zinc-900 transition-colors group"
+          aria-label="Aevion Studio Home"
         >
-          <div className="w-8 h-8 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold font-mono text-sm group-hover:scale-105 transition-transform">
-            ▲
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold text-white tracking-wider font-sans leading-tight">AEVION</span>
-            <span className="text-[9px] font-mono text-emerald-400 tracking-widest leading-none">STUDIO</span>
+          <AevionLogo
+            variant="full"
+            className="h-9 w-auto object-contain hidden sm:block"
+            priority
+          />
+          <div className="flex items-center gap-2 sm:hidden">
+            <AevionLogo
+              variant="mark"
+              className="h-7 w-auto object-contain"
+              priority
+            />
+            <span className="text-xs font-mono uppercase tracking-[0.14em] font-bold text-white">
+              AEVION
+            </span>
           </div>
         </Link>
 

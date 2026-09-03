@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { Github, Linkedin, Mail, ArrowUpRight, Activity } from "lucide-react";
+import AevionLogo from "./AevionLogo";
 
 export default function GlobalFooter() {
   return (
@@ -12,9 +13,14 @@ export default function GlobalFooter() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Col */}
           <div className="space-y-3 md:col-span-2">
-            <div className="flex items-center gap-2">
-              <span className="text-emerald-400 font-bold text-base">▲ AEVION STUDIO</span>
-              <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1">
+            <div className="flex items-center gap-3">
+              <Link href="/" aria-label="Aevion Studio Home">
+                <AevionLogo
+                  variant="full"
+                  className="h-9 w-auto object-contain"
+                />
+              </Link>
+              <span className="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full flex items-center gap-1 self-center">
                 <Activity size={10} className="animate-pulse" /> PRODUCTION READY
               </span>
             </div>

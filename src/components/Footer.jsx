@@ -8,6 +8,7 @@ import { ArrowUpRight, Github, Activity, Sparkles, Cpu } from "lucide-react";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
 import { getWhatsAppUrl } from "@/lib/config/studio";
+import AevionLogo from "@/components/ui/AevionLogo";
 
 export default function Footer() {
   const footerRef = useRef(null);
@@ -103,14 +104,18 @@ export default function Footer() {
         <div className="footer-grid grid grid-cols-1 md:grid-cols-5 gap-10">
           {/* Brand Info & Founders */}
           <div className="footer-col space-y-5 md:col-span-2">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold font-mono text-sm shadow-[0_0_15px_rgba(16,185,129,0.2)]">
-                ▲
-              </div>
-              <span className="font-extrabold text-base font-mono tracking-tight text-white">
-                AEVION STUDIO
-              </span>
-              <span className="text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+            <div className="flex items-center gap-3">
+              <Link
+                href="/"
+                aria-label="Aevion Studio Home"
+                className="inline-block hover:opacity-90 transition-opacity"
+              >
+                <AevionLogo
+                  variant="full"
+                  className="h-10 sm:h-11 w-auto object-contain"
+                />
+              </Link>
+              <span className="text-[10px] font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5 self-center">
                 <Activity size={10} className="animate-pulse" /> OPERATIONAL
               </span>
             </div>

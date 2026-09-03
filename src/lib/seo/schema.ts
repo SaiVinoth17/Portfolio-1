@@ -11,7 +11,7 @@ export function getOrganizationSchema() {
     name: "Aevion Studio",
     legalName: "Aevion Studio",
     url: PRODUCTION_DOMAIN,
-    logo: `${PRODUCTION_DOMAIN}/favicon.svg`,
+    logo: `${PRODUCTION_DOMAIN}/images/aevion-logo.png`,
     email: "hello@aevionstudio.in",
     description:
       "Aevion Studio is an elite technology studio founded by Sai Vinoth (Full Stack Developer & AI/ML Engineer) and Edison (Front End Developer).",

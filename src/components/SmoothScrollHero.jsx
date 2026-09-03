@@ -13,7 +13,6 @@ import shadowImage from "@/assets/images/shadowImage.webp";
 import skyImage from "@/assets/images/skyImage.webp";
 import cloudsImage from "@/assets/images/cloudsImage.webp";
 import aboveImage from "@/assets/images/aboveImage.webp";
-import aevionLogo from "@/assets/images/logo.svg";
 import About from './About';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -113,9 +112,11 @@ const SmoothScrollHero = () => {
                 <div className="w-[180px] sm:w-[220px] lg:w-[250px]">
                     <Image
                         ref={logoRef}
-                        src={aevionLogo}
+                        src="/images/aevion-logo.png"
                         alt="Aevion Studio Logo"
-                        className="w-full h-auto object-contain brightness-0 invert"
+                        width={1024}
+                        height={682}
+                        className="w-full h-auto object-contain"
                         priority
                     />
                 </div>

@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
-import aevionLogo from "@/assets/images/logo.svg";
+import AevionLogo from "@/components/ui/AevionLogo";
 
 /*
   iOS 26 Liquid Glass — authentic recipe
@@ -153,7 +152,26 @@ export default function Navbar() {
         aria-label="Main navigation"
         className="fixed top-0 left-0 w-full z-40 pointer-events-none flex justify-center pt-4 px-4"
       >
-        <GlassPill className="hidden lg:flex pointer-events-auto gap-1 px-2 py-1.5">
+        <GlassPill className="hidden lg:flex pointer-events-auto items-center gap-2 px-3 py-1.5">
+          {/* Brand Logo */}
+          <Link
+            href="/"
+            aria-label="Aevion Studio Home"
+            className="flex items-center pl-1 pr-1.5 hover:opacity-90 transition-opacity select-none"
+          >
+            <AevionLogo
+              variant="full"
+              className="h-11 w-auto object-contain"
+              priority
+            />
+          </Link>
+
+          {/* Separator */}
+          <div
+            className="h-4 w-px mx-0.5 shrink-0"
+            style={{ background: "rgba(255,255,255,0.18)" }}
+          />
+
           {/* Nav links */}
           <div className="flex items-center gap-0.5">
             {navLinks.map((l) => (
@@ -190,12 +208,20 @@ export default function Navbar() {
         </GlassPill>
 
         {/* ── Mobile pill ──────────────────────────────────────── */}
-        <GlassPill className="lg:hidden w-full pointer-events-auto px-4 py-2.5 justify-between">
+        <GlassPill className="lg:hidden w-full pointer-events-auto px-3.5 py-2 justify-between items-center">
           <Link
             href="/"
-            className="text-[11px] font-mono uppercase tracking-[0.12em] font-bold text-white/90"
+            aria-label="Aevion Studio Home"
+            className="flex items-center gap-2 select-none"
           >
-            AEVION STUDIO
+            <AevionLogo
+              variant="mark"
+              className="h-7 w-auto object-contain"
+              priority
+            />
+            <span className="text-[12px] font-mono uppercase tracking-[0.14em] font-bold text-white/90">
+              AEVION
+            </span>
           </Link>
           <button
             onClick={() => setIsOpen(true)}
@@ -241,12 +267,18 @@ export default function Navbar() {
           onClick={(e) => e.stopPropagation()}
         >
           <div className="flex items-center justify-between mb-10">
-            <Image
-              src={aevionLogo}
-              alt="Aevion Studio"
-              width={110}
-              className="brightness-0 invert"
-            />
+            <Link
+              href="/"
+              onClick={() => setIsOpen(false)}
+              aria-label="Aevion Studio Home"
+              className="flex items-center"
+            >
+              <AevionLogo
+                variant="full"
+                className="h-12 w-auto object-contain"
+                priority
+              />
+            </Link>
             <button
               onClick={() => setIsOpen(false)}
               aria-label="Close menu"

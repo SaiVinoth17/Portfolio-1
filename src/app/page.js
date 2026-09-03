@@ -1,5 +1,5 @@
 import React from "react";
-import AevionHero from "@/components/home/AevionHero";
+import AirlockHero from "@/components/ui/airlock-spaceship-hero";
 import ManifestoSection from "@/components/home/ManifestoSection";
 import FoundersSection from "@/components/home/FoundersSection";
 import RippleDistortionSection from "@/components/home/RippleDistortionSection";
@@ -16,8 +16,14 @@ export const metadata = {
 export default function Page() {
   return (
     <main className="w-full bg-[#030306] text-white selection:bg-emerald-500 selection:text-black">
-      {/* Flagship Interactive Futuristic Hero */}
-      <AevionHero />
+      {/* Scroll-locked scrub-driven video hero */}
+      <AirlockHero
+        title="WE BUILD SYSTEMS THAT FEEL IMPOSSIBLE."
+        tagline="An elite technology studio building autonomous AI systems and high-performance web experiences."
+        theme="vacuum"
+        scrubDistance={3200}
+        holdDistance={1100}
+      />
 
       {/* Interactive WebGL Ripple Distortion Shader Laboratory */}
       <RippleDistortionSection />

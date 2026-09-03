@@ -11,9 +11,14 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#0a0a0a",
     icons: [
       {
-        src: "/favicon.svg",
-        sizes: "any",
-        type: "image/svg+xml",
+        src: "/favicon.png",
+        sizes: "512x512",
+        type: "image/png",
+      },
+      {
+        src: "/images/aevion-mark.png",
+        sizes: "470x365",
+        type: "image/png",
       },
     ],
   };
