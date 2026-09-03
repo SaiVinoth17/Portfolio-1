@@ -7,6 +7,10 @@ import { ArrowLeft, Cpu, Activity, Sparkles, Layers, Sliders } from "lucide-reac
 import { LabExperiment } from "@/lib/data/labExperiments";
 
 // Dynamic imports with ssr: false to guarantee clean client-side WebGL hydration
+const ThreeMasterShowcase = dynamic(
+  () => import("@/components/ui/ThreeMasterShowcase"),
+  { ssr: false, loading: () => <CanvasLoader /> }
+);
 const MacBookNeoDemo = dynamic(
   () => import("@/components/ui/mac-book-neo-hero-demo"),
   { ssr: false, loading: () => <CanvasLoader /> }
@@ -44,6 +48,8 @@ function CanvasLoader() {
 export default function LabDetailClient({ experiment }: { experiment: LabExperiment }) {
   const renderInteractiveCanvas = () => {
     switch (experiment.slug) {
+      case "threejs-master":
+        return <ThreeMasterShowcase />;
       case "macbook-neo":
         return <MacBookNeoDemo />;
       case "molten-metal":

@@ -44,3 +44,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# three.js master repo
+/three.js-master/
+/three.js-master-temp/
+*.zip

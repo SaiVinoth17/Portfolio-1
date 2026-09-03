@@ -14,6 +14,32 @@ export interface LabExperiment {
 
 export const LAB_EXPERIMENTS: LabExperiment[] = [
   {
+    slug: "threejs-master",
+    title: "Three.js Master · Complete 588 Examples & 3D Suite",
+    subtitle: "Official Three.js Master build featuring all 588 examples, 3D Editor, API Documentation, and Keyframe Metropolis",
+    category: "3D Hardware",
+    renderer: "Three.js (WebGL)",
+    status: "PUBLISHED",
+    performanceProfile: "All 588 examples, DRACOLoader WASM decompression, AnimationMixer, ACES Filmic tonemapping",
+    mobileSupport: "Fully Responsive",
+    description:
+      "Full integration of the Three.js master repository: searchable directory of all 588 official WebGL, WebGPU, physics, shader, and animation examples, live 3D Scene Editor, complete API documentation, and native Draco keyframe studio.",
+    technicalDetails: [
+      "Complete official catalog of 588 Three.js Master examples (WebGL, WebGPU, Postprocessing, Physics, WebXR, Games)",
+      "Live embedded Three.js 3D Scene Editor with scene graph inspection and material editors",
+      "Full searchable Three.js API Reference and interactive manual tutorials",
+      "Native WebGL Keyframe Metropolis studio with local Draco WASM decoding and AnimationMixer",
+      "Dynamic lighting presets, wireframe modes, camera presets, and real-time GPU diagnostics",
+    ],
+    controls: [
+      "Top Navigation Bar: Switch between Native Studio, All 588 Examples, 3D Editor, API Docs, and Manual",
+      "Quick Highlights Bar: Instantly launch top demos (Littlest Tokyo, Ocean Shaders, Ammo Physics Cloth, Unreal Bloom, FPS Game)",
+      "Search Bar: Filter all 588 examples by keyword, category, or module name",
+      "Left Click / Touch Drag: Orbit and interact with any live 3D scene",
+      "Lighting & Wireframe Buttons: Customize rendering modes and time-of-day illumination",
+    ],
+  },
+  {
     slug: "macbook-neo",
     title: "MacBook Neo 3D",
     subtitle: "Hardware-accelerated photorealistic device model",

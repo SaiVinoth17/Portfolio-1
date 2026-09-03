@@ -85,9 +85,16 @@ export default function LabIndexPage() {
             >
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-zinc-300">
-                    {exp.category}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded-md text-[10px] font-mono font-bold bg-white/5 border border-white/10 text-zinc-300">
+                      {exp.category}
+                    </span>
+                    {exp.slug === "threejs-master" && (
+                      <span className="px-2 py-0.5 rounded text-[9px] font-mono font-extrabold bg-purple-500/20 text-purple-300 border border-purple-500/40">
+                        OFFICIAL MASTER
+                      </span>
+                    )}
+                  </div>
                   <span className="text-[10px] font-mono text-emerald-400 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     {exp.status}
