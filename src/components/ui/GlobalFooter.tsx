@@ -54,12 +54,12 @@ export default function GlobalFooter() {
                 <Github size={12} /> GitHub
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://x.com/aevionstudio"
                 target="_blank"
                 rel="noreferrer"
                 className="hover:text-emerald-400 transition-colors flex items-center gap-1.5"
               >
-                <Linkedin size={12} /> LinkedIn
+                X / Twitter
               </a>
               <a
                 href="mailto:hello@aevionstudio.in"

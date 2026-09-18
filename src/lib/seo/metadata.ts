@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-export const PRODUCTION_DOMAIN = "https://aevionstudio.in";
+export const PRODUCTION_DOMAIN = "https://www.aevionstudio.in";
 
 interface MetadataProps {
   title: string;

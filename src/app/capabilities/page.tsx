@@ -49,7 +49,7 @@ const CAPABILITIES = [
   {
     id: "software-engineering",
     name: "Resilient Software & Cloud Architecture",
-    lead: "Edison",
+    lead: "Sai Rio",
     icon: Server,
     summary:
       "Fault-tolerant cloud backends, microservices, and distributed systems built for continuous uptime and strict deterministic execution.",
@@ -64,7 +64,7 @@ const CAPABILITIES = [
   {
     id: "immersive-web",
     name: "Immersive WebGL & Creative Engineering",
-    lead: "Edison & Sai Rio",
+    lead: "Sai Rio",
     icon: Sparkles,
     summary:
       "Award-caliber 3D web experiences, custom GLSL shaders, and hardware-accelerated interfaces that remain butter-smooth across devices.",
@@ -94,7 +94,7 @@ const CAPABILITIES = [
   {
     id: "realtime-systems",
     name: "Real-Time & Streaming Infrastructure",
-    lead: "Edison",
+    lead: "Sai Rio",
     icon: Zap,
     summary:
       "Sub-millisecond data exchange architectures powering live collaborative workspaces, telemetry monitors, and interactive interfaces.",

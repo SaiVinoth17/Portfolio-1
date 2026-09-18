@@ -2,92 +2,37 @@
 
 import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { ExternalLink, Github, ArrowUpRight, Sparkles } from "lucide-react";
+import { ExternalLink, ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { getPublishedProjects, Project } from "@/lib/data/projects";
 
-const PROJECTS = [
-  {
-    id: "nilgiris",
-    num: "001",
-    title: "Nilgiris Explorers",
-    type: "Travel & Discovery Platform",
-    year: "2024",
-    stack: ["Next.js 16", "Supabase", "Framer Motion", "MapboxGL"],
-    desc: "Immersive travel discovery platform for the Nilgiri Hills with real-time trail mapping, AI-curated itineraries, and dynamic terrain visualization.",
-    status: "SHIPPED",
-    color: "#f59e0b",
-    accent: "#fbbf24",
-    tags: ["AI", "Maps", "Discovery"],
-    link: "/projects/nilgiris-explorers",
-  },
-  {
-    id: "mistwings",
-    num: "002",
-    title: "Ooty Mistwings",
-    type: "Premium Hospitality Experience",
-    year: "2024",
-    stack: ["Next.js", "GSAP", "Three.js", "Stripe"],
-    desc: "Luxury booking experience with cinematic WebGL room previews, smooth scroll storytelling, and integrated payment flows for a Nilgiri resort.",
-    status: "SHIPPED",
-    color: "#a78bfa",
-    accent: "#c4b5fd",
-    tags: ["3D", "Booking", "Luxury"],
-    link: "/projects/ooty-mistwings",
-  },
-  {
-    id: "gaming-kingdom",
-    num: "003",
-    title: "Gaming Kingdom",
-    type: "Interactive Gaming Portal",
-    year: "2023",
-    stack: ["React", "Node.js", "Socket.io", "PostgreSQL"],
-    desc: "Real-time multiplayer gaming hub with live leaderboards, social features, and a custom game engine built on WebSockets.",
-    status: "SHIPPED",
-    color: "#34d399",
-    accent: "#6ee7b7",
-    tags: ["Real-Time", "Gaming", "Social"],
-    link: "/projects/gaming-kingdom",
-  },
-  {
-    id: "aevion-os",
-    num: "004",
-    title: "Aevion Studio OS",
-    type: "Motion Operating System",
-    year: "2024",
-    stack: ["Next.js 16", "Three.js", "GSAP", "Framer Motion"],
-    desc: "The Aevion brand experience itself — a motion-first portfolio OS with WebGL experiments, command palette, and a 941-frame scroll sequence.",
-    status: "LIVE",
-    color: "#f43f5e",
-    accent: "#fb7185",
-    tags: ["WebGL", "GSAP", "Brand"],
-    link: "/",
-  },
-];
-
-function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [hovered, setHovered] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const frameNum = String(index + 1).padStart(3, "0");
 
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 40, rotate: index % 2 === 0 ? -1 : 1 }}
       animate={inView ? { opacity: 1, y: 0, rotate: 0 } : {}}
-      transition={{ delay: index * 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: index * 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="relative group cursor-pointer"
+      className={`relative group cursor-pointer ${index === 0 ? "lg:col-span-2" : ""}`}
     >
       {/* Film negative frame */}
       <motion.div
         animate={{ scale: hovered ? 1.01 : 1, rotate: hovered ? (index % 2 === 0 ? -0.5 : 0.5) : 0 }}
         transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative rounded-3xl overflow-hidden"
+        className="relative rounded-3xl overflow-hidden flex flex-col justify-between h-full"
         style={{
           background: `linear-gradient(135deg, #18140e 0%, #0f0c08 100%)`,
           border: `1px solid ${project.color}25`,
-          boxShadow: hovered ? `0 30px 80px -20px ${project.color}30, 0 0 0 1px ${project.color}15` : "0 8px 32px rgba(0,0,0,0.5)",
+          boxShadow: hovered
+            ? `0 30px 80px -20px ${project.color}30, 0 0 0 1px ${project.color}15`
+            : "0 8px 32px rgba(0,0,0,0.5)",
         }}
       >
         {/* Film strip holes top */}
@@ -97,48 +42,55 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
           ))}
         </div>
 
-        <div className="p-8">
-          {/* Header row */}
-          <div className="flex items-start justify-between mb-6">
-            <div>
-              <div className="text-[10px] font-mono font-bold tracking-widest mb-1" style={{ color: project.color }}>
-                FRAME {project.num} · {project.year}
+        <div className="p-8 flex-1 flex flex-col justify-between">
+          <div>
+            {/* Header row */}
+            <div className="flex items-start justify-between mb-6">
+              <div>
+                <div className="text-[10px] font-mono font-bold tracking-widest mb-1" style={{ color: project.color }}>
+                  FRAME {frameNum} · {project.year}
+                </div>
+                <div
+                  className="inline-block text-[10px] font-mono px-2.5 py-0.5 rounded-full"
+                  style={{ background: `${project.color}15`, color: project.accent, border: `1px solid ${project.color}25` }}
+                >
+                  {project.status}
+                </div>
               </div>
-              <div
-                className="inline-block text-[10px] font-mono px-2.5 py-0.5 rounded-full"
-                style={{ background: `${project.color}15`, color: project.accent, border: `1px solid ${project.color}25` }}
+              <Link
+                href={`/projects/${project.slug}`}
+                aria-label={`View ${project.title} Case Study`}
+                className="p-2.5 rounded-xl transition-all hover:scale-110"
+                style={{ background: `${project.color}15`, border: `1px solid ${project.color}25` }}
               >
-                {project.status}
-              </div>
+                <ExternalLink size={16} style={{ color: project.color }} />
+              </Link>
             </div>
-            <Link
-              href={project.link}
-              className="p-2.5 rounded-xl transition-all hover:scale-110"
-              style={{ background: `${project.color}15`, border: `1px solid ${project.color}25` }}
-            >
-              <ExternalLink size={16} style={{ color: project.color }} />
-            </Link>
-          </div>
 
-          {/* Title */}
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1">{project.title}</h3>
-          <p className="text-xs font-mono mb-5" style={{ color: `${project.color}90` }}>{project.type}</p>
+            {/* Title */}
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1">
+              <Link href={`/projects/${project.slug}`} className="hover:underline">
+                {project.title}
+              </Link>
+            </h3>
+            <p className="text-xs font-mono mb-5" style={{ color: `${project.color}90` }}>{project.category}</p>
 
-          {/* Description */}
-          <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.desc}</p>
+            {/* Description */}
+            <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.description}</p>
 
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2 mb-6">
-            {project.tags.map((t) => (
-              <span key={t} className="text-[10px] font-mono px-2.5 py-1 rounded-lg" style={{ background: `${project.color}10`, color: project.accent, border: `1px solid ${project.color}20` }}>
-                {t}
-              </span>
-            ))}
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2 mb-6">
+              {project.tags.map((t) => (
+                <span key={t} className="text-[10px] font-mono px-2.5 py-1 rounded-lg" style={{ background: `${project.color}10`, color: project.accent, border: `1px solid ${project.color}20` }}>
+                  {t}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Stack */}
           <div className="flex flex-wrap gap-2 pt-5 border-t" style={{ borderColor: `${project.color}12` }}>
-            {project.stack.map((s) => (
+            {project.technologies.map((s) => (
               <span key={s} className="text-[10px] font-mono px-2.5 py-1 rounded-lg border border-white/8 text-zinc-500">{s}</span>
             ))}
           </div>
@@ -163,6 +115,8 @@ function ProjectCard({ project, index }: { project: typeof PROJECTS[0]; index: n
 }
 
 export default function ProjectsPage() {
+  const projects = getPublishedProjects();
+
   return (
     <main
       className="min-h-screen text-white selection:bg-amber-500 selection:text-black"
@@ -185,7 +139,7 @@ export default function ProjectsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-400 text-xs font-mono mb-8"
           >
-            <Sparkles size={12} /> FILM LAB · {PROJECTS.length} NEGATIVES DEVELOPED
+            <Sparkles size={12} /> FILM LAB · {projects.length} NEGATIVES DEVELOPED
           </motion.div>
 
           <motion.h1
@@ -194,8 +148,7 @@ export default function ProjectsPage() {
             transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
           >
-            <span className="text-white">Proven systems
-            </span>
+            <span className="text-white">Proven systems</span>
             <br />
             <span style={{ background: "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               shipped with intent.
@@ -214,7 +167,9 @@ export default function ProjectsPage() {
 
         {/* Projects Grid */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-24">
-          {PROJECTS.map((p, i) => <ProjectCard key={p.id} project={p} index={i} />)}
+          {projects.map((p, i) => (
+            <ProjectCard key={p.slug} project={p} index={i} />
+          ))}
         </section>
 
         {/* More work CTA */}

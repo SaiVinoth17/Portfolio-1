@@ -64,7 +64,7 @@ export default function ThreeMasterShowcase() {
     id: "webgl_animation_keyframes",
     title: "Animation Keyframes",
     category: "webgl",
-    url: "https://threejs.org/examples/webgl_animation_keyframes.html",
+    url: "/api/threejs-frame?id=webgl_animation_keyframes",
   });
 
   // Example Explorer Search & Filter
@@ -455,7 +455,10 @@ export default function ThreeMasterShowcase() {
   };
 
   const launchExample = (item: ThreeExampleItem) => {
-    setCurrentExample(item);
+    setCurrentExample({
+      ...item,
+      url: `/api/threejs-frame?id=${item.id}`,
+    });
     setViewMode("live-example");
   };
 
@@ -599,7 +602,7 @@ export default function ThreeMasterShowcase() {
                   id: item.id,
                   title: item.label,
                   category: item.category,
-                  url: `https://threejs.org/examples/${item.id}.html`,
+                  url: `/api/threejs-frame?id=${item.id}`,
                 })
               }
               className={`shrink-0 px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5 ${
@@ -822,7 +825,7 @@ export default function ThreeMasterShowcase() {
               </div>
               <div className="flex items-center gap-2">
                 <a
-                  href={currentExample.url}
+                  href={`/api/threejs-frame?id=${currentExample.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-[11px] text-cyan-400 hover:underline"
@@ -839,7 +842,7 @@ export default function ThreeMasterShowcase() {
               </div>
             </div>
             <iframe
-              src={currentExample.url}
+              src={`/api/threejs-frame?id=${currentExample.id}`}
               className="w-full flex-1 border-0"
               title={currentExample.title}
               allow="accelerometer; autoplay; camera; gyroscope; vr; xr; xr-spatial-tracking"

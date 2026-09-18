@@ -12,14 +12,25 @@ interface Props {
 }
 
 export async function generateStaticParams() {
-  return LAB_EXPERIMENTS.map((exp) => ({
+  const params = LAB_EXPERIMENTS.map((exp) => ({
     slug: exp.slug,
   }));
+  params.push({ slug: "three.js" });
+  params.push({ slug: "threejs" });
+  return params;
+}
+
+function normalizeLabSlug(rawSlug: string): string {
+  if (rawSlug === "three.js" || rawSlug === "threejs") {
+    return "threejs-master";
+  }
+  return rawSlug;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const experiment = LAB_EXPERIMENTS.find((e) => e.slug === slug);
+  const normalizedSlug = normalizeLabSlug(slug);
+  const experiment = LAB_EXPERIMENTS.find((e) => e.slug === normalizedSlug);
 
   if (!experiment) {
     return constructMetadata({
@@ -46,7 +57,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function LabExperimentDetailPage({ params }: Props) {
   const { slug } = await params;
-  const experiment = LAB_EXPERIMENTS.find((e) => e.slug === slug);
+  const normalizedSlug = normalizeLabSlug(slug);
+  const experiment = LAB_EXPERIMENTS.find((e) => e.slug === normalizedSlug);
 
   if (!experiment) {
     notFound();

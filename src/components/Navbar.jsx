@@ -33,7 +33,7 @@ const contactLinks = [
   { text: "hello@aevionstudio.in", href: "mailto:hello@aevionstudio.in" },
 ];
 
-/* Nav link — minimal, clean, white */
+/* Nav link — minimal, clean, white with kinetic micro-tracking */
 function NavLink({ href, children }) {
   const [hover, setHover] = useState(false);
   return (
@@ -42,9 +42,10 @@ function NavLink({ href, children }) {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        transition: "color 0.2s, background 0.2s",
+        transition: "color 0.25s, background 0.25s, letter-spacing 0.25s",
         background: hover ? "rgba(255,255,255,0.10)" : "transparent",
         color: hover ? "#fff" : "rgba(255,255,255,0.75)",
+        letterSpacing: hover ? "0.14em" : "0.1em",
       }}
       className="relative px-3 py-1.5 rounded-full text-[11px] font-mono uppercase tracking-[0.1em] font-medium cursor-pointer select-none whitespace-nowrap"
     >

@@ -38,14 +38,14 @@ export const metadata = {
     "Gaming Kingdom"
   ],
   authors: [{ name: "Sai Rio" }, { name: "Edison" }, { name: "Aevion Studio" }],
-  metadataBase: new URL("https://aevionstudio.in"),
+  metadataBase: new URL("https://www.aevionstudio.in"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
     description: "Two builders. One vision. Technology without limits. Engineering autonomous AI, high-throughput systems, and next-generation software.",
-    url: "https://aevionstudio.in",
+    url: "https://www.aevionstudio.in",
     siteName: "Aevion Studio",
     locale: "en_US",
     type: "website",
@@ -82,28 +82,28 @@ export default function RootLayout({ children }) {
     "@graph": [
       {
         "@type": "Organization",
-        "@id": "https://aevionstudio.in/#organization",
+        "@id": "https://www.aevionstudio.in/#organization",
         "name": "Aevion Studio",
-        "url": "https://aevionstudio.in",
-        "logo": "https://aevionstudio.in/images/aevion-logo.png",
+        "url": "https://www.aevionstudio.in",
+        "logo": "https://www.aevionstudio.in/images/aevion-logo.png",
         "email": "hello@aevionstudio.in",
         "founders": [
           {
             "@type": "Person",
-            "name": "Sai Vinoth",
-            "jobTitle": "Co-Founder · Full Stack Developer & AI/ML Engineer",
+            "name": "Sai Rio (Sai Vinoth)",
+            "jobTitle": "Founder & Lead Engineer",
             "sameAs": "https://github.com/SaiVinoth17",
-            "knowsAbout": ["Full Stack Development", "AI/ML Engineering", "Autonomous Systems", "Next.js", "Cloud Backends"]
+            "knowsAbout": ["Full Stack Development", "Systems Architecture", "AI/ML Engineering", "Next.js", "Cloud Backends"]
           },
           {
             "@type": "Person",
             "name": "Edison",
-            "jobTitle": "Co-Founder · Front End Developer",
+            "jobTitle": "Co-Founder",
             "sameAs": "https://github.com/edisonedi84431-art",
-            "knowsAbout": ["Front End Development", "WebGL Shaders", "Three.js", "UI/UX Engineering", "Creative Motion"]
+            "knowsAbout": ["Studio Operations", "Digital Strategy", "Brand Direction", "Product Strategy"]
           }
         ],
-        "description": "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Founded by Sai Vinoth and Edison.",
+        "description": "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Founded by Sai Rio and Edison. Conceived and engineered from scratch by Sai Rio.",
         "sameAs": ["https://github.com/SaiVinoth17", "https://github.com/edisonedi84431-art", "https://github.com/aevionstudio"],
         "address": {
           "@type": "PostalAddress",
@@ -114,28 +114,28 @@ export default function RootLayout({ children }) {
           "@type": "ContactPoint",
           "contactType": "customer service & project inquiry",
           "email": "hello@aevionstudio.in",
-          "url": "https://aevionstudio.in/contact",
+          "url": "https://www.aevionstudio.in/contact",
           "availableLanguage": ["English", "Tamil"]
         }
       },
       {
         "@type": "Person",
-        "@id": "https://aevionstudio.in/#saivinoth",
-        "name": "Sai Vinoth",
-        "jobTitle": "Co-Founder · Full Stack Developer & AI/ML Engineer",
+        "@id": "https://www.aevionstudio.in/#sairio",
+        "name": "Sai Rio (Sai Vinoth)",
+        "jobTitle": "Founder & Lead Engineer",
         "sameAs": "https://github.com/SaiVinoth17",
         "worksFor": {
-          "@id": "https://aevionstudio.in/#organization"
+          "@id": "https://www.aevionstudio.in/#organization"
         }
       },
       {
         "@type": "Person",
-        "@id": "https://aevionstudio.in/#edison",
+        "@id": "https://www.aevionstudio.in/#edison",
         "name": "Edison",
-        "jobTitle": "Co-Founder · Front End Developer",
+        "jobTitle": "Co-Founder",
         "sameAs": "https://github.com/edisonedi84431-art",
         "worksFor": {
-          "@id": "https://aevionstudio.in/#organization"
+          "@id": "https://www.aevionstudio.in/#organization"
         }
       },
       {
@@ -156,7 +156,7 @@ export default function RootLayout({ children }) {
             "@type": "ListItem",
             "position": 1,
             "name": "Home",
-            "item": "https://aevionstudio.in"
+            "item": "https://www.aevionstudio.in"
           }
         ]
       }

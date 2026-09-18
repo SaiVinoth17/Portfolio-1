@@ -268,13 +268,13 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
             
             <header className="relative z-10 w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="flex items-center justify-between gap-4">
-                    <a href="#" className="font-bold text-2xl text-foreground tracking-tight">
+                    <a href="/" className="font-bold text-2xl text-foreground tracking-tight">
                         {brandName}
                     </a>
                     <nav className="hidden md:flex items-center gap-2 text-sm font-medium text-muted-foreground">
-                        <a href="#" className="hover:text-foreground px-3 py-2 transition-colors rounded-md">About</a>
-                        <a href="#" className="hover:text-foreground px-3 py-2 transition-colors rounded-md">Blog</a>
-                        <a href="#" className="hover:text-foreground px-3 py-2 transition-colors rounded-md">Contact</a>
+                        <a href="/about" className="hover:text-foreground px-3 py-2 transition-colors rounded-md">About</a>
+                        <a href="/blog" className="hover:text-foreground px-3 py-2 transition-colors rounded-md">Blog</a>
+                        <a href="/contact" className="hover:text-foreground px-3 py-2 transition-colors rounded-md">Contact</a>
                     </nav>
                     <div className="flex items-center gap-2">
                         <button
@@ -326,9 +326,9 @@ export const InteractiveHero: React.FC<InteractiveHeroProps> = ({
                 <div className="md:hidden absolute top-0 left-0 w-full h-full bg-background/80 backdrop-blur-sm z-20">
                     <div className="absolute top-24 right-8 p-4 bg-card border shadow-lg rounded-xl w-48">
                         <nav className="flex flex-col gap-2 text-muted-foreground font-medium">
-                            <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-foreground px-3 py-2 text-sm transition-colors rounded-lg">About</a>
-                            <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-foreground px-3 py-2 text-sm transition-colors rounded-lg">Blog</a>
-                            <a href="#" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-foreground px-3 py-2 text-sm transition-colors rounded-lg">Contact</a>
+                            <a href="/about" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-foreground px-3 py-2 text-sm transition-colors rounded-lg">About</a>
+                            <a href="/blog" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-foreground px-3 py-2 text-sm transition-colors rounded-lg">Blog</a>
+                            <a href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="hover:text-foreground px-3 py-2 text-sm transition-colors rounded-lg">Contact</a>
                         </nav>
                     </div>
                 </div>

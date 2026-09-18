@@ -3,15 +3,20 @@
 import React, { useState, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { Github, ArrowUpRight, Network, Sparkles, Activity } from "lucide-react";
+import { SplitText } from "gsap/SplitText";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { Github, ArrowUpRight, Network, Sparkles, Activity, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
+
+gsap.registerPlugin(SplitText, ScrambleTextPlugin);
 
 interface FounderData {
   id: string;
   name: string;
   role: string;
+  badge: string;
   title: string;
   tagline: string;
   focus: string[];
@@ -21,50 +26,58 @@ interface FounderData {
   accentColor: string;
   gradient: string;
   nodeIndex: string;
+  buildStatus?: string;
 }
 
 const FOUNDERS: FounderData[] = [
   {
-    id: "sai-vinoth",
-    name: "SAI VINOTH",
-    role: "FOUNDER",
-    title: "Full Stack Developer & AI/ML Engineer",
-    tagline: "Architecting end-to-end full stack systems and autonomous AI/ML intelligence.",
+    id: "sai-rio",
+    name: "SAI RIO",
+    role: "FOUNDER · LEAD ENGINEER",
+    badge: "FOUNDER · LEAD ENGINEER",
+    title: "Architecture • Full-Stack • AI Systems",
+    tagline:
+      "The builder behind Aevion — responsible for its architecture, interface, engineering, AI systems and product experience, built from the ground up.",
     focus: [
-      "Full Stack Development",
-      "AI/ML Systems Architecture",
-      "Next.js App Router Frameworks",
-      "Vector & RAG Pipelines",
-      "Distributed Cloud Systems",
+      "Architecture",
+      "Full-Stack Engineering",
+      "Frontend",
+      "AI Systems",
+      "Product Engineering",
+      "Creative Technology",
+      "Interactive Experiences",
     ],
     philosophy:
       "Software should be an extension of human will. We eliminate unnecessary friction until only raw performance, intelligence, and clarity remain.",
-    specialties: ["Full Stack Engineering", "AI/ML Pipelines", "Autonomous Agents", "System Architecture"],
+    specialties: ["System Architecture", "Full-Stack Engineering", "Autonomous AI", "Creative Motion"],
     github: "https://github.com/SaiVinoth17",
     accentColor: "#34d399",
     gradient: "from-emerald-400 to-teal-500",
-    nodeIndex: "NODE_01 // ALPHA",
+    nodeIndex: "NODE_01 // ARCHITECT & LEAD ENGINEER",
+    buildStatus: "CONCEIVED · ARCHITECTED · DESIGNED · ENGINEERED",
   },
   {
     id: "edison",
     name: "EDISON",
-    role: "FOUNDER",
-    title: "Front End Developer",
-    tagline: "Engineering butter-smooth client interfaces, 3D WebGL graphics, and tactile interactions.",
+    role: "CO-FOUNDER",
+    badge: "CO-FOUNDER",
+    title: "Co-Founder",
+    tagline:
+      "Co-founder of Aevion Studio, partnering in studio foundation, digital vision, and strategic direction.",
     focus: [
-      "Front End Development",
-      "Interactive 3D WebGL",
-      "Custom GLSL Shaders",
-      "Responsive UI/UX Engineering",
-      "Kinetic Motion & GSAP",
+      "Studio Foundation",
+      "Digital Brand Direction",
+      "Product Strategy",
+      "Creative Vision",
+      "Strategic Partnerships",
     ],
     philosophy:
-      "True craftsmanship lies in the invisible layers. When every byte is optimized and every transition is calculated, software becomes unforgettable.",
-    specialties: ["Front End Development", "Three.js & Shaders", "Fluid Interaction", "High-FPS Graphics"],
+      "Great studios are built on singular conviction. When vision and engineering align without friction, ambitious ideas turn into enduring reality.",
+    specialties: ["Studio Operations", "Digital Strategy", "Brand Direction", "Co-Founder"],
     github: "https://github.com/edisonedi84431-art",
     accentColor: "#22d3ee",
     gradient: "from-cyan-400 to-blue-500",
-    nodeIndex: "NODE_02 // BETA",
+    nodeIndex: "NODE_02 // CO-FOUNDER",
   },
 ];
 
@@ -76,32 +89,66 @@ export default function FoundersSection() {
     () => {
       if (!sectionRef.current || isReducedMotion()) return;
 
-      // Section Header
-      gsap.fromTo(
-        ".founders-header-elem",
-        { opacity: 0, y: 25 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.cinematic,
-          scrollTrigger: {
-            trigger: ".founders-header",
-            start: "top 85%",
-            once: true,
-          },
-        }
-      );
+      const splits: SplitText[] = [];
 
-      // Convergence Circuit line expand
+      // 1. Eyebrow Terminal Decode
+      gsap.to(".founders-eyebrow-text", {
+        scrollTrigger: {
+          trigger: ".founders-header",
+          start: "top 85%",
+          once: true,
+        },
+        scrambleText: {
+          text: "LEADERSHIP & ARCHITECTURAL CORE",
+          chars: "0101#@*!",
+          speed: 0.35,
+        },
+        duration: 0.8,
+        ease: "none",
+      });
+
+      // 2. Headline Split-Line Masked Assembly
+      const headlineTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".founders-header",
+          start: "top 82%",
+          once: true,
+        },
+      });
+
+      headlineTl
+        .fromTo(
+          ".founders-hl-line1",
+          { x: -35, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+        )
+        .fromTo(
+          ".founders-hl-line2",
+          { x: 35, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+          "<0.1"
+        )
+        .fromTo(
+          ".founders-header-desc",
+          { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power2.out" },
+          "-=0.3"
+        )
+        .fromTo(
+          ".founders-quote-line",
+          { letterSpacing: "-0.04em", opacity: 0 },
+          { letterSpacing: "0em", opacity: 1, duration: 0.6, ease: "power2.out" },
+          "-=0.2"
+        );
+
+      // 3. Central Convergence Circuit
       gsap.fromTo(
         ".founders-circuit-line",
         { scaleX: 0, transformOrigin: "center" },
         {
           scaleX: 1,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.smooth,
+          duration: 0.9,
+          ease: "power2.inOut",
           scrollTrigger: {
             trigger: ".founders-circuit",
             start: "top 85%",
@@ -110,41 +157,260 @@ export default function FoundersSection() {
         }
       );
 
-      // Founders Cards progressive reveal
+      // 4. Founder Cards Entrance
       gsap.fromTo(
         ".founder-card",
-        { opacity: 0, y: 40, scale: 0.97 },
+        { opacity: 0, y: 45, scale: 0.96 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
-          stagger: 0.15,
-          duration: MOTION.duration.cinematic,
-          ease: MOTION.ease.cinematic,
+          stagger: 0.18,
+          duration: 0.9,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: ".founders-grid",
-            start: "top 80%",
+            start: "top 78%",
             once: true,
           },
         }
       );
 
-      // Collaboration Banner
+      // 5. Node indices scramble on scroll
+      gsap.utils.toArray<HTMLElement>(".founder-node-idx").forEach((el) => {
+        const text = el.innerText;
+        gsap.to(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            once: true,
+          },
+          scrambleText: {
+            text: text,
+            chars: "0101ARCH_CORE",
+            speed: 0.4,
+          },
+          duration: 0.75,
+          ease: "none",
+        });
+      });
+
+      // 6. SAI RIO — Character Assembly / Precision Lock
+      const saiSplit = new SplitText(".founder-name-sai", { type: "chars" });
+      splits.push(saiSplit);
       gsap.fromTo(
-        ".founders-collab-banner",
-        { opacity: 0, y: 25 },
+        saiSplit.chars,
+        { opacity: 0, y: 16, rotateY: -60, filter: "blur(4px)" },
         {
           opacity: 1,
           y: 0,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.cinematic,
+          rotateY: 0,
+          filter: "blur(0px)",
+          stagger: 0.04,
+          duration: 0.7,
+          ease: "power3.out",
           scrollTrigger: {
-            trigger: ".founders-collab-banner",
-            start: "top 88%",
+            trigger: ".founders-grid",
+            start: "top 75%",
             once: true,
           },
         }
       );
+
+      // 7. SAI RIO Role: Tracking Compression
+      gsap.fromTo(
+        ".founder-role-sai",
+        { letterSpacing: "0.26em", opacity: 0, scale: 0.95 },
+        {
+          letterSpacing: "0.08em",
+          opacity: 1,
+          scale: 1,
+          duration: 0.75,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 75%",
+            once: true,
+          },
+        }
+      );
+
+      // 8. EDISON — Restrained Text Motion
+      gsap.fromTo(
+        ".founder-name-edison",
+        { letterSpacing: "-0.03em", y: 12, opacity: 0 },
+        {
+          letterSpacing: "0.02em",
+          y: 0,
+          opacity: 1,
+          duration: 0.7,
+          ease: "power2.out",
+          delay: 0.1,
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 75%",
+            once: true,
+          },
+        }
+      );
+
+      // 9. EDISON Role: Independent Tracking / Mask
+      gsap.fromTo(
+        ".founder-role-edison",
+        { clipPath: "inset(0 100% 0 0)", letterSpacing: "0.2em", opacity: 0 },
+        {
+          clipPath: "inset(0 0% 0 0)",
+          letterSpacing: "0.08em",
+          opacity: 1,
+          duration: 0.65,
+          ease: "power2.out",
+          delay: 0.15,
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 75%",
+            once: true,
+          },
+        }
+      );
+
+      // 10. Descriptions: Phrase-by-phrase masked construction
+      const descSplitSai = new SplitText(".founder-desc-sai", { type: "lines,words" });
+      splits.push(descSplitSai);
+      gsap.fromTo(
+        descSplitSai.words,
+        { opacity: 0, y: 12 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.025,
+          duration: 0.55,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 72%",
+            once: true,
+          },
+        }
+      );
+
+      const descSplitEdison = new SplitText(".founder-desc-edison", { type: "lines,words" });
+      splits.push(descSplitEdison);
+      gsap.fromTo(
+        descSplitEdison.words,
+        { opacity: 0, y: 10 },
+        {
+          opacity: 1,
+          y: 0,
+          stagger: 0.02,
+          duration: 0.5,
+          ease: "power2.out",
+          delay: 0.1,
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 72%",
+            once: true,
+          },
+        }
+      );
+
+      // 11. Focus tags stagger (Sai Rio: Editorial Reveal)
+      gsap.fromTo(
+        ".founder-focus-tag-sai",
+        { x: -16, opacity: 0, scale: 0.94 },
+        {
+          x: 0,
+          opacity: 1,
+          scale: 1,
+          stagger: 0.04,
+          duration: 0.55,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 66%",
+            once: true,
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".founder-focus-tag-edison",
+        { y: 12, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.035,
+          duration: 0.5,
+          ease: "power2.out",
+          delay: 0.08,
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 66%",
+            once: true,
+          },
+        }
+      );
+
+      // 12. Philosophy quotes word reveal
+      gsap.fromTo(
+        ".founder-philosophy-quote",
+        { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+        {
+          clipPath: "inset(0 0% 0 0)",
+          opacity: 1,
+          stagger: 0.2,
+          duration: 0.9,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".founders-grid",
+            start: "top 70%",
+            once: true,
+          },
+        }
+      );
+
+      // 13. STRONG BUILD CREDIT BANNER — Progressive Word Construction
+      const buildHlSplit = new SplitText(".build-credit-hl", { type: "words" });
+      splits.push(buildHlSplit);
+      gsap.fromTo(
+        buildHlSplit.words,
+        { opacity: 0, y: 18, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          stagger: 0.045,
+          duration: 0.65,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".founders-collab-banner",
+            start: "top 86%",
+            once: true,
+          },
+        }
+      );
+
+      gsap.to(".build-credit-eyebrow", {
+        scrollTrigger: {
+          trigger: ".founders-collab-banner",
+          start: "top 90%",
+          once: true,
+        },
+        scrambleText: {
+          text: "ARCHITECTURAL RECORD // AEVION CORE",
+          chars: "0101#@*!",
+          speed: 0.4,
+        },
+        duration: 0.8,
+        ease: "none",
+      });
+
+      return () => {
+        splits.forEach((s) => {
+          try {
+            s.revert();
+          } catch (_) {}
+        });
+      };
     },
     { scope: sectionRef }
   );
@@ -153,7 +419,7 @@ export default function FoundersSection() {
     <section
       ref={sectionRef}
       id="founders"
-      className="relative bg-[#06060a] text-white py-28 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+      className="relative scroll-mt-20 bg-[#06060a] text-white py-28 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
     >
       {/* Background ambient lighting */}
       <div className="pointer-events-none absolute top-1/2 left-1/4 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 blur-[140px] rounded-full" />
@@ -163,26 +429,24 @@ export default function FoundersSection() {
         {/* Section Header */}
         <div className="founders-header flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
           <div className="space-y-4">
-            <div className="founders-header-elem inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-emerald-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-emerald-400 select-none">
               <Network size={13} />
-              <span>CO-FOUNDERS ARCHITECTURE</span>
+              <span className="founders-eyebrow-text">LEADERSHIP &amp; ARCHITECTURAL CORE</span>
             </div>
-            <h2 className="founders-header-elem text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
-              THE PEOPLE
-              <br />
-              <span className="bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white select-none">
+              <span className="founders-hl-line1 block">THE PEOPLE</span>
+              <span className="founders-hl-line2 block bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
                 BEHIND AEVION.
               </span>
             </h2>
           </div>
 
-          <div className="founders-header-elem max-w-md">
-            <p className="text-sm font-mono text-zinc-400 leading-relaxed">
-              Two equal co-founders with a shared conviction. Blending foundational product vision, deep
-              engineering discipline, and cutting-edge artificial intelligence.
+          <div className="max-w-md space-y-3">
+            <p className="founders-header-desc text-sm font-mono text-zinc-400 leading-relaxed">
+              Two builders united by a shared vision. Aevion Studio is engineered from the ground up, pairing deep technical architecture with creative digital craft.
             </p>
-            <div className="mt-3 text-xs font-mono text-emerald-400 flex items-center gap-2">
-              <Activity size={12} className="animate-pulse" />
+            <div className="founders-quote-line text-xs font-mono text-emerald-400 flex items-center gap-2 select-none">
+              <Activity size={12} className="animate-pulse flex-shrink-0" />
               <span>&ldquo;Two builders. One vision. Technology without limits.&rdquo;</span>
             </div>
           </div>
@@ -197,10 +461,11 @@ export default function FoundersSection() {
           </div>
         </div>
 
-        {/* Equal Founders Cards Grid */}
+        {/* Founders Cards Grid */}
         <div className="founders-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
           {FOUNDERS.map((founder) => {
             const isHovered = hoveredFounder === founder.id;
+            const isSai = founder.id === "sai-rio";
 
             return (
               <div
@@ -229,21 +494,27 @@ export default function FoundersSection() {
                   {/* Card Header Info */}
                   <div className="flex items-start justify-between">
                     <div>
-                      <div className="text-[11px] font-mono tracking-widest text-zinc-500 font-bold mb-1">
+                      <div className="founder-node-idx text-[11px] font-mono tracking-widest text-zinc-500 font-bold mb-1 select-none">
                         {founder.nodeIndex}
                       </div>
-                      <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                      <h3
+                        className={`${
+                          isSai ? "founder-name-sai" : "founder-name-edison"
+                        } text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3 select-none`}
+                      >
                         {founder.name}
                       </h3>
                       <div
-                        className="inline-block mt-1 text-xs font-mono font-bold tracking-widest px-2.5 py-0.5 rounded-md"
+                        className={`${
+                          isSai ? "founder-role-sai" : "founder-role-edison"
+                        } inline-block mt-1 text-xs font-mono font-bold tracking-widest px-2.5 py-0.5 rounded-md select-none`}
                         style={{
                           background: `${founder.accentColor}18`,
                           color: founder.accentColor,
                           border: `1px solid ${founder.accentColor}30`,
                         }}
                       >
-                        {founder.role}
+                        {founder.badge}
                       </div>
                     </div>
 
@@ -264,35 +535,46 @@ export default function FoundersSection() {
                     )}
                   </div>
 
-                  {/* Core Title / Focus Domain */}
-                  <div className="pt-2 border-t border-white/5">
-                    <div className="text-xs font-mono text-zinc-400 font-medium">FOCUS DOMAIN:</div>
-                    <div className="text-sm font-semibold text-zinc-200 mt-1 font-mono">
-                      {founder.title}
-                    </div>
+                  {/* Core Description / Build Positioning */}
+                  <div className="pt-2 border-t border-white/5 space-y-1.5">
+                    <p
+                      className={`${
+                        isSai ? "founder-desc-sai" : "founder-desc-edison"
+                      } text-xs sm:text-sm font-mono text-zinc-300 leading-relaxed`}
+                    >
+                      {founder.tagline}
+                    </p>
+                    {founder.buildStatus && (
+                      <div className="text-[10px] font-mono text-emerald-400 font-bold tracking-wider pt-1 flex items-center gap-1.5">
+                        <ShieldCheck size={12} />
+                        <span>{founder.buildStatus}</span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Short Philosophy Quote */}
                   <div className="p-5 rounded-2xl bg-black/40 border border-white/5 space-y-2">
-                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 flex items-center gap-1.5">
+                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 flex items-center gap-1.5 select-none">
                       <Sparkles size={11} style={{ color: founder.accentColor }} />
                       <span>Philosophy</span>
                     </div>
-                    <blockquote className="text-sm text-zinc-300 italic leading-relaxed">
+                    <blockquote className="founder-philosophy-quote text-sm text-zinc-300 italic leading-relaxed">
                       &ldquo;{founder.philosophy}&rdquo;
                     </blockquote>
                   </div>
 
                   {/* Focus Areas Pills */}
                   <div className="space-y-2">
-                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-                      Discipline &amp; Leadership
+                    <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 select-none">
+                      {isSai ? "Craft & Core Disciplines" : "Focus & Technical Craft"}
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {founder.focus.map((item) => (
                         <span
                           key={item}
-                          className="text-xs font-mono px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-zinc-300"
+                          className={`${
+                            isSai ? "founder-focus-tag-sai" : "founder-focus-tag-edison"
+                          } text-xs font-mono px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-zinc-300 select-none`}
                         >
                           {item}
                         </span>
@@ -314,8 +596,8 @@ export default function FoundersSection() {
                     ))}
                   </div>
 
-                  <div className="text-[11px] font-mono" style={{ color: founder.accentColor }}>
-                    ACTIVE BUILDER →
+                  <div className="text-[11px] font-mono font-semibold" style={{ color: founder.accentColor }}>
+                    {isSai ? "LEAD ARCHITECT →" : "CO-FOUNDER →"}
                   </div>
                 </div>
               </div>
@@ -323,26 +605,30 @@ export default function FoundersSection() {
           })}
         </div>
 
-        {/* Mutual Collaboration Banner */}
-        <div className="founders-collab-banner p-8 rounded-3xl border border-white/10 bg-white/[0.02] flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
-          <div className="space-y-1">
-            <div className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
-              UNIFIED STUDIO MANIFESTO
+        {/* STRONG BUILD CREDIT BANNER */}
+        <div className="founders-collab-banner p-8 sm:p-10 rounded-3xl border border-white/10 bg-white/[0.02] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+          <div className="space-y-2 max-w-3xl">
+            <div className="build-credit-eyebrow text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+              ARCHITECTURAL RECORD // AEVION CORE
             </div>
-            <div className="text-lg sm:text-xl font-bold text-white">
-              Every project is personally architected and engineered by Sai Vinoth and Edison.
+            <div className="build-credit-hl text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight text-white leading-tight">
+              EVERY INTERFACE. EVERY INTERACTION. EVERY SYSTEM.
+              <br />
+              <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                BUILT FROM SCRATCH BY SAI RIO.
+              </span>
             </div>
-            <div className="text-xs text-zinc-400 font-mono">
-              Zero outsourced middlemen. Zero generic templates. Direct builder-to-builder collaboration.
+            <div className="text-xs sm:text-sm text-zinc-400 font-mono pt-1">
+              Conceived, architected, designed, and engineered from the ground up — zero outsourced layers, zero generic templates.
             </div>
           </div>
 
           <AevionMagnetic strength={0.25}>
             <Link
               href="/contact"
-              className="shrink-0 px-6 py-3.5 rounded-2xl bg-white text-black font-bold font-mono text-[11px] uppercase tracking-[0.1em] hover:bg-zinc-200 transition-all inline-block"
+              className="shrink-0 px-7 py-4 rounded-2xl bg-white text-black font-bold font-mono text-xs uppercase tracking-[0.1em] hover:bg-zinc-200 transition-all inline-block shadow-[0_0_25px_rgba(255,255,255,0.15)]"
             >
-              INITIATE CONTACT
+              Initiate Project Brief
             </Link>
           </AevionMagnetic>
         </div>

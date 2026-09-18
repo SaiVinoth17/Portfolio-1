@@ -25,7 +25,7 @@ const LAB_FAQS = [
   {
     question: "What is Aevion Lab?",
     answer:
-      "Aevion Lab is our internal research and development incubator where Sai Rio and Edison stress-test bleeding-edge WebGL graphics, GLSL mathematical shaders, real-time physics engines, and GPU interfaces before deploying them to client software.",
+      "Aevion Lab is our internal research and development incubator where bleeding-edge WebGL graphics, GLSL mathematical shaders, real-time physics engines, and GPU interfaces are engineered and stress-tested before deployment.",
   },
   {
     question: "Are Aevion Lab experiments production-ready?",

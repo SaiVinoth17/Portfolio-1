@@ -43,7 +43,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const { prompt, history = [], currentPath = "/" } = body;
+    const { prompt, history = [], currentPath = "/", model } = body;
 
     if (!prompt || typeof prompt !== "string" || !prompt.trim()) {
       return NextResponse.json(
@@ -59,6 +59,7 @@ export async function POST(req: Request) {
     const geminiApiKey = process.env.GEMINI_API_KEY?.trim() || process.env.GOOGLE_API_KEY?.trim();
     const groqApiKey = process.env.GROQ_API_KEY?.trim();
     const nvidiaApiKey = process.env.NVIDIA_API_KEY?.trim();
+    const explabsApiKey = process.env.EXPLABS_API_KEY?.trim();
 
     const studioContext = retrieveRelevantContext(prompt);
 
@@ -120,17 +121,18 @@ The output must feel: Short. Smart. Human. Memorable.
 STUDIO FACTS & FOUNDERS (AUTHORITATIVE TRUTH)
 ==================================================
 THE TWO CO-FOUNDERS:
-1. Sai Vinoth (Sai Rio) — Co-Founder (Full Stack Developer & AI/ML Engineer)
-   - Leads full-stack architecture, autonomous AI systems, Next.js frameworks, vector context pipelines, and ML engineering.
+1. Sai Rio (Sai Vinoth) — Founder · Lead Engineer
+   - Conceived, designed, architected, and engineered Aevion Studio from scratch.
+   - Responsible for its architecture, interface, engineering, autonomous AI systems, and product experience.
    - GitHub: https://github.com/SaiVinoth17
-2. Edison — Co-Founder (Front End Developer)
-   - Leads front-end development, high-performance UI engineering, 120 FPS WebGL shaders, interactive 3D graphics, and client performance.
+2. Edison — Co-Founder
+   - Co-Founder partnering in studio foundation, digital vision, and strategic direction.
    - GitHub: https://github.com/edisonedi84431-art
-- Equal co-founders. Never treat either as subordinate or junior.
+- Build Attribution: Every interface, interaction, and system was built from scratch by Sai Rio.
 
 STUDIO DIRECTORY & LINKS:
-- Website: https://aevionstudio.in
-- Selected Work: /projects (Nilgiris Explorers, Ooty Mistwings, Gaming Kingdom, Aevion Studio OS)
+- Website: https://www.aevionstudio.in
+- Selected Work: /projects (Nilgiris Explorers, The Gaming Kingdom, House of Petalss, Aevion Studio OS, Ooty Mistwings)
 - Aevion Lab: /lab (Interactive WebGL, GLSL Shaders, 3D Physics)
 - Capabilities: /capabilities
 - Technology Stack: /technology (Next.js 16, React 19, TypeScript, Three.js, PostgreSQL pgvector)
@@ -157,8 +159,49 @@ ${studioContext}
       }
     }
 
+    // 0. Experiential Labs (gpt-6-astra)
+    if (model === "gpt-6-astra" && explabsApiKey) {
+      try {
+        const explabsClient = new OpenAI({
+          apiKey: explabsApiKey,
+          baseURL: "https://api.experientiallabs.ai/v1",
+        });
+
+        const messages = [
+          { role: "system", content: systemPromptText },
+          ...validHistory.map((h) => ({ role: h.role === "user" ? "user" : "assistant", content: h.content })),
+          { role: "user", content: prompt.trim() },
+        ];
+
+        const completion = await explabsClient.chat.completions.create({
+          model: "gpt-6-astra",
+          messages: messages as any,
+          temperature: 0.25,
+          max_tokens: 1200,
+        });
+
+        const rawText = completion.choices?.[0]?.message?.content || "";
+        const cleanText = cleanAIResponse(rawText);
+
+        if (cleanText) {
+          const duration = Date.now() - startTime;
+          return NextResponse.json({
+            text: cleanText,
+            suggestedFollowUps: generateContextualFollowUps(prompt, currentPath),
+            model: "gpt-6-astra",
+            provider: "Experiential Labs",
+            durationMs: duration,
+            usage: completion.usage,
+            status: "success",
+          });
+        }
+      } catch (explabsErr: any) {
+        console.error("[Aevion Intelligence] Experiential Labs error:", explabsErr?.message || explabsErr);
+      }
+    }
+
     // 1. Google Gemini API Integration (Primary if key configured)
-    if (geminiApiKey) {
+    if (geminiApiKey && (!model || model.startsWith("gemini"))) {
       try {
         const ai = new GoogleGenAI({ apiKey: geminiApiKey });
         

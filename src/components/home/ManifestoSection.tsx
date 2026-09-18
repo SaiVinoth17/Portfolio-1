@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { SplitText } from "gsap/SplitText";
 import { Sparkles, Terminal, Cpu, Zap, ArrowUpRight, Code2 } from "lucide-react";
 import Link from "next/link";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
@@ -36,7 +37,7 @@ const PRINCIPLES = [
     num: "04",
     title: "Founder-Direct Execution",
     summary:
-      "No agency bloat, no account managers, and no handoffs. Sai Rio and Edison personally architect and write the code for every system that bears the Aevion name.",
+      "No agency bloat, no account managers, and no handoffs. Every system bearing the Aevion name is personally architected, coded, and engineered by founder and lead engineer Sai Rio.",
     icon: Code2,
     tag: "DIRECT CRAFTSMANSHIP",
   },
@@ -47,25 +48,229 @@ export default function ManifestoSection() {
 
   useGSAP(
     () => {
-      if (!sectionRef.current || isReducedMotion()) return;
+      if (isReducedMotion()) {
+        gsap.set(".manifesto-phase-1", { display: "none" });
+        gsap.set(".manifesto-phase-2", { opacity: 1, position: "relative", pointerEvents: "auto" });
+        gsap.set([".manifesto-w-we2", ".manifesto-w-build2", ".manifesto-w-whats", ".manifesto-w-next"], { y: "0%", opacity: 1, scale: 1, x: 0 });
+        gsap.set([".manifesto-support-1", ".manifesto-support-2", ".manifesto-support-3", ".manifesto-desc"], { opacity: 1, y: 0, clipPath: "none" });
+        return;
+      }
 
-      // Heading Reveal
-      gsap.fromTo(
-        ".manifesto-header-elem",
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.12,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.cinematic,
-          scrollTrigger: {
-            trigger: ".manifesto-header",
-            start: "top 85%",
-            once: true,
+      // ─── SCENE 4: DECLARE (Staged Climax) ─────────────────────
+      const justSplit = new SplitText(".manifesto-w-just", {
+        type: "chars",
+        charsClass: "just-char",
+      });
+
+      const nextLineSplit = new SplitText(".manifesto-support-3", {
+        type: "chars",
+        charsClass: "support3-char",
+      });
+
+      const stageTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".manifesto-stage",
+          start: "top 75%",
+          end: "bottom 25%",
+          scrub: 0.6,
+        },
+      });
+
+      // 1. Eyebrow initial state: highly tracked
+      gsap.set(".manifesto-eyebrow-text", {
+        letterSpacing: "0.55em",
+      });
+
+      // 2. Phase 1 initial states
+      gsap.set(".manifesto-w-we", {
+        scale: 1.45,
+        opacity: 0,
+      });
+
+      gsap.set(".manifesto-w-dont", {
+        x: -35,
+        opacity: 0,
+      });
+
+      gsap.set(justSplit.chars, {
+        y: -24,
+        opacity: 0,
+      });
+
+      gsap.set([".manifesto-w-build1", ".manifesto-w-products"], {
+        y: "115%",
+        opacity: 0,
+      });
+
+      // 3. Phase 2 initial states
+      gsap.set(".manifesto-w-we2", {
+        x: -35,
+        opacity: 0,
+      });
+
+      gsap.set(".manifesto-w-build2", {
+        x: 35,
+        opacity: 0,
+      });
+
+      gsap.set([".manifesto-w-whats", ".manifesto-w-next"], {
+        scale: 0.82,
+        opacity: 0,
+      });
+
+      // 4. Supporting Manifesto initial states
+      gsap.set(".manifesto-support-1", {
+        clipPath: "inset(0 100% 0 0)",
+        opacity: 0,
+      });
+
+      gsap.set(".manifesto-support-2", {
+        letterSpacing: "-0.05em",
+        opacity: 0,
+      });
+
+      gsap.set(nextLineSplit.chars, {
+        y: 12,
+        opacity: 0,
+      });
+
+      gsap.set(".manifesto-desc", {
+        y: 15,
+        opacity: 0,
+      });
+
+      // ── Stage Progression ──
+      stageTl
+        // 1. Editorial tracking reveal on eyebrow
+        .to(".manifesto-eyebrow-text", {
+          letterSpacing: "0.15em",
+          ease: "power2.out",
+        })
+        // 2. WE reveals: Scale / center lock
+        .to(
+          ".manifesto-w-we",
+          {
+            scale: 1,
+            opacity: 1,
+            duration: 0.15,
+            ease: "power2.out",
           },
-        }
-      );
+          "<0.05"
+        )
+        // 3. DON'T reveals: Horizontal word expansion
+        .to(
+          ".manifesto-w-dont",
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.15,
+            ease: "power2.out",
+          },
+          "<0.08"
+        )
+        // 4. JUST reveals: Character cascade
+        .to(
+          justSplit.chars,
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.03,
+            duration: 0.15,
+            ease: "power3.out",
+          },
+          "<0.08"
+        )
+        // 5. BUILD PRODUCTS. reveals: Masked vertical reveal
+        .to(
+          [".manifesto-w-build1", ".manifesto-w-products"],
+          {
+            y: "0%",
+            opacity: 1,
+            stagger: 0.08,
+            duration: 0.2,
+            ease: "power2.out",
+          },
+          "<0.1"
+        )
+        // 6. HOLD / BREATHE (Pause beat)
+        .to({}, { duration: 0.35 })
+        // 7. Phase 1 disperses cleanly
+        .to(".manifesto-phase-1", {
+          y: -30,
+          opacity: 0,
+          scale: 0.98,
+          duration: 0.22,
+          ease: "power2.inOut",
+        })
+        // 8. Phase 2 reveals: WE BUILD (Word Convergence)
+        .set(".manifesto-phase-2", { opacity: 1, pointerEvents: "auto" }, "<0.06")
+        .to(
+          [".manifesto-w-we2", ".manifesto-w-build2"],
+          {
+            x: 0,
+            opacity: 1,
+            duration: 0.2,
+            ease: "power3.out",
+          },
+          "<0.04"
+        )
+        // 9. WHAT'S NEXT.: Large-scale typographic expansion
+        .to(
+          [".manifesto-w-whats", ".manifesto-w-next"],
+          {
+            scale: 1,
+            opacity: 1,
+            stagger: 0.06,
+            duration: 0.24,
+            ease: "back.out(1.3)",
+          },
+          "-=0.08"
+        )
+        // 10. Supporting Manifesto Sentence 1: Horizontal editorial reveal
+        .to(
+          ".manifesto-support-1",
+          {
+            clipPath: "inset(0 0% 0 0)",
+            opacity: 1,
+            duration: 0.18,
+            ease: "power2.out",
+          },
+          "-=0.05"
+        )
+        // 11. Supporting Manifesto Sentence 2: Compressed tracking release
+        .to(
+          ".manifesto-support-2",
+          {
+            letterSpacing: "0.02em",
+            opacity: 1,
+            duration: 0.18,
+            ease: "power2.out",
+          },
+          "<0.08"
+        )
+        // 12. Supporting Manifesto Sentence 3: Progressive character construction
+        .to(
+          nextLineSplit.chars,
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.015,
+            duration: 0.2,
+            ease: "power2.out",
+          },
+          "<0.08"
+        )
+        // 13. Narrative statement
+        .to(
+          ".manifesto-desc",
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.2,
+            ease: "power2.out",
+          },
+          "-=0.1"
+        );
 
       // Principle Cards Stagger
       gsap.fromTo(
@@ -102,6 +307,11 @@ export default function ManifestoSection() {
           },
         }
       );
+
+      return () => {
+        justSplit.revert();
+        nextLineSplit.revert();
+      };
     },
     { scope: sectionRef }
   );
@@ -110,7 +320,7 @@ export default function ManifestoSection() {
     <section
       ref={sectionRef}
       id="manifesto"
-      className="relative bg-[#030306] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+      className="relative scroll-mt-20 bg-[#030306] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
     >
       {/* Laser grid accents */}
       <div
@@ -123,24 +333,65 @@ export default function ManifestoSection() {
       />
 
       <div className="max-w-7xl mx-auto relative z-10 space-y-20">
-        {/* Top Manifesto Title */}
-        <div className="manifesto-header space-y-6 max-w-4xl">
-          <div className="manifesto-header-elem inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono tracking-widest uppercase">
-            <Sparkles size={12} /> The Aevion Manifesto
+        {/* Top Manifesto Kinetic Transformation Stage */}
+        <div className="manifesto-stage space-y-8 max-w-5xl relative min-h-[360px] sm:min-h-[420px] flex flex-col justify-center">
+          <div className="manifesto-eyebrow inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono uppercase mb-4 w-fit select-none">
+            <Sparkles size={12} />
+            <span className="manifesto-eyebrow-text">The Aevion Manifesto</span>
           </div>
 
-          <h2 className="manifesto-header-elem text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tighter leading-[1.02] text-white">
-            AEVION EXISTS TO TURN
-            <br />
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-              AMBITIOUS IDEAS INTO REAL TECHNOLOGY.
-            </span>
-          </h2>
+          {/* Kinetic Container holding both transformation phases */}
+          <div className="relative w-full overflow-visible">
+            {/* Phase 1: WE DON'T JUST BUILD PRODUCTS. */}
+            <div className="manifesto-phase-1">
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.02] text-white select-none">
+                <div className="overflow-hidden py-1">
+                  <span className="manifesto-w-we inline-block mr-3 sm:mr-5">WE</span>
+                  <span className="manifesto-w-dont inline-block mr-3 sm:mr-5">DON&apos;T</span>
+                  <span className="manifesto-w-just inline-block">JUST</span>
+                </div>
+                <div className="overflow-hidden py-1 text-white/70">
+                  <span className="manifesto-w-build1 inline-block mr-3 sm:mr-5">BUILD</span>
+                  <span className="manifesto-w-products inline-block">PRODUCTS.</span>
+                </div>
+              </h2>
+            </div>
 
-          <p className="manifesto-header-elem text-base sm:text-xl text-zinc-400 font-light leading-relaxed max-w-3xl">
-            We don&apos;t build generic websites, copy startup trends, or assemble template stacks. We
-            operate as an elite experimental laboratory and software foundry for founders and
-            forward-thinking enterprises.
+            {/* Phase 2: WE BUILD WHAT'S NEXT. (Culmination) */}
+            <div className="manifesto-phase-2 absolute top-0 left-0 w-full opacity-0 pointer-events-none">
+              <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.02] text-white select-none">
+                <div className="overflow-hidden py-1">
+                  <span className="manifesto-w-we2 inline-block mr-3 sm:mr-5">WE</span>
+                  <span className="manifesto-w-build2 inline-block">BUILD</span>
+                </div>
+                <div className="overflow-hidden py-1">
+                  <span className="manifesto-w-whats inline-block mr-3 sm:mr-5 bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                    WHAT&apos;S
+                  </span>
+                  <span className="manifesto-w-next inline-block bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
+                    NEXT.
+                  </span>
+                </div>
+              </h2>
+            </div>
+          </div>
+
+          {/* Supporting Manifesto - 3 Distinct Editorial Statements */}
+          <div className="manifesto-supporting-statements space-y-1.5 pt-2 font-mono text-sm sm:text-base text-emerald-400/90 tracking-wide select-none">
+            <div className="overflow-hidden">
+              <p className="manifesto-support-1">We don&apos;t follow templates.</p>
+            </div>
+            <div className="overflow-hidden">
+              <p className="manifesto-support-2">We don&apos;t chase noise.</p>
+            </div>
+            <div className="overflow-hidden">
+              <p className="manifesto-support-3 text-cyan-300 font-semibold">We engineer what comes next.</p>
+            </div>
+          </div>
+
+          <p className="manifesto-desc text-base sm:text-lg text-zinc-400 font-light leading-relaxed max-w-3xl pt-1">
+            We operate as an elite experimental laboratory and software foundry for founders and
+            forward-thinking enterprises who refuse to settle for ordinary digital products.
           </p>
         </div>
 

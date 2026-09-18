@@ -13,7 +13,7 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
   // 1. Direct High-Precision Interceptors
   if (/^(who founded aevion|who created aevion|who is behind aevion|who are the founders|meet the founders|founders|founder)\b/i.test(clean)) {
     return {
-      text: "**Sai Vinoth** and **Edison** founded Aevion Studio as equal co-founders.\n\n• **Sai Vinoth**: Full Stack Developer and AI/ML Engineer.\n• **Edison**: Front End Developer.\n\nTwo builders, zero middlemen, engineering technology without limits.",
+      text: "Aevion Studio was founded by **Sai Rio** (Founder & Lead Engineer) and **Edison** (Co-Founder).\n\n• **Sai Rio**: Founder & Lead Engineer — conceived, architected, designed, and engineered Aevion from scratch.\n• **Edison**: Co-Founder.\n\nTwo builders, zero middlemen, engineering technology without limits.",
       suggestedFollowUps: [
         "What are we building?",
         "Explain the technology",
@@ -25,7 +25,7 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (/\b(who is sai|who is sai rio|who is sai vinoth|about sai|sai's role|sai github)\b/i.test(clean)) {
     return {
-      text: "**Sai Vinoth** is Co-Founder of Aevion, directing **Full Stack Development and AI/ML Engineering**.\n\nHe engineers our autonomous LLM pipelines, vector indexing, Next.js architecture, and cloud backends.\n\nGitHub: https://github.com/SaiVinoth17",
+      text: "**Sai Rio** is Founder and Lead Engineer of Aevion Studio.\n\nHe is the builder behind Aevion — responsible for its architecture, interface, engineering, AI systems, and product experience, built from the ground up.\n\nGitHub: https://github.com/SaiVinoth17",
       suggestedFollowUps: [
         "Who is Edison?",
         "What are we building?",
@@ -36,9 +36,9 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (/\b(who is edison|about edison|edison's role|edison github)\b/i.test(clean)) {
     return {
-      text: "**Edison** is Co-Founder of Aevion, directing **Front End Development**.\n\nHe architects high-performance UI layers, 120 FPS WebGL shaders, interactive 3D graphics, and client performance.\n\nGitHub: https://github.com/edisonedi84431-art",
+      text: "**Edison** is Co-Founder of Aevion Studio, partnering in studio foundation, digital vision, and strategic direction.\n\nGitHub: https://github.com/edisonedi84431-art",
       suggestedFollowUps: [
-        "Who is Sai Vinoth?",
+        "Who is Sai Rio?",
         "What are we building?",
         "Explore our projects",
       ],
@@ -47,7 +47,7 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (/\b(are sai and edison both founders|are both founders|are they co-founders|who is the main founder|is edison a founder)\b/i.test(clean)) {
     return {
-      text: "**Yes. Sai Vinoth and Edison are equal co-founders.**\n\nNeither founder is subordinate to the other. They architect, build, and deploy every system together directly.",
+      text: "**Sai Rio** is the Founder & Lead Engineer who architected and engineered Aevion from the ground up. **Edison** is Co-Founder of the studio.\n\nTogether they established Aevion Studio with a unified vision: technology without limits.",
       suggestedFollowUps: [
         "What are we building?",
         "Enter the lab",
@@ -59,7 +59,7 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (/\b(who built this website|who made this website|who coded this|who designed this|who built this)\b/i.test(clean)) {
     return {
-      text: "Co-founders **Sai Vinoth** and **Edison** built this platform directly.\n\nEngineered on Next.js 16 App Router, React 19, TypeScript, Three.js shaders, and Tailwind CSS.",
+      text: "This platform was conceived, designed, architected, and engineered from scratch by **Sai Rio** (Founder & Lead Engineer).\n\nBuilt on Next.js 16 App Router, React 19, TypeScript, WebGL shaders, GSAP kinetic motion, and Tailwind CSS.",
       suggestedFollowUps: [
         "Meet the founders",
         "Explain the technology",
@@ -81,7 +81,7 @@ export function generateAIResponse(query: string, history: ConversationMessage[]
 
   if (/\b(what are you building|what are we building|current projects|what do you build|experiments|enter the lab)\b/i.test(clean)) {
     return {
-      text: "We are currently engineering four flagship systems:\n\n• **Aevion Studio OS**: The studio's motion OS and WebGL sandbox.\n• **Nilgiris Explorers**: Geospatial travel discovery with real-time trail routing.\n• **Ooty Mistwings**: Luxury hospitality booking engine with cinematic 3D previews.\n• **Gaming Kingdom**: Real-time multiplayer gaming hub powered by WebSockets.",
+      text: "We are currently engineering flagship systems:\n\n• **Aevion Studio OS**: The studio's motion OS and WebGL sandbox.\n• **Nilgiris Explorers**: Geospatial travel discovery with real-time trail routing.\n• **The Gaming Kingdom**: Real-time multiplayer gaming hub powered by WebSockets.\n• **House of Petalss**: Interactive flower boutique booking and florist platform.\n• **Ooty Mistwings**: Luxury hospitality booking engine with cinematic 3D previews.",
       suggestedFollowUps: [
         "Explain the technology",
         "Meet the founders",

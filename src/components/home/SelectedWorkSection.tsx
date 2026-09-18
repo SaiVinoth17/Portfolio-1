@@ -3,7 +3,9 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { ArrowUpRight, Github, Layers, Compass, Sparkles, Gamepad2, Laptop } from "lucide-react";
+import { SplitText } from "gsap/SplitText";
+import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
+import { ArrowUpRight, Github, Layers, Compass, Sparkles, Gamepad2, Laptop, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
@@ -84,8 +86,27 @@ const CASE_STUDIES: CaseStudy[] = [
     icon: Gamepad2,
   },
   {
-    id: "aevion-studio-os",
+    id: "house-of-petalss",
     number: "04",
+    name: "House of Petalss",
+    category: "E-Commerce & Florist Platform",
+    tagline: "Interactive flower boutique booking & digital storefront in Ooty.",
+    problem:
+      "Traditional floral shops in Ooty lacked an interactive digital presence with real-time bouquet previews and friction-free direct booking funnels.",
+    solution:
+      "Engineered an elegant storefront with high-resolution floral curation catalogs, instant WhatsApp direct order uplink, and mobile-first fluid browsing.",
+    outcome:
+      "Delivered crisp floral visual fidelity, responsive booking interactions, and sub-second page performance across mobile devices.",
+    technologies: ["Next.js", "React 19", "Tailwind CSS", "TypeScript", "Framer Motion"],
+    demoUrl: "/projects/house-of-petalss",
+    githubUrl: "https://github.com/aevionstudio",
+    status: "SHIPPED & LIVE",
+    accentColor: "#ec4899",
+    icon: ShoppingBag,
+  },
+  {
+    id: "aevion-studio-os",
+    number: "05",
     name: "Aevion Studio OS",
     category: "Brand Motion & Experimental Lab",
     tagline: "The studio's flagship interactive operating system & 3D sandbox.",
@@ -94,9 +115,9 @@ const CASE_STUDIES: CaseStudy[] = [
     solution:
       "Created an OS-grade interactive portfolio with customizable command palette, WebGL laboratory, terminal developer mode, and smooth Lenis scroll mechanics.",
     outcome:
-      "A living technology demonstration built by Sai Rio and Edison to showcase studio capability in real time.",
+      "A living technology demonstration designed, architected, and engineered from scratch by Sai Rio to showcase studio capability in real time.",
     technologies: ["Next.js 16", "Three.js", "GSAP", "Lenis", "OGL", "Groq AI"],
-    demoUrl: "/showcase",
+    demoUrl: "/projects/aevion-studio-os",
     githubUrl: "https://github.com/aevionstudio",
     status: "PRODUCTION CORE",
     accentColor: "#38bdf8",
@@ -111,44 +132,150 @@ export default function SelectedWorkSection() {
     () => {
       if (!sectionRef.current || isReducedMotion()) return;
 
-      // Section Header
-      gsap.fromTo(
-        ".work-header-elem",
-        { opacity: 0, y: 25 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.1,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.cinematic,
-          scrollTrigger: {
-            trigger: ".work-header",
-            start: "top 85%",
-            once: true,
-          },
-        }
-      );
+      // 1. Eyebrow Terminal Decode
+      gsap.to(".work-eyebrow-text", {
+        scrollTrigger: {
+          trigger: ".work-header",
+          start: "top 85%",
+          once: true,
+        },
+        scrambleText: {
+          text: "PRODUCTION CASE STUDIES",
+          chars: "0101#@*!",
+          speed: 0.35,
+        },
+        duration: 0.8,
+        ease: "none",
+      });
 
-      // Project Cards Progressive Reveal
+      // 2. Headline Staged Line Displacement
+      const headlineTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".work-header",
+          start: "top 82%",
+          once: true,
+        },
+      });
+
+      headlineTl
+        .fromTo(
+          ".work-hl-line1",
+          { x: -35, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+        )
+        .fromTo(
+          ".work-hl-line2",
+          { x: 35, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+          "<0.1"
+        )
+        .fromTo(
+          ".work-header-desc",
+          { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power2.out" },
+          "-=0.3"
+        )
+        .fromTo(
+          ".work-archive-btn",
+          { y: 15, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.2"
+        );
+
+      // 3. Project Cards Progressive Reveal
       const cards = gsap.utils.toArray<HTMLElement>(".case-study-card");
       cards.forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 40, scale: 0.98 },
+          { opacity: 0, y: 45, scale: 0.97 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: MOTION.duration.cinematic,
-            ease: MOTION.ease.cinematic,
+            duration: 0.85,
+            ease: "power3.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
+              start: "top 82%",
               once: true,
             },
           }
         );
       });
+
+      // Case numbers rolling transition
+      gsap.utils.toArray<HTMLElement>(".case-num-text").forEach((el) => {
+        const text = el.innerText;
+        gsap.to(el, {
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
+            once: true,
+          },
+          scrambleText: {
+            text: text,
+            chars: "0123456789",
+            speed: 0.3,
+          },
+          duration: 0.6,
+          ease: "none",
+        });
+      });
+
+      // Project names tracking snap
+      gsap.fromTo(
+        ".case-name-text",
+        { letterSpacing: "-0.04em", y: 12, opacity: 0 },
+        {
+          letterSpacing: "0em",
+          y: 0,
+          opacity: 1,
+          stagger: 0.12,
+          duration: 0.7,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".case-study-card",
+            start: "top 78%",
+            once: true,
+          },
+        }
+      );
+
+      // Categories tracking expansion
+      gsap.fromTo(
+        ".case-cat-text",
+        { letterSpacing: "0.05em", opacity: 0 },
+        {
+          letterSpacing: "0.18em",
+          opacity: 1,
+          stagger: 0.12,
+          duration: 0.65,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".case-study-card",
+            start: "top 78%",
+            once: true,
+          },
+        }
+      );
+
+      // Narrative boxes directional entrance
+      gsap.fromTo(
+        ".case-narrative-box",
+        { y: 20, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          stagger: 0.08,
+          duration: 0.6,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".case-study-card",
+            start: "top 72%",
+            once: true,
+          },
+        }
+      );
     },
     { scope: sectionRef }
   );
@@ -157,7 +284,7 @@ export default function SelectedWorkSection() {
     <section
       ref={sectionRef}
       id="work"
-      className="relative bg-[#050509] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
+      className="relative scroll-mt-20 bg-[#050509] text-white py-32 px-4 sm:px-8 lg:px-16 border-t border-white/10 selection:bg-emerald-500 selection:text-black overflow-hidden"
     >
       {/* Background radial glow */}
       <div className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-white/[0.02] blur-[150px] rounded-full" />
@@ -166,28 +293,27 @@ export default function SelectedWorkSection() {
         {/* Section Header */}
         <div className="work-header flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-white/10 pb-12">
           <div className="space-y-4">
-            <div className="work-header-elem inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-cyan-400">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.03] border border-white/10 text-xs font-mono text-cyan-400 select-none">
               <Layers size={13} />
-              <span>PRODUCTION CASE STUDIES</span>
+              <span className="work-eyebrow-text">PRODUCTION CASE STUDIES</span>
             </div>
-            <h2 className="work-header-elem text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white">
-              SELECTED
-              <br />
-              <span className="bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
+            <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white select-none">
+              <span className="work-hl-line1 block">SELECTED</span>
+              <span className="work-hl-line2 block bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
                 SYSTEMS &amp; ARCHITECTURE.
               </span>
             </h2>
           </div>
 
-          <div className="work-header-elem max-w-md">
-            <p className="text-sm font-mono text-zinc-400 leading-relaxed">
+          <div className="max-w-md space-y-4">
+            <p className="work-header-desc text-sm font-mono text-zinc-400 leading-relaxed">
               Every project is a bespoke case study engineered with strict type safety, visual
               storytelling, and high-performance mechanics.
             </p>
-            <div className="mt-4">
+            <div>
               <Link
                 href="/projects"
-                className="inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-[0.1em] font-bold"
+                className="work-archive-btn inline-flex items-center gap-2 text-xs font-mono text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-[0.1em] font-bold select-none"
               >
                 ACCESS FULL ARCHIVE <ArrowUpRight size={14} />
               </Link>
@@ -213,8 +339,8 @@ export default function SelectedWorkSection() {
                   {/* Left Column: Number, Title, Overview */}
                   <div className="lg:col-span-5 space-y-6 flex flex-col justify-between">
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm font-mono font-bold text-zinc-500">
+                      <div className="flex items-center gap-3 select-none">
+                        <span className="case-num-text text-sm font-mono font-bold text-zinc-500">
                           CASE {project.number}
                         </span>
                         <span className="text-zinc-600">•</span>
@@ -231,15 +357,15 @@ export default function SelectedWorkSection() {
                       </div>
 
                       <div>
-                        <h3 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-zinc-100 transition-colors">
+                        <h3 className="case-name-text text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-zinc-100 transition-colors select-none">
                           {project.name}
                         </h3>
-                        <div className="text-xs font-mono text-zinc-400 mt-1 uppercase tracking-wider">
+                        <div className="case-cat-text text-xs font-mono text-zinc-400 mt-1 uppercase select-none">
                           {project.category}
                         </div>
                       </div>
 
-                      <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
+                      <p className="case-tagline-text text-sm sm:text-base text-zinc-300 leading-relaxed font-light">
                         {project.tagline}
                       </p>
                     </div>
@@ -250,7 +376,7 @@ export default function SelectedWorkSection() {
                         {project.technologies.map((tech) => (
                           <span
                             key={tech}
-                            className="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/10 text-zinc-400"
+                            className="case-tech-pill text-[11px] font-mono px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/10 text-zinc-400 select-none"
                           >
                             {tech}
                           </span>
@@ -287,8 +413,8 @@ export default function SelectedWorkSection() {
 
                   {/* Right Column: Problem, Solution, Outcome Narrative */}
                   <div className="lg:col-span-7 space-y-4 flex flex-col justify-center">
-                    <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-2">
-                      <div className="text-[11px] font-mono uppercase tracking-widest text-red-400/90 font-semibold">
+                    <div className="case-narrative-box p-6 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+                      <div className="text-[11px] font-mono uppercase tracking-widest text-red-400/90 font-semibold select-none">
                         01 // THE CHALLENGE
                       </div>
                       <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
@@ -296,8 +422,8 @@ export default function SelectedWorkSection() {
                       </p>
                     </div>
 
-                    <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-2">
-                      <div className="text-[11px] font-mono uppercase tracking-widest text-emerald-400 font-semibold">
+                    <div className="case-narrative-box p-6 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+                      <div className="text-[11px] font-mono uppercase tracking-widest text-emerald-400 font-semibold select-none">
                         02 // ARCHITECTURE &amp; SOLUTION
                       </div>
                       <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">
@@ -305,8 +431,8 @@ export default function SelectedWorkSection() {
                       </p>
                     </div>
 
-                    <div className="p-6 rounded-2xl bg-black/40 border border-white/5 space-y-2">
-                      <div className="text-[11px] font-mono uppercase tracking-widest text-cyan-400 font-semibold">
+                    <div className="case-narrative-box p-6 rounded-2xl bg-black/40 border border-white/5 space-y-2">
+                      <div className="text-[11px] font-mono uppercase tracking-widest text-cyan-400 font-semibold select-none">
                         03 // MEASURABLE OUTCOME
                       </div>
                       <p className="text-xs sm:text-sm text-zinc-300 leading-relaxed">

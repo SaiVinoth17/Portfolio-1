@@ -1,32 +1,37 @@
 import React from "react";
-import AirlockHero from "@/components/ui/airlock-spaceship-hero";
+import GlobeScrollDemo from "@/components/ui/landing-page";
 import ManifestoSection from "@/components/home/ManifestoSection";
 import FoundersSection from "@/components/home/FoundersSection";
-import RippleDistortionSection from "@/components/home/RippleDistortionSection";
 import SelectedWorkSection from "@/components/home/SelectedWorkSection";
 import JourneyTimelineSection from "@/components/home/JourneyTimelineSection";
 import CapabilitiesSection from "@/components/home/CapabilitiesSection";
 
-export const metadata = {
-  title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
+import { constructMetadata } from "@/lib/seo/metadata";
+
+export const metadata = constructMetadata({
+  title: "Aevion Studio — Futuristic Technology & AI Studio | Sai Rio & Edison",
   description:
-    "Aevion is an AI & experimental technology studio founded by Sai Rio and Edison. Two builders. One vision. Technology without limits.",
-};
+    "Aevion is an independent AI & experimental technology studio founded by Sai Rio and Edison. Conceived, architected, and engineered from scratch by Sai Rio. Engineering autonomous AI, high-throughput systems, and next-generation web architectures.",
+  path: "/",
+  keywords: [
+    "Aevion Studio",
+    "Sai Rio",
+    "Sai Vinoth",
+    "Edison",
+    "Nilgiris Explorers",
+    "The Gaming Kingdom",
+    "House of Petalss",
+    "Aevion Studio OS",
+    "AI Software Studio",
+    "Futuristic Technology Lab",
+  ],
+});
 
 export default function Page() {
   return (
     <main className="w-full bg-[#030306] text-white selection:bg-emerald-500 selection:text-black">
-      {/* Scroll-locked scrub-driven video hero */}
-      <AirlockHero
-        title="WE BUILD SYSTEMS THAT FEEL IMPOSSIBLE."
-        tagline="An elite technology studio building autonomous AI systems and high-performance web experiences."
-        theme="vacuum"
-        scrubDistance={3200}
-        holdDistance={1100}
-      />
-
-      {/* Interactive WebGL Ripple Distortion Shader Laboratory */}
-      <RippleDistortionSection />
+      {/* Scroll-globe hero replacing previous AirlockHero + RippleDistortionSection */}
+      <GlobeScrollDemo />
 
       {/* Manifesto: Turning Ambitious Ideas Into Real Technology */}
       <ManifestoSection />

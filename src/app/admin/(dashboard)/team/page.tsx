@@ -49,12 +49,11 @@ export default function AdminTeamPage() {
             <div>
               <h3 className="text-xl font-bold text-white font-mono">Sai Rio</h3>
               <p className="text-xs font-mono text-zinc-400 mt-1">
-                Product · Engineering · AI · Systems · Vision
+                Founder · Lead Engineer · Full-Stack & AI Systems
               </p>
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-              Architect of autonomous neural pipelines, low-latency streaming infrastructure, and
-              first-party digital architectures.
+              Lead engineer and architect of Aevion Studio. Conceived, architected, and engineered the platform from scratch.
             </p>
           </div>
 
@@ -70,12 +69,11 @@ export default function AdminTeamPage() {
             <div>
               <h3 className="text-xl font-bold text-white font-mono">Edison</h3>
               <p className="text-xs font-mono text-zinc-400 mt-1">
-                Development · Technology · Engineering · Building
+                Co-Founder · Studio Foundation & Strategy
               </p>
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-              Architect of high-performance frontend graphics, distributed serverless execution, and
-              computational reliability.
+              Co-Founder of Aevion Studio, partnering in studio foundation, digital brand direction, and strategic growth.
             </p>
           </div>
         </div>

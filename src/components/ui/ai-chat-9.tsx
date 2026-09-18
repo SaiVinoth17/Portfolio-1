@@ -40,6 +40,17 @@ export interface AIModel {
 
 export const AI_MODELS: AIModel[] = [
   {
+    id: "gpt-6-astra",
+    name: "GPT-6 Astra",
+    provider: "openai",
+    providerName: "Experiential Labs",
+    description: "Next-gen model accessed through the Experiential gateway.",
+    contextWindow: "128,000 tokens",
+    speed: "ultra",
+    supportsReasoning: true,
+    isRecommended: true,
+  },
+  {
     id: "gemini-2.5-flash",
     name: "Gemini 2.5 Flash",
     provider: "gemini",
@@ -48,7 +59,6 @@ export const AI_MODELS: AIModel[] = [
     contextWindow: "1,000,000 tokens",
     speed: "450 tok/s",
     supportsReasoning: true,
-    isRecommended: true,
   },
   {
     id: "llama-3.3-70b-versatile",

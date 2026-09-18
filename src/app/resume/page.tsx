@@ -87,7 +87,7 @@ export default function ResumePage() {
           transition={{ delay: 0.2 }}
           className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed print:text-zinc-700 print:text-xs print:mx-0"
         >
-          Co-Founded by Sai Rio &amp; Edison. Specialized in Next.js 16 App Router, React 19, high-throughput AI LLM inference pipelines, distributed edge architectures, and GPU-accelerated creative motion engineering.
+          Co-Founded by Sai Rio &amp; Edison. Engineered by Sai Rio: Specialized in Next.js 16 App Router, React 19, high-throughput AI LLM inference pipelines, distributed edge architectures, and GPU-accelerated creative motion engineering.
         </motion.p>
 
         {/* Action Controls */}
