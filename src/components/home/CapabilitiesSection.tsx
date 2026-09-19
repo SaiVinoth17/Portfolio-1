@@ -3,10 +3,13 @@
 import React, { useState, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { Cpu, Zap, Globe, Shield, Terminal, Database, ArrowUpRight, Activity } from "lucide-react";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
 const LAB_MODULES = [
   {
@@ -83,15 +86,15 @@ export default function CapabilitiesSection() {
       gsap.to(".cap-eyebrow-text", {
         scrollTrigger: {
           trigger: ".cap-header",
-          start: "top 85%",
+          start: "top 88%",
           once: true,
         },
         scrambleText: {
           text: "EXPERIMENTAL LAB & CAPABILITIES",
           chars: "0101#@*!",
-          speed: 0.35,
+          speed: 0.45,
         },
-        duration: 0.8,
+        duration: 0.4,
         ease: "none",
       });
 
@@ -99,7 +102,7 @@ export default function CapabilitiesSection() {
       const headlineTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".cap-header",
-          start: "top 82%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -107,94 +110,100 @@ export default function CapabilitiesSection() {
       headlineTl
         .fromTo(
           ".cap-hl-line1",
-          { x: -35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
         )
         .fromTo(
           ".cap-hl-line2",
-          { x: 35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
-          "<0.1"
+          { x: 20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+          "<0.08"
         )
         .fromTo(
           ".cap-header-desc",
           { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power2.out" },
-          "-=0.3"
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.2"
         );
 
-      // 3. Cards Grid Progressive Reveal
-      gsap.fromTo(
-        ".capability-card",
-        { opacity: 0, y: 40, scale: 0.97 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.08,
-          duration: 0.8,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".capabilities-grid",
-            start: "top 80%",
-            once: true,
-          },
-        }
-      );
+      // 3. Capability Cards Staged Stagger per Card
+      const cards = gsap.utils.toArray<HTMLElement>(".capability-card");
+      cards.forEach((card) => {
+        const cat = card.querySelector(".cap-cat-text");
+        const title = card.querySelector(".cap-title-text");
+        const summary = card.querySelector(".cap-summary-text");
 
-      // Category tracking expansion
-      gsap.fromTo(
-        ".cap-cat-text",
-        { letterSpacing: "0.05em", opacity: 0 },
-        {
-          letterSpacing: "0.2em",
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".capabilities-grid",
-            start: "top 78%",
-            once: true,
-          },
-        }
-      );
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 22, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
 
-      // Title vertical masked reveal
-      gsap.fromTo(
-        ".cap-title-text",
-        { y: 15, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.65,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".capabilities-grid",
-            start: "top 76%",
-            once: true,
-          },
+        if (cat) {
+          gsap.fromTo(
+            cat,
+            { letterSpacing: "0.05em", opacity: 0 },
+            {
+              letterSpacing: "0.2em",
+              opacity: 1,
+              duration: 0.45,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
         }
-      );
 
-      // Summary clip-path reveal
-      gsap.fromTo(
-        ".cap-summary-text",
-        { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-        {
-          clipPath: "inset(0 0% 0 0)",
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.7,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".capabilities-grid",
-            start: "top 72%",
-            once: true,
-          },
+        if (title) {
+          gsap.fromTo(
+            title,
+            { y: 10, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.52,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
         }
-      );
+
+        if (summary) {
+          gsap.fromTo(
+            summary,
+            { opacity: 0, y: 8 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.45,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
+        }
+      });
 
       // Metric telemetry decode
       gsap.utils.toArray<HTMLElement>(".cap-metric-text").forEach((el) => {
@@ -202,7 +211,7 @@ export default function CapabilitiesSection() {
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "top 82%",
+            start: "top 90%",
             once: true,
           },
           scrambleText: {
@@ -214,6 +223,8 @@ export default function CapabilitiesSection() {
           ease: "none",
         });
       });
+
+      ScrollTrigger.refresh();
     },
     { scope: sectionRef }
   );

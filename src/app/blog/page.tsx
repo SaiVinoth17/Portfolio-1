@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight, Clock, Tag, Search, BookOpen } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 const ARTICLES = [
   {
@@ -153,24 +154,22 @@ export default function BlogPage() {
           <div className="flex items-end justify-between gap-8 flex-wrap">
             <div>
               <div className="text-[10px] font-bold tracking-widest text-indigo-600 mb-4 flex items-center gap-2">
-                <BookOpen size={11} /> AEVION JOURNAL · ENGINEERING & CRAFT
+                <BookOpen size={11} />
+                <AevionText variant="eyebrow" text="AEVION JOURNAL · ENGINEERING & CRAFT" />
               </div>
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+              <AevionText
+                as="h1"
+                variant="display"
+                text="The Lab."
                 className="text-6xl sm:text-8xl font-black text-zinc-900 leading-none tracking-tighter"
                 style={{ fontFamily: "'Georgia', serif" }}
-              >
-                The Lab.
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+              />
+              <AevionText
+                variant="paragraph"
+                text="Deep technical writing on AI engineering, creative frontend, full-stack architecture, and motion design."
                 className="text-zinc-500 mt-4 max-w-md text-sm"
-              >
-                Deep technical writing on AI engineering, creative frontend, full-stack architecture, and motion design.
-              </motion.p>
+                delay={0.15}
+              />
             </div>
             {/* Issue tag */}
             <div className="text-right hidden sm:block">
@@ -209,22 +208,36 @@ export default function BlogPage() {
           className="rounded-3xl p-12 text-center border-2 border-indigo-100"
           style={{ background: "linear-gradient(135deg, #eef2ff, #f8faff)" }}
         >
-          <div className="text-xs font-bold tracking-widest text-indigo-600 mb-4">SUBSCRIBE TO THE JOURNAL</div>
-          <h2 className="text-3xl font-black text-zinc-900 mb-3" style={{ fontFamily: "'Georgia', serif" }}>
-            New issues monthly.
-          </h2>
-          <p className="text-zinc-500 text-sm mb-8">Get deep technical articles on AI, engineering, and motion design delivered to your inbox.</p>
+          <AevionText
+            variant="eyebrow"
+            text="SUBSCRIBE TO THE JOURNAL"
+            className="text-xs font-bold tracking-widest text-indigo-600 mb-4"
+          />
+          <AevionText
+            as="h2"
+            variant="section"
+            text="New issues monthly."
+            className="text-3xl font-black text-zinc-900 mb-3 text-center"
+            style={{ fontFamily: "'Georgia', serif" }}
+          />
+          <AevionText
+            variant="paragraph"
+            text="Get deep technical articles on AI, engineering, and motion design delivered to your inbox."
+            className="text-zinc-500 text-sm mb-8 max-w-md mx-auto text-center"
+          />
           <div className="flex gap-3 max-w-md mx-auto">
             <input
               placeholder="your@email.com"
               className="flex-1 px-4 py-3 rounded-xl text-sm border border-indigo-200 focus:border-indigo-400 outline-none text-zinc-900 placeholder-zinc-400"
             />
-            <button
-              className="px-6 py-3 rounded-xl font-bold text-sm text-white"
-              style={{ background: "linear-gradient(135deg, #6366f1, #4f46e5)" }}
-            >
-              Subscribe
-            </button>
+            <AevionText variant="button">
+              <button
+                className="px-6 py-3 rounded-xl font-bold text-sm text-white"
+                style={{ background: "linear-gradient(135deg, #6366f1, #4f46e5)" }}
+              >
+                Subscribe
+              </button>
+            </AevionText>
           </div>
         </section>
       </div>

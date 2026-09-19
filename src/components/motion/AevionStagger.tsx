@@ -3,7 +3,12 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isReducedMotion, isMobileDevice } from "@/lib/motion/motionTokens";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 interface AevionStaggerProps {
   children: React.ReactNode;
@@ -19,11 +24,11 @@ interface AevionStaggerProps {
 export function AevionStagger({
   children,
   selector = "> *",
-  stagger = MOTION.stagger.normal,
-  duration = MOTION.duration.standard,
-  yOffset = 30,
+  stagger,
+  duration,
+  yOffset,
   delay = 0,
-  threshold = "top 85%",
+  threshold,
   className = "",
 }: AevionStaggerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,22 +44,28 @@ export function AevionStagger({
       const targets = containerRef.current.querySelectorAll(selector);
       if (!targets.length) return;
 
+      const isMobile = isMobileDevice();
+      const effectiveThreshold = threshold ?? (isMobile ? "top 92%" : "top 88%");
+      const animDuration = duration ?? (isMobile ? 0.42 : 0.52);
+      const animStagger = stagger ?? (isMobile ? 0.03 : 0.05);
+      const animY = yOffset ?? (isMobile ? 12 : 16);
+
       gsap.fromTo(
         targets,
         {
           opacity: 0,
-          y: yOffset,
+          y: animY,
         },
         {
           opacity: 1,
           y: 0,
-          duration,
+          duration: animDuration,
           delay,
-          stagger,
-          ease: MOTION.ease.cinematic,
+          stagger: animStagger,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: threshold,
+            start: effectiveThreshold,
             once: true,
           },
         }

@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Github, ArrowUpRight, Sparkles, Star, GitFork, Code2 } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion/AevionText";
 
 const REPOS = [
   {
@@ -185,30 +186,23 @@ export default function OpenSourcePage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-green-500/25 bg-green-500/10 text-green-400 text-xs font-mono mb-8"
           >
-            <Github size={12} /> OPEN SOURCE · {REPOS.length} REPOSITORIES
+            <Github size={12} />
+            <AevionText as="span" variant="eyebrow" text={`OPEN SOURCE · ${REPOS.length} REPOSITORIES`} />
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
-          >
-            <span className="text-white">Built in</span>
-            <br />
-            <span style={{ background: "linear-gradient(135deg, #4ade80 0%, #22c55e 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              the open.
-            </span>
-          </motion.h1>
+          <AevionText
+            as="h1"
+            variant="display"
+            text="Built in the open."
+            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6 text-white"
+          />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.25 }}
-            className="text-zinc-500 text-sm max-w-lg leading-relaxed"
-          >
-            Aevion&apos;s core tools, components, and boilerplates are open source. Use them, fork them, improve them.
-          </motion.p>
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="Open-source primitives, shaders, and boilerplates. Engineered for the developer community with MIT licensing."
+            className="text-zinc-400 text-sm max-w-lg leading-relaxed"
+          />
         </section>
 
         {/* Contribution Graph */}

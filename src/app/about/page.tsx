@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles, Code2, Cpu, Zap, Layers, Clock, Terminal, Github, Network, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion/AevionText";
 
 const FOUNDERS_INFO = [
   {
@@ -105,33 +106,36 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-mono"
           >
-            <Sparkles size={12} /> THE PEOPLE BEHIND AEVION
+            <Sparkles size={12} />
+            <AevionText as="span" variant="eyebrow" text="THE PEOPLE BEHIND AEVION" />
           </motion.div>
 
-          <h1 className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none">
-            <span className="text-white">Engineering at the</span>
-            <br />
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-              edge of the possible.
-            </span>
-          </h1>
+          <AevionText
+            as="h1"
+            variant="display"
+            text="Two builders. One codebase. Zero compromise."
+            className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none text-white justify-center"
+          />
 
-          <p className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed">
-            Founded by <strong className="text-white">Sai Rio</strong> and <strong className="text-white">Edison</strong>. Two builders united by a single vision: technology without limits.
-          </p>
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="Founded by Sai Rio and Edison. We build software with the patience of craftsmen and the speed of modern hardware. Direct architecture, zero agency bloat."
+            className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed justify-center"
+          />
 
           <div className="flex items-center justify-center gap-4 flex-wrap pt-4">
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-xs uppercase font-mono text-black bg-emerald-400 hover:bg-emerald-300 transition-all shadow-[0_0_30px_rgba(52,211,153,0.3)]"
+              className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-xs uppercase font-mono text-black bg-emerald-400 hover:bg-emerald-300 transition-all shadow-[0_0_30px_rgba(52,211,153,0.3)] group"
             >
-              Work With Us <ArrowUpRight size={16} />
+              <span>Work With Us</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
             <Link
               href="/projects"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-2xl font-bold text-xs uppercase font-mono text-white border border-white/15 hover:border-emerald-500/40 transition-colors"
             >
-              View Work <ArrowUpRight size={16} />
+              <span>View Work</span> <ArrowUpRight size={16} />
             </Link>
           </div>
         </motion.div>
@@ -139,12 +143,18 @@ export default function AboutPage() {
 
       {/* Equal Co-Founders Grid */}
       <section className="px-4 sm:px-8 max-w-7xl mx-auto mb-28">
-        <div className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase">
-          LEADERSHIP ARCHITECTURE
-        </div>
-        <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-10">
-          The Two Founders
-        </h2>
+        <AevionText
+          as="div"
+          variant="eyebrow"
+          text="LEADERSHIP ARCHITECTURE"
+          className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase"
+        />
+        <AevionText
+          as="h2"
+          variant="section"
+          text="The Two Founders"
+          className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-10"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {FOUNDERS_INFO.map((founder) => (
@@ -164,7 +174,12 @@ export default function AboutPage() {
                   >
                     {founder.role}
                   </span>
-                  <h3 className="text-3xl font-extrabold text-white mt-2">{founder.name}</h3>
+                  <AevionText
+                    as="h3"
+                    variant="subheading"
+                    text={founder.name}
+                    className="text-3xl font-extrabold text-white mt-2"
+                  />
                   <div className="text-xs font-mono text-zinc-400 mt-1">{founder.title}</div>
                 </div>
 
@@ -181,9 +196,12 @@ export default function AboutPage() {
                 )}
               </div>
 
-              <p className="text-sm text-zinc-300 font-light leading-relaxed">
-                {founder.bio}
-              </p>
+              <AevionText
+                as="p"
+                variant="paragraph"
+                text={founder.bio}
+                className="text-sm text-zinc-300 font-light leading-relaxed"
+              />
 
               <div className="space-y-2 pt-4 border-t border-white/5">
                 <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
@@ -208,12 +226,18 @@ export default function AboutPage() {
       {/* Eras Continuum */}
       <section className="px-4 sm:px-8 max-w-7xl mx-auto mb-28">
         <div className="mb-12">
-          <div className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase">
-            CHRONOLOGY
-          </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Three eras.<br />One trajectory.
-          </h2>
+          <AevionText
+            as="div"
+            variant="eyebrow"
+            text="CHRONOLOGY"
+            className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase"
+          />
+          <AevionText
+            as="h2"
+            variant="section"
+            text="Three eras. One trajectory."
+            className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight"
+          />
         </div>
 
         <div className="grid gap-6">
@@ -245,9 +269,19 @@ export default function AboutPage() {
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white">{era.role}</h3>
+                <AevionText
+                  as="h3"
+                  variant="subheading"
+                  text={era.role}
+                  className="text-xl font-bold text-white"
+                />
                 <p className="text-xs font-mono text-zinc-500">{era.org}</p>
-                <p className="text-sm text-zinc-400 font-light leading-relaxed">{era.summary}</p>
+                <AevionText
+                  as="p"
+                  variant="paragraph"
+                  text={era.summary}
+                  className="text-sm text-zinc-400 font-light leading-relaxed"
+                />
 
                 <div className="flex flex-wrap gap-2 pt-2">
                   {era.stack.map((t) => (
@@ -268,10 +302,18 @@ export default function AboutPage() {
       {/* Engineering Principles */}
       <section className="px-4 sm:px-8 max-w-7xl mx-auto mb-28">
         <div className="mb-12">
-          <div className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase">
-            ENGINEERING PRINCIPLES
-          </div>
-          <h2 className="text-4xl font-extrabold text-white">What we believe in.</h2>
+          <AevionText
+            as="div"
+            variant="eyebrow"
+            text="ENGINEERING PRINCIPLES"
+            className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase"
+          />
+          <AevionText
+            as="h2"
+            variant="section"
+            text="Engineering principles we ship by."
+            className="text-4xl font-extrabold text-white"
+          />
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {PRINCIPLES.map((p, i) => (
@@ -280,8 +322,18 @@ export default function AboutPage() {
               className="p-8 rounded-3xl border border-white/10 bg-white/[0.02] hover:border-emerald-500/30 transition-all"
             >
               <div className="text-2xl font-black text-emerald-500/40 font-mono mb-4">0{i + 1}</div>
-              <h3 className="text-lg font-bold text-white mb-2">{p.title}</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed font-light">{p.body}</p>
+              <AevionText
+                as="h3"
+                variant="subheading"
+                text={p.title}
+                className="text-lg font-bold text-white mb-2"
+              />
+              <AevionText
+                as="p"
+                variant="paragraph"
+                text={p.body}
+                className="text-sm text-zinc-400 leading-relaxed font-light"
+              />
             </div>
           ))}
         </div>
@@ -290,17 +342,23 @@ export default function AboutPage() {
       {/* CTA */}
       <section className="px-4 sm:px-8 max-w-7xl mx-auto mb-20 text-center">
         <div className="p-16 rounded-3xl border border-white/10 bg-gradient-to-r from-emerald-950/20 to-cyan-950/20 relative overflow-hidden">
-          <h2 className="text-4xl font-extrabold text-white mb-4">
-            Ready to build something remarkable?
-          </h2>
-          <p className="text-zinc-400 mb-8 max-w-xl mx-auto text-sm">
-            Whether it&apos;s an AI product, a high-performance web platform, or a creative experience — let&apos;s architect it together.
-          </p>
+          <AevionText
+            as="h2"
+            variant="section"
+            text="Let's build something worth remembering."
+            className="text-4xl font-extrabold text-white mb-4 justify-center"
+          />
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="Direct access to founding engineers. Bring your most ambitious technical brief."
+            className="text-zinc-400 mb-8 max-w-xl mx-auto text-sm justify-center"
+          />
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-xs font-mono uppercase tracking-wider bg-emerald-400 hover:bg-emerald-300 transition-all shadow-[0_0_30px_rgba(52,211,153,0.3)]"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-xs font-mono uppercase tracking-wider bg-emerald-400 hover:bg-emerald-300 transition-all shadow-[0_0_30px_rgba(52,211,153,0.3)] group"
           >
-            Start a Conversation <ArrowUpRight size={16} />
+            <span>Start a Conversation</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </div>
       </section>

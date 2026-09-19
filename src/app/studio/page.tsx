@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles, Cpu, Zap, Globe2, Building2, Users, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 const PILLARS = [
   { title: "Engineer-Led", body: "Every decision at Aevion starts with the engineering team. No feature ships without a solid technical foundation." },
@@ -96,46 +97,48 @@ export default function StudioPage() {
           className="relative z-10 max-w-5xl"
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-rose-500/25 bg-rose-500/10 text-rose-400 text-xs font-mono mb-10">
-            <Sparkles size={12} /> AEVION STUDIO · ESTABLISHED 2024
+            <Sparkles size={12} />
+            <AevionText variant="eyebrow" text="AEVION STUDIO · ESTABLISHED 2024" />
           </div>
 
-          <h1 className="text-6xl sm:text-8xl lg:text-[110px] font-extrabold tracking-tighter leading-none mb-8">
-            <span className="text-white">We make</span>
-            <br />
-            <span style={{
-              background: "linear-gradient(135deg, #f43f5e 0%, #fb923c 50%, #f59e0b 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-            }}>
-              software sing.
-            </span>
-          </h1>
+          <AevionText
+            as="h1"
+            variant="display"
+            text="Software made physical."
+            className="text-6xl sm:text-8xl lg:text-[110px] font-extrabold tracking-tighter leading-none mb-8 text-center"
+          />
 
-          <p className="text-zinc-400 text-lg max-w-2xl mx-auto leading-relaxed mb-12">
-            Aevion Studio is an elite creative technology studio. We engineer AI-first products, GPU-accelerated web experiences, and full-stack platforms for teams that refuse to settle for ordinary.
-          </p>
+          <AevionText
+            variant="paragraph"
+            text="An independent creative technology studio. We combine high-throughput engineering with tactile micro-motion for products that demand distinction."
+            className="text-zinc-400 text-lg max-w-2xl mx-auto leading-relaxed mb-12 text-center"
+            delay={0.15}
+          />
 
           <div className="flex items-center justify-center gap-4 flex-wrap">
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-sm"
-              style={{ background: "linear-gradient(135deg, #f43f5e, #fb7185)", boxShadow: "0 0 50px #f43f5e30" }}
-            >
-              Our Services <ArrowUpRight size={16} />
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-sm border border-white/15 hover:border-rose-500/40 transition-colors"
-            >
-              Start a Project
-            </Link>
+            <AevionText variant="button">
+              <Link
+                href="/services"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-sm group"
+                style={{ background: "linear-gradient(135deg, #f43f5e, #fb7185)", boxShadow: "0 0 50px #f43f5e30" }}
+              >
+                <span>Our Disciplines</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </Link>
+            </AevionText>
+            <AevionText variant="button">
+              <Link
+                href="/contact"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-white text-sm border border-white/15 hover:border-rose-500/40 transition-colors"
+              >
+                <span>Start a Project</span>
+              </Link>
+            </AevionText>
           </div>
         </motion.div>
 
         {/* Scroll hint */}
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-          <div className="text-[10px] font-mono text-zinc-600 tracking-widest">SCROLL</div>
+          <div className="text-[10px] font-mono text-zinc-500 tracking-widest">SCROLL</div>
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
@@ -148,18 +151,28 @@ export default function StudioPage() {
       <section className="px-4 sm:px-8 max-w-7xl mx-auto py-32">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div>
-            <div className="text-xs font-mono font-bold tracking-widest text-rose-500 mb-6">STUDIO PHILOSOPHY</div>
-            <h2 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-8">
-              Software built with the precision of engineering and the soul of art.
-            </h2>
-            <p className="text-zinc-400 text-sm leading-relaxed mb-8">
-              We believe that truly great software is indistinguishable from craft. Performance, correctness, and beauty are not tradeoffs — they are our baseline.
-            </p>
+            <AevionText
+              variant="eyebrow"
+              text="STUDIO PHILOSOPHY"
+              className="text-xs font-mono font-bold tracking-widest text-rose-500 mb-6"
+            />
+            <AevionText
+              as="h2"
+              variant="section"
+              text="Precision in the code. Tactile feedback in the glass."
+              className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-8"
+            />
+            <AevionText
+              variant="paragraph"
+              text="We treat interfaces as physical instruments. Fluid kinetic motion, GPU shaders, and instant response times are non-negotiable defaults."
+              className="text-zinc-400 text-sm leading-relaxed mb-8"
+              delay={0.1}
+            />
             <Link
               href="/process"
-              className="inline-flex items-center gap-2 text-sm font-bold text-rose-400 hover:text-rose-300 transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-bold text-rose-400 hover:text-rose-300 transition-colors group"
             >
-              See Our Process <ArrowUpRight size={14} />
+              <span>See Our Process</span> <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
             </Link>
           </div>
 
@@ -197,8 +210,17 @@ export default function StudioPage() {
       >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <div className="text-xs font-mono font-bold tracking-widest text-rose-500 mb-4">CAPABILITIES</div>
-            <h2 className="text-4xl font-extrabold text-white">What we do best.</h2>
+            <AevionText
+              variant="eyebrow"
+              text="CAPABILITIES"
+              className="text-xs font-mono font-bold tracking-widest text-rose-500 mb-4"
+            />
+            <AevionText
+              as="h2"
+              variant="section"
+              text="What we do best."
+              className="text-4xl font-extrabold text-white text-center"
+            />
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {CAPABILITIES.map((c, i) => {
@@ -224,15 +246,26 @@ export default function StudioPage() {
 
       {/* CTA */}
       <section className="px-4 sm:px-8 max-w-7xl mx-auto py-24 text-center">
-        <h2 className="text-4xl font-extrabold text-white mb-4">Ready to start?</h2>
-        <p className="text-zinc-400 text-sm mb-8 max-w-md mx-auto">Tell us about your project and we&apos;ll architect the solution together.</p>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-2 px-10 py-5 rounded-2xl font-bold text-black text-sm"
-          style={{ background: "linear-gradient(135deg, #f43f5e, #fb923c)", boxShadow: "0 0 60px #f43f5e25" }}
-        >
-          Start a Project <ArrowUpRight size={16} />
-        </Link>
+        <AevionText
+          as="h2"
+          variant="section"
+          text="Let's build something worth remembering."
+          className="text-4xl font-extrabold text-white mb-4 text-center"
+        />
+        <AevionText
+          variant="paragraph"
+          text="Send us your technical requirements. We'll outline an architectural plan within 24 hours."
+          className="text-zinc-400 text-sm mb-8 max-w-md mx-auto text-center"
+        />
+        <AevionText variant="button">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 px-10 py-5 rounded-2xl font-bold text-black text-sm group"
+            style={{ background: "linear-gradient(135deg, #f43f5e, #fb923c)", boxShadow: "0 0 60px #f43f5e25" }}
+          >
+            <span>Start a Project Brief</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </Link>
+        </AevionText>
       </section>
     </main>
   );

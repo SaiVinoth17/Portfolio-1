@@ -15,6 +15,7 @@ import {
   Database,
   Lock,
 } from "lucide-react";
+import { AevionText } from "@/components/motion/AevionText";
 
 export const metadata: Metadata = constructMetadata({
   title: "AI Systems Engineering & Autonomous Architectures",
@@ -122,19 +123,21 @@ export default function AIPage() {
       {/* Hero */}
       <header className="space-y-6 max-w-3xl border-b border-white/10 pb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-cyan-500/20 bg-cyan-500/10 text-cyan-400 text-xs font-mono uppercase tracking-widest">
-          <Cpu size={13} /> Applied Intelligence &amp; Autonomous Systems
+          <Cpu size={13} />
+          <AevionText as="span" variant="eyebrow" text="Applied Intelligence & Autonomous Systems" />
         </div>
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono">
-          NEURAL PIPELINES.
-          <br />
-          <span className="bg-gradient-to-r from-cyan-400 via-emerald-300 to-teal-400 bg-clip-text text-transparent">
-            DETERMINISTIC SYSTEMS.
-          </span>
-        </h1>
-        <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-          We treat artificial intelligence as a rigorous engineering discipline—not a demo gimmick.
-          Our architectures pair multi-agent autonomy with strict mathematical guardrails.
-        </p>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="NEURAL PIPELINES. DETERMINISTIC SYSTEMS."
+          className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono"
+        />
+        <AevionText
+          as="p"
+          variant="paragraph"
+          text="Autonomous reasoning engines, streaming inference, and domain vector retrieval. We build AI systems that do real work, not toy demos."
+          className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans"
+        />
 
         <div className="flex flex-wrap items-center gap-4 pt-4">
           <a
@@ -167,8 +170,18 @@ export default function AIPage() {
                 <div className="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
                   <Icon size={24} />
                 </div>
-                <h2 className="text-xl font-bold text-white font-mono">{pillar.title}</h2>
-                <p className="text-sm text-zinc-400 font-sans leading-relaxed">{pillar.description}</p>
+                <AevionText
+                  as="h2"
+                  variant="subheading"
+                  text={pillar.title}
+                  className="text-xl font-bold text-white font-mono"
+                />
+                <AevionText
+                  as="p"
+                  variant="paragraph"
+                  text={pillar.description}
+                  className="text-sm text-zinc-400 font-sans leading-relaxed"
+                />
                 <ul className="space-y-2 pt-2 border-t border-white/5 text-xs font-mono text-zinc-300">
                   {pillar.specs.map((s, idx) => (
                     <li key={idx} className="flex items-start gap-2">

@@ -15,6 +15,7 @@ import {
   Code2,
   Server,
 } from "lucide-react";
+import { AevionText } from "@/components/motion/AevionText";
 
 export const metadata: Metadata = constructMetadata({
   title: "Engineering Capabilities & Systems Matrix",
@@ -147,15 +148,21 @@ export default function CapabilitiesPage() {
       {/* Hero */}
       <header className="space-y-6 max-w-3xl border-b border-white/10 pb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/10 text-emerald-400 text-xs font-mono uppercase tracking-widest">
-          <Workflow size={13} /> Engineering Capabilities
+          <Workflow size={13} />
+          <AevionText as="span" variant="eyebrow" text="Engineering Capabilities" />
         </div>
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono">
-          SYSTEMS MATRIX &amp; CORE DISCIPLINES.
-        </h1>
-        <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-          We combine computational rigor with bespoke visual engineering. Every discipline below is
-          executed in-house with production-grade guarantees.
-        </p>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="SYSTEMS MATRIX & CORE DISCIPLINES."
+          className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono"
+        />
+        <AevionText
+          as="p"
+          variant="paragraph"
+          text="From raw GPU compute shaders to deterministic AI agents. Here is our technical surface, engineered in-house by Sai Rio and Edison."
+          className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans"
+        />
       </header>
 
       {/* Capabilities List */}
@@ -175,9 +182,12 @@ export default function CapabilitiesPage() {
                       <Icon size={24} />
                     </div>
                     <div>
-                      <h2 className="text-xl sm:text-2xl font-bold text-white font-mono">
-                        {cap.name}
-                      </h2>
+                      <AevionText
+                        as="h2"
+                        variant="subheading"
+                        text={cap.name}
+                        className="text-xl sm:text-2xl font-bold text-white font-mono"
+                      />
                       <div className="text-xs font-mono text-zinc-500 mt-0.5">
                         DISCIPLINE LEAD: <span className="text-zinc-300">{cap.lead}</span>
                       </div>
@@ -191,9 +201,12 @@ export default function CapabilitiesPage() {
                   </Link>
                 </div>
 
-                <p className="text-sm sm:text-base text-zinc-300 leading-relaxed font-sans">
-                  {cap.summary}
-                </p>
+                <AevionText
+                  as="p"
+                  variant="paragraph"
+                  text={cap.summary}
+                  className="text-sm sm:text-base text-zinc-300 leading-relaxed font-sans"
+                />
 
                 {/* Specs Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
@@ -258,8 +271,7 @@ export default function CapabilitiesPage() {
           HAVE AN ARCHITECTURAL CHALLENGE?
         </h2>
         <p className="text-sm text-zinc-400 max-w-xl mx-auto">
-          We partner with ambitious startups and technology organizations to build what others deem
-          impossible.
+          Bring us your most challenging technical constraints. We architect systems that scale without drama.
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
           <Link

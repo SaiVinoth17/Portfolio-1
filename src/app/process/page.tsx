@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion/AevionText";
 
 const PHASES = [
   {
@@ -77,7 +78,12 @@ function PhaseCard({ phase, index }: { phase: typeof PHASES[0]; index: number })
             <div className="text-3xl">{phase.icon}</div>
           </div>
 
-          <h3 className="text-xl font-extrabold text-white mb-1">{phase.title}</h3>
+          <AevionText
+            as="h3"
+            variant="subheading"
+            text={phase.title}
+            className="text-xl font-extrabold text-white mb-1"
+          />
           <div
             className="text-[10px] font-mono px-2.5 py-0.5 rounded-full inline-block mb-6"
             style={{ background: `${phase.color}15`, color: phase.color }}
@@ -133,37 +139,30 @@ export default function ProcessPage() {
               animate={{ opacity: 1, y: 0 }}
               className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-orange-500/25 bg-orange-500/10 text-orange-400 text-xs font-mono mb-8"
             >
-              <Sparkles size={12} /> MISSION PROTOCOL · {PHASES.length} PHASES
+              <Sparkles size={12} />
+              <AevionText as="span" variant="eyebrow" text={`MISSION PROTOCOL · ${PHASES.length} PHASES`} />
             </motion.div>
 
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
-            >
-              <span className="text-white">From brief to</span>
-              <br />
-              <span style={{ background: "linear-gradient(135deg, #f97316 0%, #ef4444 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                orbit.
-              </span>
-            </motion.h1>
+            <AevionText
+              as="h1"
+              variant="display"
+              text="Architecture to orbit. Five tight phases."
+              className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6 text-white"
+            />
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.25 }}
-              className="text-zinc-500 text-sm max-w-lg leading-relaxed"
-            >
-              Every Aevion project follows a proven mission protocol. Tight cycles, transparent communication, zero surprises.
-            </motion.p>
+            <AevionText
+              as="p"
+              variant="paragraph"
+              text="No guesswork. No bloated agile ceremonies. Five disciplined milestones from first technical schematic to global production edge."
+              className="text-zinc-400 text-sm max-w-lg leading-relaxed"
+            />
           </div>
         </section>
 
         {/* Horizontal Scroll Timeline */}
         <section className="pb-20">
           <div className="px-4 sm:px-8 max-w-7xl mx-auto mb-6">
-            <div className="text-[10px] font-mono text-zinc-600 tracking-widest">← SCROLL TO ADVANCE MISSION →</div>
+            <div className="text-[10px] font-mono text-zinc-500 tracking-widest">← SCROLL TO ADVANCE MISSION →</div>
           </div>
           <div className="overflow-x-auto pb-8" style={{ scrollSnapType: "x mandatory" }}>
             <div className="flex gap-6 px-4 sm:px-8" style={{ width: "max-content" }}>
@@ -195,20 +194,20 @@ export default function ProcessPage() {
           </div>
           <div className="flex justify-between">
             {PHASES.map((p) => (
-              <div key={p.num} className="text-[9px] font-mono text-zinc-700 w-8 text-center">{p.code.split(" ")[0]}</div>
+              <div key={p.num} className="text-[9px] font-mono text-zinc-500 w-8 text-center">{p.code.split(" ")[0]}</div>
             ))}
           </div>
         </div>
 
         {/* CTA */}
         <section className="px-4 sm:px-8 max-w-7xl mx-auto pb-24 text-center">
-          <p className="text-zinc-600 font-mono text-xs mb-6">READY TO INITIATE LAUNCH SEQUENCE?</p>
+          <p className="text-zinc-500 font-mono text-xs mb-6 uppercase tracking-wider">READY TO ARCHITECT YOUR PRODUCT?</p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-sm"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-black text-sm group"
             style={{ background: "linear-gradient(135deg, #f97316, #ef4444)", boxShadow: "0 0 40px #f9731630" }}
           >
-            Start Mission Briefing <ArrowUpRight size={16} />
+            <span>Initiate Mission Brief</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </section>
       </div>

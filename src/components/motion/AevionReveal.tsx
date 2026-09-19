@@ -3,7 +3,12 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isReducedMotion, isMobileDevice } from "@/lib/motion/motionTokens";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 interface AevionRevealProps {
   children: React.ReactNode;
@@ -11,7 +16,7 @@ interface AevionRevealProps {
   distance?: number;
   duration?: number;
   delay?: number;
-  threshold?: string; // ScrollTrigger start e.g. "top 85%"
+  threshold?: string; // ScrollTrigger start e.g. "top 88%"
   className?: string;
   once?: boolean;
 }
@@ -19,10 +24,10 @@ interface AevionRevealProps {
 export function AevionReveal({
   children,
   direction = "up",
-  distance = 35,
-  duration = MOTION.duration.standard,
+  distance,
+  duration,
   delay = 0,
-  threshold = "top 88%",
+  threshold,
   className = "",
   once = true,
 }: AevionRevealProps) {
@@ -36,13 +41,18 @@ export function AevionReveal({
         return;
       }
 
+      const isMobile = isMobileDevice();
+      const effectiveThreshold = threshold ?? (isMobile ? "top 92%" : "top 88%");
+      const animDuration = duration ?? (isMobile ? 0.44 : 0.54);
+      const effectiveDistance = distance ?? (isMobile ? 14 : 20);
+
       let xOffset = 0;
       let yOffset = 0;
 
-      if (direction === "up") yOffset = distance;
-      else if (direction === "down") yOffset = -distance;
-      else if (direction === "left") xOffset = distance;
-      else if (direction === "right") xOffset = -distance;
+      if (direction === "up") yOffset = effectiveDistance;
+      else if (direction === "down") yOffset = -effectiveDistance;
+      else if (direction === "left") xOffset = effectiveDistance;
+      else if (direction === "right") xOffset = -effectiveDistance;
 
       gsap.fromTo(
         containerRef.current,
@@ -55,12 +65,12 @@ export function AevionReveal({
           opacity: 1,
           x: 0,
           y: 0,
-          duration,
+          duration: animDuration,
           delay,
-          ease: MOTION.ease.cinematic,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: threshold,
+            start: effectiveThreshold,
             once,
           },
         }

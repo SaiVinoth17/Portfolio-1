@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Activity, CheckCircle2, ShieldCheck, Server, Globe2, RefreshCw, Clock } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 interface ServiceStatus {
   name: string;
@@ -41,34 +42,24 @@ export default function StatusPage() {
     <main className="min-h-screen bg-black text-white pt-28 pb-24 px-4 sm:px-8 max-w-7xl mx-auto selection:bg-emerald-500 selection:text-black">
       {/* Header */}
       <section className="space-y-6 text-center max-w-4xl mx-auto mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono"
-        >
-          <Activity size={14} className="animate-pulse" /> AEVION INFRASTRUCTURE HEALTH
-        </motion.div>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
+          <Activity size={14} className="animate-pulse" />
+          <AevionText variant="eyebrow" text="AEVION INFRASTRUCTURE HEALTH" />
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans"
-        >
-          All Systems <br />
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            Fully Operational.
-          </span>
-        </motion.h1>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="All Systems Fully Operational."
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans text-center"
+        />
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed"
-        >
-          Real-time health monitoring and uptime status across Aevion Studio&apos;s global edge routes, AI streaming inference backends, and rendering pipelines.
-        </motion.p>
+        <AevionText
+          variant="paragraph"
+          text="Real-time uptime and latency metrics across our global edge routes, Groq inference endpoints, and WebGL shader pipelines."
+          className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed text-center"
+          delay={0.15}
+        />
       </section>
 
       {/* Global Status Banner */}
@@ -79,7 +70,12 @@ export default function StatusPage() {
               <CheckCircle2 size={24} />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Global Edge Status: 100% Nominal</h2>
+              <AevionText
+                as="h2"
+                variant="section"
+                text="Global Edge Status: 100% Nominal"
+                className="text-lg font-bold text-white"
+              />
               <p className="text-xs text-zinc-400 font-mono">No active incidents or service degradations reported</p>
             </div>
           </div>
@@ -94,8 +90,17 @@ export default function StatusPage() {
       {/* Detailed Services Table */}
       <section className="mb-24 space-y-4">
         <div className="border-b border-white/10 pb-4">
-          <span className="text-xs font-mono uppercase text-emerald-400 font-bold block mb-1">SERVICE BREAKDOWN</span>
-          <h3 className="text-xl font-bold text-white">System Component Metrics</h3>
+          <AevionText
+            variant="eyebrow"
+            text="SERVICE BREAKDOWN"
+            className="text-xs font-mono uppercase text-emerald-400 font-bold block mb-1"
+          />
+          <AevionText
+            as="h3"
+            variant="subheading"
+            text="System Component Metrics"
+            className="text-xl font-bold text-white"
+          />
         </div>
 
         <div className="space-y-3">

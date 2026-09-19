@@ -8,7 +8,7 @@ import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import { ArrowUpRight, Github, Activity, Sparkles, Cpu } from "lucide-react";
-import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { MOTION, isReducedMotion, isMobileDevice } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
 import { getWhatsAppUrl } from "@/lib/config/studio";
 import AevionLogo from "@/components/ui/AevionLogo";
@@ -22,21 +22,26 @@ export default function Footer() {
     () => {
       if (!footerRef.current || isReducedMotion()) return;
 
+      const isMobile = isMobileDevice();
       const splits = [];
 
       // 1. Eyebrow: Tracking lock from expanded space
       gsap.fromTo(
         ".footer-eyebrow-text",
-        { opacity: 0, letterSpacing: "0.22em", filter: "blur(4px)" },
+        {
+          opacity: 0,
+          letterSpacing: "0.22em",
+          ...(isMobile ? {} : { filter: "blur(4px)" }),
+        },
         {
           opacity: 1,
           letterSpacing: "0.1em",
-          filter: "blur(0px)",
+          ...(isMobile ? {} : { filter: "blur(0px)" }),
           duration: MOTION.duration.standard,
           ease: MOTION.ease.cinematic,
           scrollTrigger: {
             trigger: ".footer-banner",
-            start: "top 88%",
+            start: "top 92%",
             once: true,
           },
         }
@@ -52,35 +57,45 @@ export default function Footer() {
       if (headlineSplit.lines.length >= 2) {
         gsap.fromTo(
           headlineSplit.lines[0],
-          { x: -35, opacity: 0, scale: 0.94, filter: "blur(3px)" },
+          {
+            x: -35,
+            opacity: 0,
+            scale: 0.94,
+            ...(isMobile ? {} : { filter: "blur(3px)" }),
+          },
           {
             x: 0,
             opacity: 1,
             scale: 1,
-            filter: "blur(0px)",
+            ...(isMobile ? {} : { filter: "blur(0px)" }),
             duration: MOTION.duration.deliberate,
             ease: MOTION.ease.cinematic,
             scrollTrigger: {
               trigger: ".footer-banner",
-              start: "top 85%",
+              start: "top 90%",
               once: true,
             },
           }
         );
         gsap.fromTo(
           headlineSplit.lines[1],
-          { x: 35, opacity: 0, letterSpacing: "-0.04em", filter: "blur(3px)" },
+          {
+            x: 35,
+            opacity: 0,
+            letterSpacing: "-0.04em",
+            ...(isMobile ? {} : { filter: "blur(3px)" }),
+          },
           {
             x: 0,
             opacity: 1,
             letterSpacing: "0em",
-            filter: "blur(0px)",
+            ...(isMobile ? {} : { filter: "blur(0px)" }),
             duration: MOTION.duration.deliberate,
             ease: MOTION.ease.editorial,
-            delay: 0.15,
+            delay: 0.1,
             scrollTrigger: {
               trigger: ".footer-banner",
-              start: "top 85%",
+              start: "top 90%",
               once: true,
             },
           }
@@ -98,7 +113,7 @@ export default function Footer() {
             ease: MOTION.ease.cinematic,
             scrollTrigger: {
               trigger: ".footer-banner",
-              start: "top 85%",
+              start: "top 90%",
               once: true,
             },
           }
@@ -118,12 +133,12 @@ export default function Footer() {
         {
           y: "0%",
           opacity: 1,
-          stagger: 0.1,
+          stagger: 0.08,
           duration: MOTION.duration.standard,
           ease: MOTION.ease.cinematic,
           scrollTrigger: {
             trigger: ".footer-banner",
-            start: "top 82%",
+            start: "top 88%",
             once: true,
           },
         }
@@ -139,10 +154,10 @@ export default function Footer() {
           y: 0,
           duration: MOTION.duration.standard,
           ease: MOTION.ease.elasticOut,
-          delay: 0.25,
+          delay: 0.15,
           scrollTrigger: {
             trigger: ".footer-banner",
-            start: "top 82%",
+            start: "top 88%",
             once: true,
           },
         }
@@ -225,6 +240,9 @@ export default function Footer() {
           },
         }
       );
+
+      // Force refresh ScrollTrigger calculations after all splits have adjusted the DOM
+      ScrollTrigger.refresh();
 
       return () => {
         splits.forEach((s) => {

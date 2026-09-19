@@ -5,6 +5,7 @@ import { motion, useInView } from "framer-motion";
 import { ExternalLink, ArrowUpRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { getPublishedProjects, Project } from "@/lib/data/projects";
+import { AevionText } from "@/components/motion/AevionText";
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [hovered, setHovered] = useState(false);
@@ -68,15 +69,21 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </div>
 
             {/* Title */}
-            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1">
-              <Link href={`/projects/${project.slug}`} className="hover:underline">
-                {project.title}
-              </Link>
-            </h3>
+            <AevionText
+              as="h3"
+              variant="project"
+              text={project.title}
+              className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-1"
+            />
             <p className="text-xs font-mono mb-5" style={{ color: `${project.color}90` }}>{project.category}</p>
 
             {/* Description */}
-            <p className="text-sm text-zinc-400 leading-relaxed mb-6">{project.description}</p>
+            <AevionText
+              as="p"
+              variant="paragraph"
+              text={project.description}
+              className="text-sm text-zinc-400 leading-relaxed mb-6"
+            />
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2 mb-6">
@@ -139,30 +146,23 @@ export default function ProjectsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-amber-500/25 bg-amber-500/10 text-amber-400 text-xs font-mono mb-8"
           >
-            <Sparkles size={12} /> FILM LAB · {projects.length} NEGATIVES DEVELOPED
+            <Sparkles size={12} />
+            <AevionText as="span" variant="eyebrow" text={`FILM LAB · ${projects.length} NEGATIVES DEVELOPED`} />
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
-          >
-            <span className="text-white">Proven systems</span>
-            <br />
-            <span style={{ background: "linear-gradient(135deg, #f59e0b 0%, #ef4444 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              shipped with intent.
-            </span>
-          </motion.h1>
+          <AevionText
+            as="h1"
+            variant="display"
+            text="Production platforms. Conceived and coded from zero."
+            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6 text-white"
+          />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.25 }}
-            className="text-zinc-500 text-sm max-w-lg leading-relaxed"
-          >
-            Every project is an architecture decision. Engineered for performance, built for scale, shipped without compromise.
-          </motion.p>
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="Four verified production systems. Real users, low-latency WebSocket infrastructure, and sub-second page loads."
+            className="text-zinc-400 text-sm max-w-lg leading-relaxed"
+          />
         </section>
 
         {/* Projects Grid */}
@@ -174,13 +174,13 @@ export default function ProjectsPage() {
 
         {/* More work CTA */}
         <section className="text-center">
-          <p className="text-zinc-600 font-mono text-xs mb-6">MORE IN THE DARKROOM — CONTACT FOR FULL PORTFOLIO</p>
+          <p className="text-zinc-500 font-mono text-xs mb-6 uppercase tracking-wider">MORE IN THE DARKROOM — CONTACT FOR FULL DOSSIER</p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-black"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-black group"
             style={{ background: "linear-gradient(135deg, #f59e0b, #ef4444)", boxShadow: "0 0 40px #f59e0b30" }}
           >
-            Request Full Portfolio <ArrowUpRight size={16} />
+            <span>Request Full Dossier</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </section>
       </div>

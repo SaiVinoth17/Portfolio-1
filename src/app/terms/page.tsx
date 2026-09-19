@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, FileText, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 export default function TermsPage() {
   return (
@@ -11,11 +12,15 @@ export default function TermsPage() {
       {/* Header */}
       <section className="space-y-4 mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
-          <FileText size={14} /> CLIENT & PLATFORM TERMS
+          <FileText size={14} />
+          <AevionText variant="eyebrow" text="CLIENT & PLATFORM TERMS" />
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight font-sans">
-          Terms of Service
-        </h1>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="Terms of Service"
+          className="text-3xl sm:text-5xl font-bold text-white tracking-tight font-sans"
+        />
         <p className="text-xs font-mono text-zinc-500">LAST UPDATED: MARCH 2025 • AEVION STUDIO</p>
       </section>
 

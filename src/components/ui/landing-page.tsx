@@ -409,7 +409,7 @@ function ScrollGlobe({
       const tl2 = gsap.timeline({
         scrollTrigger: {
           trigger: "#innovation",
-          start: "top 80%",
+          start: "top 88%",
           end: "top 20%",
           scrub: 0.5,
         },
@@ -573,7 +573,7 @@ function ScrollGlobe({
       const tl3 = gsap.timeline({
         scrollTrigger: {
           trigger: "#discovery",
-          start: "top 78%",
+          start: "top 88%",
           end: "top 25%",
           scrub: 0.55,
         },
@@ -617,7 +617,7 @@ function ScrollGlobe({
       const tl3Concepts = gsap.timeline({
         scrollTrigger: {
           trigger: ".scene3-concepts-grid",
-          start: "top 85%",
+          start: "top 90%",
           end: "top 40%",
           scrub: 0.55,
         },
@@ -738,6 +738,9 @@ function ScrollGlobe({
             ease: "power2.in",
           }
         );
+
+      // Force recalculate coordinates after SplitText injections
+      ScrollTrigger.refresh();
 
       return () => {
         heroSplit.revert();

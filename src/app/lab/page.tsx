@@ -6,6 +6,7 @@ import { getBreadcrumbSchema, getFAQSchema } from "@/lib/seo/schema";
 import { LAB_EXPERIMENTS } from "@/lib/data/labExperiments";
 import { FlaskConical, Sparkles, ArrowRight, Cpu, Activity, LayoutGrid } from "lucide-react";
 import LabDepthShowcase from "@/components/lab/LabDepthShowcase";
+import { AevionText } from "@/components/motion/AevionText";
 
 export const metadata: Metadata = constructMetadata({
   title: "Aevion Lab · Interactive WebGL & Computational R&D",
@@ -60,19 +61,21 @@ export default function LabIndexPage() {
       {/* Header */}
       <header className="space-y-6 max-w-3xl border-b border-white/10 pb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-purple-500/20 bg-purple-500/10 text-purple-400 text-xs font-mono uppercase tracking-widest">
-          <FlaskConical size={13} /> Interactive Technology Laboratory
+          <FlaskConical size={13} />
+          <AevionText as="span" variant="eyebrow" text="Interactive Technology Laboratory" />
         </div>
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono">
-          AEVION LAB //
-          <br />
-          <span className="bg-gradient-to-r from-purple-400 via-pink-300 to-cyan-400 bg-clip-text text-transparent">
-            GRAPHICS &amp; R&amp;D.
-          </span>
-        </h1>
-        <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-          Where mathematical shaders meet real-time physics. Inspect our published experiments in
-          fluid dynamics, procedural geometry deformation, and hardware-accelerated 3D models.
-        </p>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="AEVION LAB // GRAPHICS & R&D."
+          className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono"
+        />
+        <AevionText
+          as="p"
+          variant="paragraph"
+          text="Where mathematical shaders meet real-time physics. Inspect our published experiments in fluid dynamics, procedural geometry deformation, and hardware-accelerated 3D models."
+          className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans"
+        />
       </header>
 
       {/* 3D Depth Carousel Showcase */}

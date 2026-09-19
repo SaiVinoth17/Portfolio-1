@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Sparkles, ShieldCheck, Eye, Keyboard, Zap } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 const ACCESSIBILITY_FEATURES = [
   {
@@ -33,34 +34,24 @@ export default function AccessibilityPage() {
     <main className="min-h-screen bg-black text-white pt-28 pb-24 px-4 sm:px-8 max-w-7xl mx-auto selection:bg-emerald-500 selection:text-black">
       {/* Header */}
       <section className="space-y-6 text-center max-w-4xl mx-auto mb-20">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono"
-        >
-          <ShieldCheck size={14} /> ACCESSIBILITY & INCLUSION CHARTER
-        </motion.div>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
+          <ShieldCheck size={14} />
+          <AevionText variant="eyebrow" text="ACCESSIBILITY & INCLUSION CHARTER" />
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans"
-        >
-          Accessibility as an <br />
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">
-            Engineering Standard.
-          </span>
-        </motion.h1>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="Accessibility as an Engineering Standard."
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans text-center"
+        />
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-base sm:text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed"
-        >
-          We believe high-fidelity creative motion must never come at the expense of universal accessibility. Our engineering protocols ensure every visitor has an uncompromised experience.
-        </motion.p>
+        <AevionText
+          variant="paragraph"
+          text="We believe high-fidelity creative motion must never come at the expense of universal accessibility. Our engineering protocols ensure every visitor has an uncompromised experience."
+          className="text-base sm:text-xl text-zinc-400 max-w-3xl mx-auto leading-relaxed text-center"
+          delay={0.15}
+        />
       </section>
 
       {/* Grid of Accessibility Commitments */}

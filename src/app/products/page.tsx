@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { ArrowUpRight, Sparkles, Terminal, Activity, Package, ExternalLink } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 const PRODUCTS = [
   {
@@ -169,35 +170,24 @@ export default function ProductsPage() {
       <div className="relative pt-32 pb-24 px-4 sm:px-8 max-w-7xl mx-auto">
         {/* Hero — clean App Store energy */}
         <section className="mb-20 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/25 bg-blue-50 text-blue-600 text-xs font-mono mb-8"
-          >
-            <Package size={12} /> AEVION PRODUCTS · {PRODUCTS.length} LAUNCHES
-          </motion.div>
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/25 bg-blue-50 text-blue-600 text-xs font-mono mb-8">
+            <Package size={12} />
+            <AevionText variant="eyebrow" text={`AEVION PRODUCTS · ${PRODUCTS.length} LAUNCHES`} />
+          </div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6 text-zinc-900"
-          >
-            Software that
-            <br />
-            <span style={{ background: "linear-gradient(135deg, #1e3a5f, #3b82f6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              ships.
-            </span>
-          </motion.h1>
+          <AevionText
+            as="h1"
+            variant="display"
+            text="First-party software tools & platforms."
+            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6 text-zinc-900 text-center"
+          />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.25 }}
-            className="text-zinc-500 text-sm max-w-xl mx-auto leading-relaxed"
-          >
-            Aevion builds and maintains products used by engineers, designers, and product teams. Click a card to flip and see pricing.
-          </motion.p>
+          <AevionText
+            variant="paragraph"
+            text="Proprietary tools, developer runtimes, and motion platforms engineered by Aevion Studio. Click any card to inspect technical specifications."
+            className="text-zinc-500 text-sm max-w-xl mx-auto leading-relaxed text-center"
+            delay={0.15}
+          />
         </section>
 
         {/* Products Grid */}
@@ -210,16 +200,31 @@ export default function ProductsPage() {
           className="rounded-3xl p-12 text-center border-2 border-zinc-100"
           style={{ background: "linear-gradient(135deg, #f8faff, #eef2ff)" }}
         >
-          <div className="text-xs font-mono font-bold text-blue-600 tracking-widest mb-4">ENTERPRISE PLANS</div>
-          <h2 className="text-3xl font-extrabold text-zinc-900 mb-3">Need something custom?</h2>
-          <p className="text-zinc-500 text-sm mb-8 max-w-md mx-auto">We build bespoke software solutions for enterprises and high-growth teams. Let&apos;s talk.</p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-white"
-            style={{ background: "linear-gradient(135deg, #1e3a5f, #3b82f6)", boxShadow: "0 0 40px #3b82f630" }}
-          >
-            Contact for Enterprise <ArrowUpRight size={16} />
-          </Link>
+          <AevionText
+            variant="eyebrow"
+            text="ENTERPRISE & BESPOKE"
+            className="text-xs font-mono font-bold text-blue-600 tracking-widest mb-4"
+          />
+          <AevionText
+            as="h2"
+            variant="section"
+            text="Need a bespoke platform?"
+            className="text-3xl font-extrabold text-zinc-900 mb-3 text-center"
+          />
+          <AevionText
+            variant="paragraph"
+            text="We partner with visionary teams to build dedicated software architectures. Inquire directly."
+            className="text-zinc-500 text-sm mb-8 max-w-md mx-auto text-center"
+          />
+          <AevionText variant="button">
+            <Link
+              href="/contact"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-white"
+              style={{ background: "linear-gradient(135deg, #1e3a5f, #3b82f6)", boxShadow: "0 0 40px #3b82f630" }}
+            >
+              Contact for Enterprise <ArrowUpRight size={16} />
+            </Link>
+          </AevionText>
         </section>
       </div>
     </main>

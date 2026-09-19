@@ -3,12 +3,15 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { ArrowUpRight, Github, Layers, Compass, Sparkles, Gamepad2, Laptop, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
+
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
 interface CaseStudy {
   id: string;
@@ -136,15 +139,15 @@ export default function SelectedWorkSection() {
       gsap.to(".work-eyebrow-text", {
         scrollTrigger: {
           trigger: ".work-header",
-          start: "top 85%",
+          start: "top 88%",
           once: true,
         },
         scrambleText: {
           text: "PRODUCTION CASE STUDIES",
           chars: "0101#@*!",
-          speed: 0.35,
+          speed: 0.45,
         },
-        duration: 0.8,
+        duration: 0.4,
         ease: "none",
       });
 
@@ -152,7 +155,7 @@ export default function SelectedWorkSection() {
       const headlineTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".work-header",
-          start: "top 82%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -160,26 +163,26 @@ export default function SelectedWorkSection() {
       headlineTl
         .fromTo(
           ".work-hl-line1",
-          { x: -35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
         )
         .fromTo(
           ".work-hl-line2",
-          { x: 35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
-          "<0.1"
+          { x: 20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+          "<0.08"
         )
         .fromTo(
           ".work-header-desc",
           { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power2.out" },
-          "-=0.3"
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.2"
         )
         .fromTo(
           ".work-archive-btn",
-          { y: 15, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" },
-          "-=0.2"
+          { y: 12, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.45, ease: "power2.out" },
+          "-=0.15"
         );
 
       // 3. Project Cards Progressive Reveal
@@ -187,16 +190,16 @@ export default function SelectedWorkSection() {
       cards.forEach((card) => {
         gsap.fromTo(
           card,
-          { opacity: 0, y: 45, scale: 0.97 },
+          { opacity: 0, y: 24, scale: 0.98 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 0.85,
+            duration: 0.6,
             ease: "power3.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 82%",
+              start: "top 88%",
               once: true,
             },
           }
@@ -209,73 +212,82 @@ export default function SelectedWorkSection() {
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "top 85%",
+            start: "top 88%",
             once: true,
           },
           scrambleText: {
             text: text,
-            chars: "0123456789",
-            speed: 0.3,
+            chars: "0101#@*!",
+            speed: 0.5,
           },
-          duration: 0.6,
+          duration: 0.4,
           ease: "none",
         });
       });
 
-      // Project names tracking snap
-      gsap.fromTo(
-        ".case-name-text",
-        { letterSpacing: "-0.04em", y: 12, opacity: 0 },
-        {
-          letterSpacing: "0em",
-          y: 0,
-          opacity: 1,
-          stagger: 0.12,
-          duration: 0.7,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".case-study-card",
-            start: "top 78%",
-            once: true,
-          },
-        }
-      );
+      // Project names, categories & narrative boxes staged per card
+      cards.forEach((card) => {
+        const name = card.querySelector(".case-name-text");
+        const cat = card.querySelector(".case-cat-text");
+        const boxes = card.querySelectorAll(".case-narrative-box");
 
-      // Categories tracking expansion
-      gsap.fromTo(
-        ".case-cat-text",
-        { letterSpacing: "0.05em", opacity: 0 },
-        {
-          letterSpacing: "0.18em",
-          opacity: 1,
-          stagger: 0.12,
-          duration: 0.65,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".case-study-card",
-            start: "top 78%",
-            once: true,
-          },
+        if (name) {
+          gsap.fromTo(
+            name,
+            { letterSpacing: "-0.04em", y: 12, opacity: 0 },
+            {
+              letterSpacing: "0em",
+              y: 0,
+              opacity: 1,
+              duration: 0.7,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
         }
-      );
 
-      // Narrative boxes directional entrance
-      gsap.fromTo(
-        ".case-narrative-box",
-        { y: 20, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.08,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".case-study-card",
-            start: "top 72%",
-            once: true,
-          },
+        if (cat) {
+          gsap.fromTo(
+            cat,
+            { letterSpacing: "0.05em", opacity: 0 },
+            {
+              letterSpacing: "0.18em",
+              opacity: 1,
+              duration: 0.65,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: card,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
         }
-      );
+
+        if (boxes.length > 0) {
+          boxes.forEach((box) => {
+            gsap.fromTo(
+              box,
+              { y: 16, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 0.55,
+                ease: "power2.out",
+                scrollTrigger: {
+                  trigger: box,
+                  start: "top 90%",
+                  once: true,
+                },
+              }
+            );
+          });
+        }
+      });
     },
     { scope: sectionRef }
   );

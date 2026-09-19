@@ -34,11 +34,11 @@ export const PROJECTS: Project[] = [
     subtitle: "Premium Tourism & Geospatial Experience Discovery Platform",
     category: "AI & Geospatial Travel Engine",
     description:
-      "An immersive travel discovery platform for the Nilgiri Hills featuring real-time mountain trail mapping, AI-curated itineraries, offline-first trail documentation, and dynamic terrain visualization.",
+      "A geospatial discovery engine for the Nilgiris. Real-time mountain trail routing, offline GPS caching, and interactive 3D terrain elevation built for rugged terrain.",
     problem:
-      "Travelers visiting the Nilgiris (Ooty) struggled with fragmented, static guidebooks and poor real-time trail data across rugged mountainous terrain with intermittent connectivity.",
+      "Hikers in the Nilgiris struggled with static maps and dropped signals. They needed dependable trail coordinates and topography that works entirely offline.",
     approach:
-      "Architected a responsive Next.js application with interactive 3D terrain waypoints, cached offline trail documentation, and fluid momentum scroll sequences.",
+      "We built a responsive Next.js application with vector waypoint geometry, cached trail routing, and fluid momentum scroll sequences.",
     whatWeBuilt: [
       "Dynamic Viewport Waypoint Geometry Engine",
       "Tailwind CSS v4 Responsive Token Grid",
@@ -89,11 +89,11 @@ export const PROJECTS: Project[] = [
     subtitle: "High-Performance Interactive Gaming Portal & Community Hub",
     category: "Real-Time WebSocket Gaming Portal",
     description:
-      "A fast, visually engaging web platform designed to showcase modern frontend engineering, high responsiveness, live multiplayer score synchronization, and interactive UI components for gaming enthusiasts in Ooty.",
+      "A high-throughput competitive gaming hub in Ooty. Sub-15ms WebSocket state synchronization, live spectator leaderboards, and synthesized Web Audio soundscapes.",
     problem:
-      "Gaming community hubs frequently suffer from heavy bundle sizes, slow re-renders, socket latency spikes under high player concurrency, and poor mobile responsiveness.",
+      "Gaming communities battle socket latency spikes and bloated frontend bundles during peak tournament concurrency.",
     approach:
-      "Architected a low-latency socket engine paired with an aggressive frontend caching layer, live score streaming, and an arcade-inspired responsive UI.",
+      "We built a low-overhead WebSocket engine with client-side state prediction, optimistic UI updates, and an arcade sound system.",
     whatWeBuilt: [
       "Modular Component Architecture",
       "Optimized React State Pipelines",
@@ -143,11 +143,11 @@ export const PROJECTS: Project[] = [
     subtitle: "Interactive Flower Booking & Boutique Florist Platform in Ooty",
     category: "E-Commerce & Interactive Florist Platform",
     description:
-      "A modern digital boutique ordering and floral experience platform for House of Petalss in Ooty. Features visual arrangement catalogs, fresh bloom reservation flows, and friction-free direct inquiries.",
+      "An editorial boutique ordering platform for House of Petalss. Visual arrangement previews, fresh bloom reservation funnels, and frictionless WhatsApp inquiry routing.",
     problem:
-      "Traditional florist shops and floral boutiques in Ooty struggled with manual phone orders, lack of real-time bouquet previews, and slow client booking pipelines.",
+      "Local florists relied on manual phone calls and vague text chats without visual confirmation or reliable booking records.",
     approach:
-      "Engineered a streamlined, elegant storefront showcasing curated floral arrangements, custom event bouquet bookings, and responsive mobile-first order workflows.",
+      "We engineered an editorial digital storefront with bespoke floral filters, occasion reservations, and instant mobile-first inquiry pipelines.",
     whatWeBuilt: [
       "Interactive Floral Catalog & Variant Selector",
       "Direct Booking & Event Inquiry Engine",
@@ -195,11 +195,11 @@ export const PROJECTS: Project[] = [
     subtitle: "Interactive Web Operating System & 3D Engineering Lab",
     category: "Brand Motion & Experimental Web OS",
     description:
-      "The flagship digital experience for Aevion Studio — engineered with streaming AI conversation, hardware-accelerated 3D scroll physics, sound synthesis, and real-time telemetry.",
+      "Our experimental web operating system. A 941-frame canvas sequence, custom WebGL fluid shaders, streaming Groq AI intelligence, and zero-CLS kinetic scroll.",
     problem:
-      "Standard agency portfolios felt static, repetitive, and failed to demonstrate true full-stack engineering and creative graphics capabilities.",
+      "Traditional agency portfolios are static brochures that fail to prove technical depth or creative technology capability.",
     approach:
-      "Transformed the website into a living motion operating system with real-time telemetry, Web Audio API sound synthesis, and interactive CLI terminal.",
+      "We conceived and engineered a living web operating system with real-time telemetry, Web Audio synthesizers, and GPU-composited motion.",
     whatWeBuilt: [
       "Next.js 16 App Router Architecture",
       "Groq Llama 3.3 Low-Latency AI Route",

@@ -3,10 +3,13 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { Sparkles, Terminal, Cpu, Zap, ArrowUpRight, Code2 } from "lucide-react";
 import Link from "next/link";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+
+gsap.registerPlugin(ScrollTrigger, SplitText);
 
 const PRINCIPLES = [
   {
@@ -70,7 +73,7 @@ export default function ManifestoSection() {
       const stageTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".manifesto-stage",
-          start: "top 75%",
+          start: "top 88%",
           end: "bottom 25%",
           scrub: 0.6,
         },
@@ -272,34 +275,36 @@ export default function ManifestoSection() {
           "-=0.1"
         );
 
-      // Principle Cards Stagger
-      gsap.fromTo(
-        ".manifesto-card",
-        { opacity: 0, y: 35, scale: 0.98 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.1,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.cinematic,
-          scrollTrigger: {
-            trigger: ".manifesto-cards-grid",
-            start: "top 82%",
-            once: true,
-          },
-        }
-      );
+      // Principle Cards Entrance: Scoped per card for responsive timing on mobile & desktop
+      const cards = sectionRef.current?.querySelectorAll(".manifesto-card") || [];
+      cards.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 20, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.55,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
+      });
 
       // Callout Banner
       gsap.fromTo(
         ".manifesto-banner",
-        { opacity: 0, y: 25 },
+        { opacity: 0, y: 18 },
         {
           opacity: 1,
           y: 0,
-          duration: MOTION.duration.standard,
-          ease: MOTION.ease.cinematic,
+          duration: 0.55,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: ".manifesto-banner",
             start: "top 88%",
@@ -307,6 +312,9 @@ export default function ManifestoSection() {
           },
         }
       );
+
+      // Force refresh of ScrollTrigger after DOM splitting
+      ScrollTrigger.refresh();
 
       return () => {
         justSplit.revert();

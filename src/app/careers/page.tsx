@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Briefcase, Sparkles, ArrowUpRight, Code2, Cpu, Zap, Users, Globe } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion/AevionText";
 
 const ROLES = [
   {
@@ -164,35 +165,33 @@ export default function CareersPage() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400 text-xs font-mono mb-8"
           >
-            <Sparkles size={12} /> WE&apos;RE HIRING · {ROLES.length} OPEN ROLES
+            <Sparkles size={12} />
+            <AevionText as="span" variant="eyebrow" text={`WE'RE HIRING · ${ROLES.length} OPEN ROLES`} />
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6"
-          >
-            <span className="text-white">Build the</span>
-            <br />
-            <span style={{ background: "linear-gradient(135deg, #8b5cf6 0%, #c4b5fd 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              impossible.
-            </span>
-          </motion.h1>
+          <AevionText
+            as="h1"
+            variant="display"
+            text="Small team. Direct craft. High agency."
+            className="text-5xl sm:text-7xl font-extrabold tracking-tight leading-none mb-6 text-white"
+          />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.25 }}
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="A compact engineering studio. We partner with engineers and designers who obsess over code quality, hardware performance, and direct ownership."
             className="text-zinc-400 text-base leading-relaxed"
-          >
-            Aevion is a small, elite team that ships extraordinary software. If you obsess over craft, move fast, and want real ownership — we want to hear from you.
-          </motion.p>
+          />
         </section>
 
         {/* Values */}
         <section className="mb-20">
-          <div className="text-xs font-mono font-bold tracking-widest text-violet-500 mb-6">OUR VALUES</div>
+          <AevionText
+            as="div"
+            variant="eyebrow"
+            text="OUR VALUES"
+            className="text-xs font-mono font-bold tracking-widest text-violet-500 mb-6"
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {VALUES.map((v, i) => {
               const Icon = v.icon;
@@ -209,7 +208,12 @@ export default function CareersPage() {
                   <div className="p-2.5 rounded-xl mb-4 w-fit" style={{ background: "#8b5cf620" }}>
                     <Icon size={18} className="text-violet-400" />
                   </div>
-                  <h3 className="text-sm font-bold text-white mb-2">{v.title}</h3>
+                  <AevionText
+                    as="h3"
+                    variant="subheading"
+                    text={v.title}
+                    className="text-sm font-bold text-white mb-2"
+                  />
                   <p className="text-xs text-zinc-500 leading-relaxed">{v.body}</p>
                 </motion.div>
               );

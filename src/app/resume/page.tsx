@@ -17,6 +17,7 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 const SKILL_MATRIX = [
   {
@@ -61,49 +62,43 @@ export default function ResumePage() {
     <main className="min-h-screen bg-black text-white pt-28 pb-24 px-4 sm:px-8 max-w-7xl mx-auto selection:bg-emerald-500 selection:text-black print:bg-white print:text-black print:pt-6 print:pb-6">
       {/* Header */}
       <section className="space-y-6 text-center max-w-4xl mx-auto mb-16 print:mb-8 print:text-left">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono backdrop-blur-md print:hidden"
-        >
-          <FileText size={14} /> THE DOSSIER • VERIFIED TECHNICAL RECORD
-        </motion.div>
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono backdrop-blur-md print:hidden">
+          <FileText size={14} />
+          <AevionText variant="eyebrow" text="THE DOSSIER • VERIFIED TECHNICAL RECORD" />
+        </div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans print:text-black print:text-3xl"
-        >
-          Aevion Studio <br />
-          <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent print:text-black print:bg-none">
-            Technical Dossier &amp; Architecture.
-          </span>
-        </motion.h1>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="Technical Dossier & Verified Architecture."
+          className="text-4xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight font-sans text-center print:text-black print:text-3xl"
+        />
 
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed print:text-zinc-700 print:text-xs print:mx-0"
-        >
-          Co-Founded by Sai Rio &amp; Edison. Engineered by Sai Rio: Specialized in Next.js 16 App Router, React 19, high-throughput AI LLM inference pipelines, distributed edge architectures, and GPU-accelerated creative motion engineering.
-        </motion.p>
+        <AevionText
+          variant="paragraph"
+          text="Co-founded by Sai Rio and Edison. Architected from scratch by Sai Rio: specialized in Next.js 16, React 19, high-throughput Groq LLM pipelines, and GPU creative engineering."
+          className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed text-center print:text-zinc-700 print:text-xs print:mx-0"
+          delay={0.15}
+        />
 
         {/* Action Controls */}
         <div className="flex flex-wrap items-center justify-center gap-3 pt-2 print:hidden">
-          <button
-            onClick={handlePrint}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-black font-bold text-xs rounded-2xl hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer"
-          >
-            <Printer size={14} /> Print / Save PDF
-          </button>
-          <a
-            href="mailto:hello@aevion.studio"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 border border-white/10 text-white font-mono text-xs rounded-2xl hover:border-emerald-500/40 transition-all"
-          >
-            Request Full ATS CV
-          </a>
+          <AevionText variant="button">
+            <button
+              onClick={handlePrint}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-black font-bold text-xs rounded-2xl hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 cursor-pointer"
+            >
+              <Printer size={14} /> Print / Save PDF
+            </button>
+          </AevionText>
+          <AevionText variant="button">
+            <a
+              href="mailto:hello@aevion.studio"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 border border-white/10 text-white font-mono text-xs rounded-2xl hover:border-emerald-500/40 transition-all"
+            >
+              Request Full ATS CV
+            </a>
+          </AevionText>
         </div>
       </section>
 

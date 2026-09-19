@@ -3,10 +3,13 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { Clock } from "lucide-react";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
 const MILESTONES = [
   {
@@ -61,15 +64,15 @@ export default function JourneyTimelineSection() {
       // 1. Eyebrow Tracking Collapse
       gsap.fromTo(
         ".timeline-eyebrow-text",
-        { letterSpacing: "0.55em", opacity: 0 },
+        { letterSpacing: "0.4em", opacity: 0 },
         {
           letterSpacing: "0.15em",
           opacity: 1,
-          duration: 0.8,
+          duration: 0.45,
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".timeline-header",
-            start: "top 85%",
+            start: "top 88%",
             once: true,
           },
         }
@@ -79,7 +82,7 @@ export default function JourneyTimelineSection() {
       const headlineTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".timeline-header",
-          start: "top 82%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -87,20 +90,20 @@ export default function JourneyTimelineSection() {
       headlineTl
         .fromTo(
           ".timeline-hl-line1",
-          { x: -35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
         )
         .fromTo(
           ".timeline-hl-line2",
-          { x: 35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
-          "<0.1"
+          { x: 20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+          "<0.08"
         )
         .fromTo(
           ".timeline-header-desc",
           { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power2.out" },
-          "-=0.3"
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.2"
         );
 
       // 3. Timeline Milestones Progressive Reveal
@@ -108,15 +111,15 @@ export default function JourneyTimelineSection() {
       items.forEach((item) => {
         gsap.fromTo(
           item,
-          { opacity: 0, x: -30 },
+          { opacity: 0, x: -16 },
           {
             opacity: 1,
             x: 0,
-            duration: 0.8,
+            duration: 0.55,
             ease: "power3.out",
             scrollTrigger: {
               trigger: item,
-              start: "top 82%",
+              start: "top 88%",
               once: true,
             },
           }
@@ -129,15 +132,15 @@ export default function JourneyTimelineSection() {
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "top 85%",
+            start: "top 88%",
             once: true,
           },
           scrambleText: {
             text: text,
             chars: "0123456789PHASE",
-            speed: 0.35,
+            speed: 0.45,
           },
-          duration: 0.6,
+          duration: 0.4,
           ease: "none",
         });
       });
@@ -148,7 +151,7 @@ export default function JourneyTimelineSection() {
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "top 85%",
+            start: "top 90%",
             once: true,
           },
           scrambleText: {
@@ -161,24 +164,73 @@ export default function JourneyTimelineSection() {
         });
       });
 
-      // Milestone titles tracking snap
-      gsap.fromTo(
-        ".timeline-title-text",
-        { letterSpacing: "-0.03em", y: 10, opacity: 0 },
-        {
-          letterSpacing: "0em",
-          y: 0,
-          opacity: 1,
-          stagger: 0.1,
-          duration: 0.65,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".timeline-milestone-item",
-            start: "top 80%",
-            once: true,
-          },
+      // Milestone titles, descriptions & tag pills staged entry
+      items.forEach((item) => {
+        const title = item.querySelector(".timeline-title-text");
+        const desc = item.querySelector(".timeline-desc-text");
+        const tags = item.querySelectorAll(".timeline-tag-pill");
+
+        if (title) {
+          gsap.fromTo(
+            title,
+            { letterSpacing: "-0.03em", y: 10, opacity: 0 },
+            {
+              letterSpacing: "0em",
+              y: 0,
+              opacity: 1,
+              duration: 0.65,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
         }
-      );
+
+        if (desc) {
+          gsap.fromTo(
+            desc,
+            { opacity: 0, y: 12 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.65,
+              ease: "power2.out",
+              delay: 0.08,
+              scrollTrigger: {
+                trigger: item,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
+        }
+
+        if (tags.length > 0) {
+          gsap.fromTo(
+            tags,
+            { opacity: 0, scale: 0.9, y: 6 },
+            {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+              stagger: 0.04,
+              duration: 0.5,
+              ease: "power2.out",
+              delay: 0.12,
+              scrollTrigger: {
+                trigger: item,
+                start: "top 88%",
+                once: true,
+              },
+            }
+          );
+        }
+      });
+
+      ScrollTrigger.refresh();
     },
     { scope: sectionRef }
   );

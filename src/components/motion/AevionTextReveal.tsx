@@ -3,7 +3,12 @@
 import React, { useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { isReducedMotion, isMobileDevice } from "@/lib/motion/motionTokens";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 interface AevionTextRevealProps {
   text: string;
@@ -21,9 +26,9 @@ export function AevionTextReveal({
   as: Component = "h2",
   className = "",
   delay = 0,
-  duration = MOTION.duration.cinematic,
-  stagger = MOTION.stagger.normal,
-  threshold = "top 85%",
+  duration,
+  stagger,
+  threshold,
   splitBy = "words",
 }: AevionTextRevealProps) {
   const containerRef = useRef<HTMLElement>(null);
@@ -39,24 +44,29 @@ export function AevionTextReveal({
         return;
       }
 
+      const isMobile = isMobileDevice();
+      const effectiveThreshold = threshold ?? (isMobile ? "top 92%" : "top 88%");
+      const animDuration = duration ?? (isMobile ? 0.52 : 0.62);
+      const animStagger = stagger ?? (isMobile ? 0.02 : 0.03);
+
       const tokens = containerRef.current.querySelectorAll(".aevion-text-token");
 
       gsap.fromTo(
         tokens,
         {
-          y: "115%",
+          yPercent: 105,
           opacity: 0,
         },
         {
-          y: "0%",
+          yPercent: 0,
           opacity: 1,
-          duration,
+          duration: animDuration,
           delay,
-          stagger,
-          ease: MOTION.ease.cinematic,
+          stagger: animStagger,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: containerRef.current,
-            start: threshold,
+            start: effectiveThreshold,
             once: true,
           },
         }
@@ -65,18 +75,20 @@ export function AevionTextReveal({
     { scope: containerRef, dependencies: [text, delay, duration, stagger, threshold] }
   );
 
-  const tokens = splitBy === "words" ? text.split(" ") : text.split("\n");
+  const tokens = splitBy === "words" ? text.split(/\s+/).filter(Boolean) : text.split("\n");
 
   return (
     // @ts-expect-error - Dynamic component ref typing
-    <Component ref={containerRef} className={`${className} inline-flex flex-wrap gap-x-[0.25em]`}>
+    <Component ref={containerRef} className={className}>
       {tokens.map((token, idx) => (
-        <span key={idx} className="inline-block overflow-hidden pb-[0.08em] -mb-[0.08em]">
-          <span className="aevion-text-token inline-block will-change-transform">
-            {token}
-            {idx < tokens.length - 1 && splitBy === "words" ? "" : ""}
+        <React.Fragment key={idx}>
+          <span className="inline-block whitespace-nowrap overflow-hidden align-baseline py-[0.06em] -my-[0.06em]">
+            <span className="aevion-text-token inline-block will-change-transform">
+              {token}
+            </span>
           </span>
-        </span>
+          {idx < tokens.length - 1 && " "}
+        </React.Fragment>
       ))}
     </Component>
   );

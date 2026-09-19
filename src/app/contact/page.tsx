@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, MapPin, Send, Clock, Activity, ArrowUpRight, ShieldCheck } from "lucide-react";
 import { getWhatsAppUrl } from "@/lib/config/studio";
+import { AevionText } from "@/components/motion/AevionText";
 
 const PROJECT_TYPES = [
   { id: "ai", label: "AI Application", timeline: "3–5 Weeks", complexity: "High" },
@@ -129,9 +130,12 @@ export default function ContactPage() {
           <div className="flex items-center justify-between py-4 flex-wrap gap-4">
             <div className="flex items-center gap-3">
               <PulseRing />
-              <div className="text-[10px] font-mono font-bold tracking-widest text-cyan-400">
-                AEVION MISSION CONTROL · CONTACT UPLINK
-              </div>
+              <AevionText
+                as="div"
+                variant="eyebrow"
+                text="AEVION MISSION CONTROL · CONTACT UPLINK"
+                className="text-[10px] font-mono font-bold tracking-widest text-cyan-400"
+              />
             </div>
             <div className="flex items-center gap-2 text-[10px] font-mono text-cyan-600">
               <Activity size={11} />
@@ -158,23 +162,18 @@ export default function ContactPage() {
           {/* Left: Contact info */}
           <div className="lg:col-span-2 space-y-6">
             <div>
-              <h1 className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4">
-                Establish
-                <br />
-                <span
-                  style={{
-                    background: "linear-gradient(135deg, #06b6d4, #0ea5e9)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                  }}
-                >
-                  Contact.
-                </span>
-              </h1>
-              <p className="text-zinc-400 text-sm leading-relaxed">
-                Transmit your project brief. We&apos;ll acknowledge within 24 hours and schedule a mission debrief.
-              </p>
+              <AevionText
+                as="h1"
+                variant="display"
+                text="Initiate Direct Contact."
+                className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4"
+              />
+              <AevionText
+                as="p"
+                variant="paragraph"
+                text="Submit your project requirements. You speak directly with the founding engineers — no sales qualification, no account managers."
+                className="text-zinc-400 text-sm leading-relaxed"
+              />
             </div>
 
             <div className="space-y-3.5">
@@ -233,11 +232,11 @@ export default function ContactPage() {
               <div className="flex items-center gap-2 mb-2">
                 <ShieldCheck size={15} className="text-cyan-400" />
                 <span className="text-[10px] font-mono font-bold tracking-widest text-cyan-500 uppercase">
-                  NDA READY
+                  MUTUAL NDA PROTECTED
                 </span>
               </div>
               <p className="text-xs text-zinc-400 leading-relaxed font-sans">
-                All project conversations are protected under mutual NDA by default. Your IP is safe.
+                All inquiries protected under mutual NDA by default. Your architecture and IP remain strictly confidential.
               </p>
             </div>
 

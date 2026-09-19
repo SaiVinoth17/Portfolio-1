@@ -3,14 +3,15 @@
 import React, { useState, useRef } from "react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
 import { Github, ArrowUpRight, Network, Sparkles, Activity, ShieldCheck } from "lucide-react";
 import Link from "next/link";
-import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
+import { MOTION, isReducedMotion, isMobileDevice } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
 
-gsap.registerPlugin(SplitText, ScrambleTextPlugin);
+gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 
 interface FounderData {
   id: string;
@@ -95,15 +96,15 @@ export default function FoundersSection() {
       gsap.to(".founders-eyebrow-text", {
         scrollTrigger: {
           trigger: ".founders-header",
-          start: "top 85%",
+          start: "top 88%",
           once: true,
         },
         scrambleText: {
           text: "LEADERSHIP & ARCHITECTURAL CORE",
           chars: "0101#@*!",
-          speed: 0.35,
+          speed: 0.45,
         },
-        duration: 0.8,
+        duration: 0.4,
         ease: "none",
       });
 
@@ -111,7 +112,7 @@ export default function FoundersSection() {
       const headlineTl = gsap.timeline({
         scrollTrigger: {
           trigger: ".founders-header",
-          start: "top 82%",
+          start: "top 88%",
           once: true,
         },
       });
@@ -119,26 +120,26 @@ export default function FoundersSection() {
       headlineTl
         .fromTo(
           ".founders-hl-line1",
-          { x: -35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }
+          { x: -20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }
         )
         .fromTo(
           ".founders-hl-line2",
-          { x: 35, opacity: 0 },
-          { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
-          "<0.1"
+          { x: 20, opacity: 0 },
+          { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" },
+          "<0.08"
         )
         .fromTo(
           ".founders-header-desc",
           { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.7, ease: "power2.out" },
-          "-=0.3"
+          { clipPath: "inset(0 0% 0 0)", opacity: 1, duration: 0.5, ease: "power2.out" },
+          "-=0.2"
         )
         .fromTo(
           ".founders-quote-line",
-          { letterSpacing: "-0.04em", opacity: 0 },
-          { letterSpacing: "0em", opacity: 1, duration: 0.6, ease: "power2.out" },
-          "-=0.2"
+          { letterSpacing: "-0.03em", opacity: 0 },
+          { letterSpacing: "0em", opacity: 1, duration: 0.45, ease: "power2.out" },
+          "-=0.15"
         );
 
       // 3. Central Convergence Circuit
@@ -147,34 +148,36 @@ export default function FoundersSection() {
         { scaleX: 0, transformOrigin: "center" },
         {
           scaleX: 1,
-          duration: 0.9,
+          duration: 0.6,
           ease: "power2.inOut",
           scrollTrigger: {
             trigger: ".founders-circuit",
-            start: "top 85%",
+            start: "top 88%",
             once: true,
           },
         }
       );
 
-      // 4. Founder Cards Entrance
-      gsap.fromTo(
-        ".founder-card",
-        { opacity: 0, y: 45, scale: 0.96 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          stagger: 0.18,
-          duration: 0.9,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 78%",
-            once: true,
-          },
-        }
-      );
+      // 4. Founder Cards Entrance - Staggered per Card upon viewport entry
+      const cards = gsap.utils.toArray<HTMLElement>(".founder-card");
+      cards.forEach((card) => {
+        gsap.fromTo(
+          card,
+          { opacity: 0, y: 22, scale: 0.98 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.6,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 88%",
+              once: true,
+            },
+          }
+        );
+      });
 
       // 5. Node indices scramble on scroll
       gsap.utils.toArray<HTMLElement>(".founder-node-idx").forEach((el) => {
@@ -182,36 +185,43 @@ export default function FoundersSection() {
         gsap.to(el, {
           scrollTrigger: {
             trigger: el,
-            start: "top 85%",
+            start: "top 88%",
             once: true,
           },
           scrambleText: {
             text: text,
             chars: "0101ARCH_CORE",
-            speed: 0.4,
+            speed: 0.5,
           },
-          duration: 0.75,
+          duration: 0.4,
           ease: "none",
         });
       });
 
-      // 6. SAI RIO — Character Assembly / Precision Lock
+      const isMobile = isMobileDevice();
+
+      // 6. SAI RIO — Character Assembly / Precision Lock (Scoped to Sai's card)
       const saiSplit = new SplitText(".founder-name-sai", { type: "chars" });
       splits.push(saiSplit);
       gsap.fromTo(
         saiSplit.chars,
-        { opacity: 0, y: 16, rotateY: -60, filter: "blur(4px)" },
+        {
+          opacity: 0,
+          y: 16,
+          rotateY: isMobile ? 0 : -60,
+          ...(isMobile ? {} : { filter: "blur(4px)" }),
+        },
         {
           opacity: 1,
           y: 0,
           rotateY: 0,
-          filter: "blur(0px)",
-          stagger: 0.04,
-          duration: 0.7,
+          ...(isMobile ? {} : { filter: "blur(0px)" }),
+          stagger: isMobile ? 0.02 : 0.035,
+          duration: 0.65,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 75%",
+            trigger: ".founder-card-sai-rio",
+            start: "top 88%",
             once: true,
           },
         }
@@ -225,17 +235,17 @@ export default function FoundersSection() {
           letterSpacing: "0.08em",
           opacity: 1,
           scale: 1,
-          duration: 0.75,
+          duration: 0.7,
           ease: "power3.out",
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 75%",
+            trigger: ".founder-card-sai-rio",
+            start: "top 88%",
             once: true,
           },
         }
       );
 
-      // 8. EDISON — Restrained Text Motion
+      // 8. EDISON — Restrained Text Motion (Scoped to Edison's card)
       gsap.fromTo(
         ".founder-name-edison",
         { letterSpacing: "-0.03em", y: 12, opacity: 0 },
@@ -243,12 +253,12 @@ export default function FoundersSection() {
           letterSpacing: "0.02em",
           y: 0,
           opacity: 1,
-          duration: 0.7,
+          duration: 0.65,
           ease: "power2.out",
-          delay: 0.1,
+          delay: 0.05,
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 75%",
+            trigger: ".founder-card-edison",
+            start: "top 88%",
             once: true,
           },
         }
@@ -264,10 +274,10 @@ export default function FoundersSection() {
           opacity: 1,
           duration: 0.65,
           ease: "power2.out",
-          delay: 0.15,
+          delay: 0.1,
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 75%",
+            trigger: ".founder-card-edison",
+            start: "top 88%",
             once: true,
           },
         }
@@ -282,12 +292,12 @@ export default function FoundersSection() {
         {
           opacity: 1,
           y: 0,
-          stagger: 0.025,
-          duration: 0.55,
+          stagger: 0.02,
+          duration: 0.5,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 72%",
+            trigger: ".founder-card-sai-rio",
+            start: "top 86%",
             once: true,
           },
         }
@@ -304,29 +314,29 @@ export default function FoundersSection() {
           stagger: 0.02,
           duration: 0.5,
           ease: "power2.out",
-          delay: 0.1,
+          delay: 0.05,
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 72%",
+            trigger: ".founder-card-edison",
+            start: "top 86%",
             once: true,
           },
         }
       );
 
-      // 11. Focus tags stagger (Sai Rio: Editorial Reveal)
+      // 11. Focus tags stagger
       gsap.fromTo(
         ".founder-focus-tag-sai",
-        { x: -16, opacity: 0, scale: 0.94 },
+        { x: -14, opacity: 0, scale: 0.95 },
         {
           x: 0,
           opacity: 1,
           scale: 1,
-          stagger: 0.04,
-          duration: 0.55,
+          stagger: 0.03,
+          duration: 0.5,
           ease: "power2.out",
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 66%",
+            trigger: ".founder-card-sai-rio",
+            start: "top 84%",
             once: true,
           },
         }
@@ -334,39 +344,40 @@ export default function FoundersSection() {
 
       gsap.fromTo(
         ".founder-focus-tag-edison",
-        { y: 12, opacity: 0 },
+        { y: 10, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          stagger: 0.035,
+          stagger: 0.03,
           duration: 0.5,
           ease: "power2.out",
-          delay: 0.08,
+          delay: 0.05,
           scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 66%",
+            trigger: ".founder-card-edison",
+            start: "top 84%",
             once: true,
           },
         }
       );
 
-      // 12. Philosophy quotes word reveal
-      gsap.fromTo(
-        ".founder-philosophy-quote",
-        { clipPath: "inset(0 100% 0 0)", opacity: 0 },
-        {
-          clipPath: "inset(0 0% 0 0)",
-          opacity: 1,
-          stagger: 0.2,
-          duration: 0.9,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: ".founders-grid",
-            start: "top 70%",
-            once: true,
-          },
-        }
-      );
+      // 12. Philosophy quotes word reveal (Scoped directly to each quote element)
+      gsap.utils.toArray<HTMLElement>(".founder-philosophy-quote").forEach((quote) => {
+        gsap.fromTo(
+          quote,
+          { clipPath: "inset(0 100% 0 0)", opacity: 0 },
+          {
+            clipPath: "inset(0 0% 0 0)",
+            opacity: 1,
+            duration: 0.7,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: quote,
+              start: "top 90%",
+              once: true,
+            },
+          }
+        );
+      });
 
       // 13. STRONG BUILD CREDIT BANNER — Progressive Word Construction
       const buildHlSplit = new SplitText(".build-credit-hl", { type: "words" });
@@ -378,12 +389,12 @@ export default function FoundersSection() {
           opacity: 1,
           y: 0,
           scale: 1,
-          stagger: 0.045,
+          stagger: 0.04,
           duration: 0.65,
           ease: "power3.out",
           scrollTrigger: {
             trigger: ".founders-collab-banner",
-            start: "top 86%",
+            start: "top 90%",
             once: true,
           },
         }
@@ -392,7 +403,7 @@ export default function FoundersSection() {
       gsap.to(".build-credit-eyebrow", {
         scrollTrigger: {
           trigger: ".founders-collab-banner",
-          start: "top 90%",
+          start: "top 92%",
           once: true,
         },
         scrambleText: {
@@ -403,6 +414,9 @@ export default function FoundersSection() {
         duration: 0.8,
         ease: "none",
       });
+
+      // Recalculate ScrollTrigger positions after all SplitText DOM modifications
+      ScrollTrigger.refresh();
 
       return () => {
         splits.forEach((s) => {
@@ -472,7 +486,7 @@ export default function FoundersSection() {
                 key={founder.id}
                 onMouseEnter={() => setHoveredFounder(founder.id)}
                 onMouseLeave={() => setHoveredFounder(null)}
-                className="founder-card relative rounded-3xl border transition-all duration-500 p-8 sm:p-10 flex flex-col justify-between overflow-hidden group"
+                className={`founder-card founder-card-${founder.id} relative rounded-3xl border transition-all duration-500 p-8 sm:p-10 flex flex-col justify-between overflow-hidden group`}
                 style={{
                   borderColor: isHovered ? founder.accentColor : "rgba(255, 255, 255, 0.1)",
                   background: isHovered

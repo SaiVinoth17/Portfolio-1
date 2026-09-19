@@ -46,3 +46,19 @@ export function isDesktopPointer(): boolean {
   if (typeof window === "undefined") return false;
   return window.matchMedia("(pointer: fine) and (hover: hover) and (min-width: 768px)").matches;
 }
+
+/**
+ * Checks if device is a mobile or touch device
+ */
+export function isTouchDevice(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
+}
+
+/**
+ * Checks if device viewport is mobile width (< 768px)
+ */
+export function isMobileDevice(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < 768;
+}

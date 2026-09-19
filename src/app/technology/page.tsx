@@ -14,6 +14,7 @@ import {
   Code2,
   Terminal,
 } from "lucide-react";
+import { AevionText } from "@/components/motion/AevionText";
 
 export const metadata: Metadata = constructMetadata({
   title: "Technology Stack, Runtimes & Engineering Architecture",
@@ -136,15 +137,21 @@ export default function TechnologyPage() {
       {/* Header */}
       <header className="space-y-6 max-w-3xl border-b border-white/10 pb-16">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-sky-500/20 bg-sky-500/10 text-sky-400 text-xs font-mono uppercase tracking-widest">
-          <Terminal size={13} /> Architecture &amp; Runtimes
+          <Terminal size={13} />
+          <AevionText as="span" variant="eyebrow" text="Architecture & Runtimes" />
         </div>
-        <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono">
-          PRODUCTION TECHNOLOGY ARCHITECTURE.
-        </h1>
-        <p className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans">
-          A transparent inspection of the runtimes, computational frameworks, graphics engines, and
-          cryptographic standards powering Aevion Studio systems.
-        </p>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="PRODUCTION TECHNOLOGY ARCHITECTURE."
+          className="text-4xl sm:text-6xl font-extrabold tracking-tight leading-none text-white font-mono"
+        />
+        <AevionText
+          as="p"
+          variant="paragraph"
+          text="A transparent record of the runtimes, computational frameworks, graphics engines, and cryptographic standards powering our production systems."
+          className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans"
+        />
       </header>
 
       {/* Technology Categories */}
@@ -162,9 +169,12 @@ export default function TechnologyPage() {
                     <Icon size={20} />
                   </div>
                   <div>
-                    <h2 className="text-xl sm:text-2xl font-bold font-mono text-white">
-                      {cat.category}
-                    </h2>
+                    <AevionText
+                      as="h2"
+                      variant="subheading"
+                      text={cat.category}
+                      className="text-xl sm:text-2xl font-bold font-mono text-white"
+                    />
                     <p className="text-xs text-zinc-400 font-sans mt-0.5">{cat.description}</p>
                   </div>
                 </div>

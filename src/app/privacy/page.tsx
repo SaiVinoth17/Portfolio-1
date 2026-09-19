@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, Lock, CheckCircle2 } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion";
 
 export default function PrivacyPage() {
   return (
@@ -11,11 +12,15 @@ export default function PrivacyPage() {
       {/* Header */}
       <section className="space-y-4 mb-12">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
-          <ShieldCheck size={14} /> PRIVACY & DATA TRANSPARENCY
+          <ShieldCheck size={14} />
+          <AevionText variant="eyebrow" text="PRIVACY & DATA TRANSPARENCY" />
         </div>
-        <h1 className="text-3xl sm:text-5xl font-bold text-white tracking-tight font-sans">
-          Privacy Policy
-        </h1>
+        <AevionText
+          as="h1"
+          variant="display"
+          text="Privacy Policy"
+          className="text-3xl sm:text-5xl font-bold text-white tracking-tight font-sans"
+        />
         <p className="text-xs font-mono text-zinc-500">LAST UPDATED: MARCH 2025 • AEVION STUDIO</p>
       </section>
 

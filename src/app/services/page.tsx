@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { Cpu, Layout, Globe, Bot, Zap, ShieldCheck, Code2, Rocket, ArrowUpRight, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { AevionText } from "@/components/motion/AevionText";
 
 const SERVICES = [
   {
@@ -119,8 +120,18 @@ function ServiceCard({ svc, index }: { svc: typeof SERVICES[0]; index: number })
               <Icon size={18} style={{ color: svc.color }} />
             </div>
             <div>
-              <div className="text-[10px] font-mono font-bold tracking-widest mb-1" style={{ color: svc.color }}>{svc.cat}</div>
-              <h3 className="text-base font-bold text-white">{svc.title}</h3>
+              <AevionText
+                as="div"
+                variant="eyebrow"
+                text={svc.cat}
+                className="text-[10px] font-mono font-bold tracking-widest mb-1"
+              />
+              <AevionText
+                as="h3"
+                variant="subheading"
+                text={svc.title}
+                className="text-base font-bold text-white"
+              />
               <p className="text-xs font-mono text-zinc-600 mt-1">TIMELINE: {svc.timeline}</p>
             </div>
           </div>
@@ -207,27 +218,19 @@ export default function ServicesPage() {
             <div className="text-zinc-500">→ 5 core services loaded · 0 errors · Ready to deploy</div>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          <AevionText
+            as="h1"
+            variant="display"
+            text="Disciplines engineered from zero."
             className="text-5xl sm:text-7xl font-extrabold tracking-tight text-white leading-none mb-6"
-          >
-            Services
-            <br />
-            <span style={{ background: "linear-gradient(135deg, #10b981, #34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              available now.
-            </span>
-          </motion.h1>
+          />
 
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.1 }}
-            className="text-zinc-500 font-mono text-sm max-w-xl"
-          >
-            Select a service below to expand the module and view deliverables, timelines, and request access.
-          </motion.p>
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="No middle layers. You work directly with the architects who design the schemas, write the shaders, and deploy the code."
+            className="text-zinc-400 font-mono text-sm max-w-xl"
+          />
         </section>
 
         {/* Service Cards */}
@@ -240,15 +243,30 @@ export default function ServicesPage() {
           className="rounded-3xl p-12 text-center border border-emerald-500/15"
           style={{ background: "radial-gradient(ellipse at center, #10b98108, transparent)" }}
         >
-          <div className="text-xs font-mono text-emerald-500 mb-4">READY TO EXECUTE</div>
-          <h2 className="text-3xl font-extrabold text-white mb-3">Start your project.</h2>
-          <p className="text-zinc-500 text-sm font-mono mb-8 max-w-sm mx-auto">Provide your brief and we&apos;ll engineer the architecture from scratch.</p>
+          <AevionText
+            as="div"
+            variant="eyebrow"
+            text="READY TO EXECUTE"
+            className="text-xs font-mono text-emerald-500 mb-4 justify-center"
+          />
+          <AevionText
+            as="h2"
+            variant="section"
+            text="Ready to engineer what's next?"
+            className="text-3xl font-extrabold text-white mb-3 justify-center"
+          />
+          <AevionText
+            as="p"
+            variant="paragraph"
+            text="Send your technical brief. We respond within 24 hours with an architectural assessment."
+            className="text-zinc-400 text-sm font-mono mb-8 max-w-md mx-auto justify-center"
+          />
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-black"
+            className="inline-flex items-center gap-2 px-8 py-4 rounded-2xl font-bold text-sm text-black group"
             style={{ background: "linear-gradient(135deg, #10b981, #059669)", boxShadow: "0 0 40px #10b98130" }}
           >
-            Initialize Project <ArrowUpRight size={16} />
+            <span>Initialize Project Brief</span> <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </Link>
         </section>
       </div>
