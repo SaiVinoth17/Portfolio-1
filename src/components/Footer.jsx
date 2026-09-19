@@ -263,7 +263,7 @@ export default function Footer() {
     <footer
       ref={footerRef}
       id="footer"
-      className="relative scroll-mt-20 bg-[#040407] border-t border-white/10 text-white pt-24 pb-12 px-6 lg:px-16 overflow-hidden selection:bg-emerald-500 selection:text-black"
+      className="relative scroll-mt-20 bg-[#040407] border-t border-white/10 text-white pt-24 aevion-footer-spacing px-6 lg:px-16 overflow-hidden selection:bg-emerald-500 selection:text-black"
     >
       {/* Background ambient gradient glow */}
       <div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-emerald-500/5 blur-[120px] rounded-full" />

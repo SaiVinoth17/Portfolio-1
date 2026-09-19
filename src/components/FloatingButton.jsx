@@ -17,7 +17,7 @@ const FloatingButton = () => {
   const whatsappUrl = getWhatsAppUrl("general");
 
   return (
-    <div className="w-full flex justify-center fixed bottom-4 sm:bottom-6 z-30 pointer-events-none px-4">
+    <div className="w-full flex justify-center fixed aevion-floating-cta z-30 pointer-events-none px-4">
       <div className="flex items-center gap-1.5 bg-black/60 border border-white/10 backdrop-blur-xl text-white p-0.5 rounded-full pointer-events-auto shadow-xl transition-all duration-300 hover:border-white/20 hover:bg-black/70">
         <a
           href={whatsappUrl}

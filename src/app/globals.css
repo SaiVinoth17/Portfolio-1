@@ -704,4 +704,75 @@ h1, h2, h3, h4, h5, h6, p, span, a, li {
   height: 100%;
   background: linear-gradient(90deg, #ff9f3a, #ff6f9c, #5e9bff, #a37bff);
   transition: width 0.1s linear;
-}
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ADAPTIVE FRAME RATE & PERFORMANCE ENGINE STYLES
+   Degrades expensive composite operations (blur filters, box shadows) first
+   whenever sustained frame drops occur, while preserving scroll responsiveness.
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  --aevion-perf-tier: 0;
+  --aevion-dynamic-blur: 4px;
+}
+
+/* Tier 1: Balanced (Moderate frame drops detected) */
+[data-perf-tier="1"] .backdrop-blur-xl,
+[data-perf-tier="1"] .backdrop-blur-2xl,
+[data-perf-tier="1"] .backdrop-blur-3xl {
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+[data-perf-tier="1"] .fsh-nav-scrolled {
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+/* Tier 2: Efficiency (Severe frame drops detected) */
+[data-perf-tier="2"] .backdrop-blur-sm,
+[data-perf-tier="2"] .backdrop-blur-md,
+[data-perf-tier="2"] .backdrop-blur-lg,
+[data-perf-tier="2"] .backdrop-blur-xl,
+[data-perf-tier="2"] .backdrop-blur-2xl,
+[data-perf-tier="2"] .backdrop-blur-3xl {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background-color: rgba(10, 10, 15, 0.95) !important;
+}
+
+[data-perf-tier="2"] .fsh-nav-scrolled {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+/* When tab is hidden, pause CSS infinite animations to conserve CPU/GPU */
+body.tab-hidden * {
+  animation-play-state: paused !important;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   RESPONSIVE BOTTOM FLOATING CTA & FOOTER SCROLL CLEARANCE
+   ───────────────────────────────────────────────────────────────────────────── */
+.aevion-floating-cta {
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 640px) {
+  .aevion-floating-cta {
+    bottom: 1.5rem;
+  }
+}
+
+.aevion-footer-spacing {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+@media (min-width: 640px) {
+  .aevion-footer-spacing {
+    padding-bottom: 3rem;
+  }
+}
+
+

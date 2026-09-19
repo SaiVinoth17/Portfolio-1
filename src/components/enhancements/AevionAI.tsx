@@ -220,7 +220,7 @@ function IntelligenceTrigger({
       onClick={onClick}
       aria-label="Open Aevion Intelligence"
       aria-expanded={isOpen}
-      className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
+      className="hidden md:block fixed bottom-6 right-6 z-40 group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400"
       style={{
         marginBottom: "env(safe-area-inset-bottom, 0px)",
       }}
@@ -865,7 +865,7 @@ export function AevionAI() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-md"
+            className="hidden md:block fixed inset-0 z-40 bg-black/80 backdrop-blur-md"
             onClick={() => setIsOpen(false)}
           />
         )}
@@ -882,7 +882,7 @@ export function AevionAI() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.98 }}
             transition={{ type: "spring", stiffness: 380, damping: 32 }}
-            className="fixed inset-x-2 sm:inset-x-auto sm:right-6 bottom-2 sm:bottom-6 z-50 flex flex-col antialiased text-white w-auto sm:w-[620px]"
+            className="hidden md:flex fixed inset-x-2 sm:inset-x-auto sm:right-6 bottom-2 sm:bottom-6 z-50 flex-col antialiased text-white w-auto sm:w-[620px]"
             style={{
               height: "calc(100dvh - 1rem - env(safe-area-inset-bottom, 0px))",
               maxHeight: "min(740px, 92dvh)",

@@ -16,29 +16,35 @@ export function DynamicLightingEngine() {
     let lastVelX = 0;
     let lastVelY = 0;
 
+    let isRunning = false;
+
+    const startLoop = () => {
+      if (isRunning || (typeof document !== "undefined" && document.hidden)) return;
+      isRunning = true;
+      frameId = requestAnimationFrame(updateCSSVars);
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
       lastVelX = e.clientX - targetX;
       lastVelY = e.clientY - targetY;
       targetX = e.clientX;
       targetY = e.clientY;
-      dirty = true;
+      startLoop();
     };
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     const updateCSSVars = () => {
-      frameId = requestAnimationFrame(updateCSSVars);
-
-      // Skip work when mouse hasn't moved and interpolation has settled
-      if (!dirty) {
-        const dx = Math.abs(targetX - currentX);
-        const dy = Math.abs(targetY - currentY);
-        if (dx < 0.1 && dy < 0.1) return;
+      if (typeof document !== "undefined" && document.hidden) {
+        isRunning = false;
+        return;
       }
-      dirty = false;
 
-      currentX += (targetX - currentX) * 0.12;
-      currentY += (targetY - currentY) * 0.12;
+      currentX += (targetX - currentX) * 0.15;
+      currentY += (targetY - currentY) * 0.15;
+
+      const dx = Math.abs(targetX - currentX);
+      const dy = Math.abs(targetY - currentY);
 
       const root = document.documentElement;
       root.style.setProperty("--mouse-x", `${currentX.toFixed(0)}px`);
@@ -47,9 +53,15 @@ export function DynamicLightingEngine() {
       root.style.setProperty("--mouse-pct-y", (currentY / window.innerHeight).toFixed(3));
       root.style.setProperty("--mouse-vel-x", lastVelX.toFixed(0));
       root.style.setProperty("--mouse-vel-y", lastVelY.toFixed(0));
+
+      if (dx > 0.5 || dy > 0.5) {
+        frameId = requestAnimationFrame(updateCSSVars);
+      } else {
+        isRunning = false;
+      }
     };
 
-    frameId = requestAnimationFrame(updateCSSVars);
+    startLoop();
 
     return () => {
       cancelAnimationFrame(frameId);

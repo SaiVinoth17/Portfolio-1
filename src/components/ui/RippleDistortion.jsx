@@ -309,6 +309,18 @@ const RippleDistortion = ({
     ro.observe(mount);
     resize();
 
+    let raf = 0;
+    let isLoopRunning = false;
+    let previousTime = 0;
+
+    let loop;
+    const startLoop = () => {
+      if (isLoopRunning || disposed || (typeof document !== 'undefined' && document.hidden)) return;
+      isLoopRunning = true;
+      previousTime = performance.now();
+      raf = requestAnimationFrame(loop);
+    };
+
     const setNewWave = (x, y, power) => {
       const cfg = configRef.current;
       const wave = waves[current];
@@ -319,6 +331,7 @@ const RippleDistortion = ({
       wave.target = START_SCALE * Math.max(1, cfg.spread) * power;
       wave.size = Math.max(1, cfg.brushSize);
       wave.opacity = 1;
+      startLoop();
     };
 
     const localPoint = (clientX, clientY) => {
@@ -357,17 +370,20 @@ const RippleDistortion = ({
     window.addEventListener('pointermove', onMove, { passive: true });
     window.addEventListener('pointerdown', onDown, { passive: true });
 
-    let raf = 0;
-    let previousTime = 0;
+    loop = now => {
+      if (disposed || (typeof document !== 'undefined' && document.hidden)) {
+        isLoopRunning = false;
+        return;
+      }
 
-    const loop = now => {
-      raf = requestAnimationFrame(loop);
       const delta = previousTime ? Math.min(0.05, (now - previousTime) / 1000) : 0;
       previousTime = now;
       const cfg = configRef.current;
 
       const growth = reduceMotion ? 0 : 1 - Math.exp(-delta * 1.09);
       const decay = reduceMotion ? 1 : Math.exp((-delta * LIFE_CONSTANT) / Math.max(0.15, cfg.fade));
+
+      let hasActiveWaves = false;
 
       for (let i = 0; i < MAX_WAVES; i += 1) {
         const wave = waves[i];
@@ -376,6 +392,7 @@ const RippleDistortion = ({
           continue;
         }
 
+        hasActiveWaves = true;
         wave.opacity *= decay;
         wave.scale += (wave.target - wave.scale) * growth;
 
@@ -399,13 +416,31 @@ const RippleDistortion = ({
 
       renderer.render({ scene: waveMesh, target: displacementTarget, clear: true });
       renderer.render({ scene: compositeMesh });
+
+      if (hasActiveWaves) {
+        raf = requestAnimationFrame(loop);
+      } else {
+        isLoopRunning = false;
+      }
     };
-    raf = requestAnimationFrame(loop);
+
+    // Initial draw
+    renderer.render({ scene: waveMesh, target: displacementTarget, clear: true });
+    renderer.render({ scene: compositeMesh });
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        if (raf) cancelAnimationFrame(raf);
+        isLoopRunning = false;
+      }
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
     return () => {
       disposed = true;
       cancelAnimationFrame(raf);
       ro.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerdown', onDown);
       uniformsRef.current = null;

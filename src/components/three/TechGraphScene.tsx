@@ -125,8 +125,30 @@ export default function TechGraphScene() {
     let rafId: number;
     const clock = new THREE.Clock();
 
+    const handleVisibility = () => {
+      if (document.hidden) {
+        cancelAnimationFrame(rafId);
+      } else if (isRunning) {
+        clock.start();
+        rafId = requestAnimationFrame(animate);
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    // Adaptive pixel ratio scaling on performance drops
+    let unsubscribePerf: (() => void) | undefined;
+    if (typeof window !== "undefined") {
+      import("@/lib/motion/adaptiveEngine").then(({ adaptiveEngine }) => {
+        if (!isRunning) return;
+        unsubscribePerf = adaptiveEngine?.subscribe((state) => {
+          const dpr = state.currentTier === 0 ? Math.min(window.devicePixelRatio || 1, 2) : 1;
+          renderer.setPixelRatio(dpr);
+        });
+      });
+    }
+
     const animate = () => {
-      if (!isRunning) return;
+      if (!isRunning || document.hidden) return;
       const elapsed = clock.getElapsedTime();
 
       mouseX += (targetX - mouseX) * 0.05;
@@ -153,6 +175,8 @@ export default function TechGraphScene() {
     return () => {
       isRunning = false;
       cancelAnimationFrame(rafId);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      if (unsubscribePerf) unsubscribePerf();
       window.removeEventListener("mousemove", handlePointerMove);
       window.removeEventListener("resize", handleResize);
       if (renderer.domElement && container.contains(renderer.domElement)) {

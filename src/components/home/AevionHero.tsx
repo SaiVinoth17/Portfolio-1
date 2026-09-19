@@ -157,20 +157,35 @@ export default function AevionHero() {
     };
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
-    // Throttle to ~30fps — hero particles don't need 60fps
-    let skip = false;
+    let lastTime = performance.now();
+    let isVisible = true;
 
-    const render = () => {
+    // Pause when offscreen
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0]?.isIntersecting ?? true;
+      },
+      { threshold: 0.05 }
+    );
+    if (canvas) observer.observe(canvas);
+
+    const render = (now: number) => {
       animationFrameId = requestAnimationFrame(render);
-      skip = !skip;
-      if (skip) return;
+      if (!isVisible || (typeof document !== "undefined" && document.hidden)) {
+        lastTime = now;
+        return;
+      }
+
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+      const timeFactor = dt * 60; // 1.0 at 60Hz, ~0.416 at 144Hz
 
       ctx.clearRect(0, 0, width, height);
 
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-        p.x += p.vx;
-        p.y += p.vy;
+        p.x += p.vx * timeFactor;
+        p.y += p.vy * timeFactor;
 
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
@@ -186,10 +201,10 @@ export default function AevionHero() {
         if (distSq < maxDistSq) {
           const dist = Math.sqrt(distSq);
           alpha = p.baseAlpha + (1 - dist / 180) * 0.35;
-          // Gentle attraction — avoid divide-by-zero
+          // Gentle attraction with delta time normalization
           if (dist > 0.1) {
-            p.x += (dx / dist) * 0.18;
-            p.y += (dy / dist) * 0.18;
+            p.x += (dx / dist) * 0.18 * timeFactor;
+            p.y += (dy / dist) * 0.18 * timeFactor;
           }
         }
 
@@ -205,6 +220,7 @@ export default function AevionHero() {
     animationFrameId = requestAnimationFrame(render);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener("resize", handleResize);
       window.removeEventListener("mousemove", handleMouseMove);
       cancelAnimationFrame(animationFrameId);

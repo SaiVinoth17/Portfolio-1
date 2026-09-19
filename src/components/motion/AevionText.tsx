@@ -136,17 +136,22 @@ export function AevionText({
         const animDuration = duration ?? (isMobile ? 0.55 : 0.68);
         const animStagger = stagger ?? (isMobile ? 0.02 : 0.03);
 
+        const isLowPerf =
+          typeof document !== "undefined" &&
+          Boolean(document.documentElement.dataset.perfTier && document.documentElement.dataset.perfTier !== "0");
+        const useBlur = !isMobile && !isLowPerf;
+
         gsap.fromTo(
           tokens,
           {
             yPercent: 100,
             opacity: 0,
-            filter: isMobile ? "none" : "blur(4px)",
+            filter: useBlur ? "blur(4px)" : "none",
           },
           {
             yPercent: 0,
             opacity: 1,
-            filter: "blur(0px)",
+            filter: useBlur ? "blur(0px)" : "none",
             duration: animDuration,
             stagger: animStagger,
             delay,

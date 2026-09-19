@@ -30,13 +30,19 @@ export default function LenisProvider({ children }) {
     // Connect Lenis scroll events to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Synchronize GSAP ticker with Lenis requestAnimationFrame
+    // Synchronize GSAP ticker with Lenis requestAnimationFrame naturally
     const tickerUpdate = (time) => {
       lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(tickerUpdate);
-    gsap.ticker.lagSmoothing(0);
+    // Allow GSAP lagSmoothing to prevent erratic jumps on frame drop while keeping 1:1 sync
+    gsap.ticker.lagSmoothing(500, 33);
+
+    // Initialize adaptive rendering engine
+    import("@/lib/motion/adaptiveEngine").then(({ adaptiveEngine }) => {
+      // Adaptive engine auto-calibrates display refresh rate (60–144Hz+)
+    });
 
     // 1. Recalculate triggers once all web fonts are loaded (prevents stale text offset metrics)
     if (typeof document !== "undefined" && document.fonts) {

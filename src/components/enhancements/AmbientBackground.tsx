@@ -51,15 +51,20 @@ export function AmbientBackground() {
     window.addEventListener("mousemove", handleMouseMove, { passive: true });
 
     let time = 0;
-    // Throttle ambient canvas to ~30 FPS (every 2nd frame)
-    let skip = false;
+    let lastTime = performance.now();
 
-    const render = () => {
+    const render = (now: number) => {
       animationId = requestAnimationFrame(render);
-      skip = !skip;
-      if (skip) return; // Run at ~30fps — ambient layer doesn't need 60fps
+      if (typeof document !== "undefined" && document.hidden) {
+        lastTime = now;
+        return;
+      }
 
-      time += 0.008;
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+      const timeFactor = dt * 60; // 1.0 on 60Hz, ~0.416 on 144Hz
+
+      time += 0.008 * timeFactor;
       ctx.clearRect(0, 0, width, height);
 
       // Light Bloom Gradient — only recompute when mouse moved
@@ -78,9 +83,8 @@ export function AmbientBackground() {
 
       // Render Floating Micro-Particles
       particles.forEach((p) => {
-        // Use cheap sine approximation via pre-offset phases
-        p.x += p.vx + Math.sin(time + p.phaseX) * 0.08;
-        p.y += p.vy + Math.cos(time + p.phaseY) * 0.08;
+        p.x += (p.vx + Math.sin(time + p.phaseX) * 0.08) * timeFactor;
+        p.y += (p.vy + Math.cos(time + p.phaseY) * 0.08) * timeFactor;
 
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
