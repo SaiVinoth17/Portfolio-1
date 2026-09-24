@@ -163,7 +163,6 @@ export default function Navbar() {
             <AevionLogo
               variant="full"
               className="h-11 w-auto object-contain"
-              priority
             />
           </Link>
 
@@ -218,7 +217,6 @@ export default function Navbar() {
             <AevionLogo
               variant="mark"
               className="h-7 w-auto object-contain"
-              priority
             />
             <span className="text-[12px] font-mono uppercase tracking-[0.14em] font-bold text-white/90">
               AEVION
@@ -277,7 +275,6 @@ export default function Navbar() {
               <AevionLogo
                 variant="full"
                 className="h-12 w-auto object-contain"
-                priority
               />
             </Link>
             <button

@@ -1,8 +1,12 @@
 "use client";
 
 import React from "react";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
-import MoltenMetal from "./ui/MoltenMetal";
+
+const MoltenMetal = dynamic(() => import("./ui/MoltenMetal"), {
+  ssr: false,
+});
 
 export default function PageBackground() {
   const pathname = usePathname();

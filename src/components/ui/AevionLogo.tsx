@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Image from "next/image";
 
 export interface AevionLogoProps {
@@ -19,19 +19,17 @@ export default function AevionLogo({
   variant = "full",
   className = "h-10 w-auto object-contain",
   alt = "Aevion Studio",
-  priority = true,
+  priority = false,
   style,
   width,
   height,
 }: AevionLogoProps) {
   const isMark = variant === "mark" || variant === "compact";
-  const src = isMark ? "/images/aevion-mark.png" : "/images/aevion-logo.png";
+  const src = isMark ? "/images/aevion-mark-sm.png" : "/images/aevion-logo-sm.png";
   
-  // Natural aspect ratios:
-  // Full: 1024 x 682 (~1.501)
-  // Mark: 470 x 365 (~1.288)
-  const defaultWidth = isMark ? 470 : 1024;
-  const defaultHeight = isMark ? 365 : 682;
+  // Native 2x dimensions for crisp display at 66x44 and 48x37
+  const defaultWidth = isMark ? 96 : 132;
+  const defaultHeight = isMark ? 75 : 88;
 
   return (
     <Image

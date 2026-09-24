@@ -382,6 +382,7 @@ export default function FoundersSection() {
       // 13. STRONG BUILD CREDIT BANNER — Progressive Word Construction
       const buildHlSplit = new SplitText(".build-credit-hl", { type: "words" });
       splits.push(buildHlSplit);
+      splits.forEach((s) => s.elements.forEach((el) => el.removeAttribute("aria-label")));
       gsap.fromTo(
         buildHlSplit.words,
         { opacity: 0, y: 18, scale: 0.95 },

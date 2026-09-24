@@ -24,10 +24,18 @@ export function AevionMagnetic({
     const xTo = gsap.quickTo(el, "x", { duration: 0.6, ease: "power3.out" });
     const yTo = gsap.quickTo(el, "y", { duration: 0.6, ease: "power3.out" });
 
+    let cachedRect: DOMRect | null = null;
+
+    const handleMouseEnter = () => {
+      cachedRect = el.getBoundingClientRect();
+    };
+
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = el.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+      if (!cachedRect) {
+        cachedRect = el.getBoundingClientRect();
+      }
+      const centerX = cachedRect.left + cachedRect.width / 2;
+      const centerY = cachedRect.top + cachedRect.height / 2;
       const dx = (e.clientX - centerX) * strength;
       const dy = (e.clientY - centerY) * strength;
 
@@ -36,14 +44,17 @@ export function AevionMagnetic({
     };
 
     const handleMouseLeave = () => {
+      cachedRect = null;
       xTo(0);
       yTo(0);
     };
 
-    el.addEventListener("mousemove", handleMouseMove);
-    el.addEventListener("mouseleave", handleMouseLeave);
+    el.addEventListener("mouseenter", handleMouseEnter, { passive: true });
+    el.addEventListener("mousemove", handleMouseMove, { passive: true });
+    el.addEventListener("mouseleave", handleMouseLeave, { passive: true });
 
     return () => {
+      el.removeEventListener("mouseenter", handleMouseEnter);
       el.removeEventListener("mousemove", handleMouseMove);
       el.removeEventListener("mouseleave", handleMouseLeave);
       gsap.killTweensOf(el);

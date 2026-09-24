@@ -1,15 +1,41 @@
 "use client";
 
 import React, { ReactNode, useState } from "react";
+import dynamic from "next/dynamic";
 import ClickSpark from "@/components/ClickSpark";
 import { AmbientBackground } from "./AmbientBackground";
 import { DynamicLightingEngine } from "./DynamicLightingEngine";
-import { PerformanceDashboard } from "./PerformanceDashboard";
-import { EasterEggs } from "./EasterEggs";
-import { AevionAI } from "./AevionAI";
-import { CommandPalette } from "./CommandPalette";
-import { DeveloperTerminal } from "./DeveloperTerminal";
-import { StudioMetrics } from "./StudioMetrics";
+
+// Code-split heavy interactive overlays that use framer-motion, terminal emulation, and audio synthesis
+const PerformanceDashboard = dynamic(
+  () => import("./PerformanceDashboard").then((m) => m.PerformanceDashboard),
+  { ssr: false }
+);
+
+const EasterEggs = dynamic(
+  () => import("./EasterEggs").then((m) => m.EasterEggs),
+  { ssr: false }
+);
+
+const AevionAI = dynamic(
+  () => import("./AevionAI").then((m) => m.AevionAI),
+  { ssr: false }
+);
+
+const CommandPalette = dynamic(
+  () => import("./CommandPalette").then((m) => m.CommandPalette),
+  { ssr: false }
+);
+
+const DeveloperTerminal = dynamic(
+  () => import("./DeveloperTerminal").then((m) => m.DeveloperTerminal),
+  { ssr: false }
+);
+
+const StudioMetrics = dynamic(
+  () => import("./StudioMetrics").then((m) => m.StudioMetrics),
+  { ssr: false }
+);
 
 interface EnhancementProviderProps {
   children: ReactNode;

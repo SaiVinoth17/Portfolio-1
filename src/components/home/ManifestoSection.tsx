@@ -64,11 +64,13 @@ export default function ManifestoSection() {
         type: "chars",
         charsClass: "just-char",
       });
+      justSplit.elements.forEach((el: any) => el.removeAttribute("aria-label"));
 
       const nextLineSplit = new SplitText(".manifesto-support-3", {
         type: "chars",
         charsClass: "support3-char",
       });
+      nextLineSplit.elements.forEach((el: any) => el.removeAttribute("aria-label"));
 
       const stageTl = gsap.timeline({
         scrollTrigger: {

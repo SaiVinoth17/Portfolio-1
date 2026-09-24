@@ -84,13 +84,6 @@ function ScrollGlobe({
   navDots = DEFAULT_NAV_DOTS,
   className,
 }: ScrollGlobeProps) {
-  const [activeNavIndex, setActiveNavIndex] = useState(0);
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const [globeTransform, setGlobeTransform] = useState("");
-  const containerRef = useRef<HTMLDivElement>(null);
-  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
-  const animationFrameId = useRef<number | undefined>(undefined);
-
   // Pre-calculate positions for performance
   const calculatedPositions = useMemo(() => {
     return globeConfig.positions.map((pos) => ({
@@ -100,18 +93,68 @@ function ScrollGlobe({
     }));
   }, [globeConfig.positions]);
 
-  // Comprehensive scroll tracking across all page sections
+  const [activeNavIndex, setActiveNavIndex] = useState(0);
+  const [globeTransform, setGlobeTransform] = useState(() => {
+    const initialPos = calculatedPositions[0];
+    return initialPos
+      ? `translate3d(${initialPos.left}vw, ${initialPos.top}vh, 0) translate3d(-50%, -50%, 0) scale3d(${initialPos.scale}, ${initialPos.scale}, 1)`
+      : "";
+  });
+  const containerRef = useRef<HTMLDivElement>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const animationFrameId = useRef<number | undefined>(undefined);
+  const activeNavIndexRef = useRef(0);
+  const lastGlobeIndexRef = useRef(0);
+  const sectionOffsetsRef = useRef<{ id: string; top: number; bottom: number; center: number }[]>([]);
+  const docHeightRef = useRef(1);
+
+  // Pre-measure section layout geometry on mount/resize to prevent synchronous getBoundingClientRect during scroll
+  const measureSections = useCallback(() => {
+    if (typeof window === "undefined") return;
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    docHeightRef.current = Math.max(
+      document.documentElement.scrollHeight - window.innerHeight,
+      1
+    );
+
+    sectionOffsetsRef.current = navDots.map((item, index) => {
+      let el: HTMLElement | null = null;
+      if (index < sectionRefs.current.length && sectionRefs.current[index]) {
+        el = sectionRefs.current[index];
+      } else {
+        el = document.getElementById(item.id);
+      }
+
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + currentScroll;
+        const bottom = rect.bottom + currentScroll;
+        return {
+          id: item.id,
+          top,
+          bottom,
+          center: top + rect.height / 2,
+        };
+      }
+      return { id: item.id, top: 0, bottom: 0, center: 0 };
+    });
+  }, [navDots]);
+
+  // Scroll tracking without DOM reads or React component re-rendering
   const updateScrollPosition = useCallback(() => {
-    const scrollTop = window.pageYOffset;
-    const docHeight =
-      document.documentElement.scrollHeight - window.innerHeight;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const docHeight = docHeightRef.current;
     const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1);
 
-    setScrollProgress(progress);
+    // Update progress bar directly without triggering full component re-render
+    if (progressBarRef.current) {
+      progressBarRef.current.style.transform = `scaleX(${progress})`;
+    }
 
-    const viewportTarget = window.innerHeight * 0.45;
-    const scrollBottom = window.innerHeight + window.pageYOffset;
-    const totalHeight = document.documentElement.scrollHeight;
+    const viewportTarget = scrollTop + window.innerHeight * 0.45;
+    const scrollBottom = scrollTop + window.innerHeight;
+    const totalHeight = docHeight + window.innerHeight;
 
     let newActiveDot = 0;
 
@@ -122,47 +165,45 @@ function ScrollGlobe({
       newActiveDot = 0;
     } else {
       let minDistance = Infinity;
-      navDots.forEach((item, index) => {
-        let el: HTMLElement | null = null;
-        if (index < sectionRefs.current.length && sectionRefs.current[index]) {
-          el = sectionRefs.current[index];
-        } else {
-          el = document.getElementById(item.id);
-        }
-
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          // Active if viewport target line is inside this section
-          if (rect.top <= viewportTarget && rect.bottom >= viewportTarget) {
-            newActiveDot = index;
-            minDistance = -1;
-          } else if (minDistance >= 0) {
-            const sectionCenter = rect.top + rect.height / 2;
-            const distance = Math.abs(sectionCenter - viewportTarget);
-            if (distance < minDistance) {
-              minDistance = distance;
-              newActiveDot = index;
-            }
+      const offsets = sectionOffsetsRef.current;
+      for (let i = 0; i < offsets.length; i++) {
+        const section = offsets[i];
+        if (section.top <= viewportTarget && section.bottom >= viewportTarget) {
+          newActiveDot = i;
+          minDistance = -1;
+          break;
+        } else if (minDistance >= 0) {
+          const distance = Math.abs(section.center - viewportTarget);
+          if (distance < minDistance) {
+            minDistance = distance;
+            newActiveDot = i;
           }
         }
-      });
+      }
     }
 
-    setActiveNavIndex(newActiveDot);
+    // Only update state if active section has actually changed
+    if (newActiveDot !== activeNavIndexRef.current) {
+      activeNavIndexRef.current = newActiveDot;
+      setActiveNavIndex(newActiveDot);
 
-    // Globe transformation based on active section (capped to calculatedPositions)
-    const globeIndex = Math.min(newActiveDot, calculatedPositions.length - 1);
-    const currentPos = calculatedPositions[globeIndex];
-    if (currentPos) {
-      const transform = `translate3d(${currentPos.left}vw, ${currentPos.top}vh, 0) translate3d(-50%, -50%, 0) scale3d(${currentPos.scale}, ${currentPos.scale}, 1)`;
-      setGlobeTransform(transform);
+      const globeIndex = Math.min(newActiveDot, calculatedPositions.length - 1);
+      if (globeIndex !== lastGlobeIndexRef.current) {
+        lastGlobeIndexRef.current = globeIndex;
+        const currentPos = calculatedPositions[globeIndex];
+        if (currentPos) {
+          const transform = `translate3d(${currentPos.left}vw, ${currentPos.top}vh, 0) translate3d(-50%, -50%, 0) scale3d(${currentPos.scale}, ${currentPos.scale}, 1)`;
+          setGlobeTransform(transform);
+        }
+      }
     }
   }, [calculatedPositions, navDots]);
 
   // Throttled scroll handler with RAF
   useEffect(() => {
-    let ticking = false;
+    measureSections();
 
+    let ticking = false;
     const handleScroll = () => {
       if (!ticking) {
         animationFrameId.current = requestAnimationFrame(() => {
@@ -173,23 +214,28 @@ function ScrollGlobe({
       }
     };
 
+    let resizeTimer: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        measureSections();
+        updateScrollPosition();
+      }, 150);
+    };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    updateScrollPosition(); // Initial call
+    window.addEventListener("resize", handleResize, { passive: true });
+    animationFrameId.current = requestAnimationFrame(updateScrollPosition);
 
     return () => {
+      clearTimeout(resizeTimer);
       window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
       if (animationFrameId.current) {
         cancelAnimationFrame(animationFrameId.current);
       }
     };
-  }, [updateScrollPosition]);
-
-  // Initial globe position
-  useEffect(() => {
-    const initialPos = calculatedPositions[0];
-    const initialTransform = `translate3d(${initialPos.left}vw, ${initialPos.top}vh, 0) translate3d(-50%, -50%, 0) scale3d(${initialPos.scale}, ${initialPos.scale}, 1)`;
-    setGlobeTransform(initialTransform);
-  }, [calculatedPositions]);
+  }, [measureSections, updateScrollPosition]);
 
   // Smooth scroll to target section
   const scrollToNav = (item: NavDotItem, index: number) => {
@@ -371,11 +417,13 @@ function ScrollGlobe({
         type: "chars",
         charsClass: "scene2-conn-char",
       });
+      connSplit.elements.forEach((el: any) => el.removeAttribute("aria-label"));
 
       const designSplit = new SplitText(".scene2-word-design", {
         type: "chars",
         charsClass: "scene2-design-char",
       });
+      designSplit.elements.forEach((el: any) => el.removeAttribute("aria-label"));
 
       // Magnetic Convergence: Characters scattered across the visual plane
       gsap.set(connSplit.chars, {
@@ -739,9 +787,6 @@ function ScrollGlobe({
           }
         );
 
-      // Force recalculate coordinates after SplitText injections
-      ScrollTrigger.refresh();
-
       return () => {
         heroSplit.revert();
         connSplit.revert();
@@ -762,9 +807,10 @@ function ScrollGlobe({
       {/* Progress Bar */}
       <div className="fixed top-0 left-0 w-full h-0.5 bg-gradient-to-r from-border/20 via-border/40 to-border/20 z-50">
         <div
+          ref={progressBarRef}
           className="h-full bg-gradient-to-r from-primary via-blue-600 to-blue-900 will-change-transform shadow-sm"
           style={{
-            transform: `scaleX(${scrollProgress})`,
+            transform: "scaleX(0)",
             transformOrigin: "left center",
             transition: "transform 0.15s ease-out",
             filter: "drop-shadow(0 0 2px rgba(59, 130, 246, 0.3))",
@@ -967,12 +1013,12 @@ function ScrollGlobe({
                     </div>
 
                     {/* Heading: BY DESIGN - Radial Dispersion to Lock */}
-                    <h1 className="scene2-title font-black leading-[1.0] tracking-tight mb-6 text-4xl sm:text-6xl md:text-7xl lg:text-8xl select-none text-white">
+                    <h2 className="scene2-title font-black leading-[1.0] tracking-tight mb-6 text-4xl sm:text-6xl md:text-7xl lg:text-8xl select-none text-white">
                       <span className="scene2-word-by inline-block mr-4 sm:mr-6 text-white/60">BY</span>
                       <span className="scene2-word-design inline-block bg-gradient-to-r from-cyan-300 via-teal-200 to-emerald-400 bg-clip-text text-transparent">
                         DESIGN
                       </span>
-                    </h1>
+                    </h2>
 
                     {/* Description: Flowing Phrase Reveal through directional masks */}
                     {section.description && (
@@ -1020,9 +1066,9 @@ function ScrollGlobe({
                     </div>
 
                     {/* Main Heading: REAL SYSTEMS - DECODE / SCRAMBLE TRANSFORMATION */}
-                    <h1 className="scene3-title font-black leading-[0.95] tracking-tight mb-6 text-4xl sm:text-6xl md:text-7xl lg:text-8xl select-none text-white">
+                    <h2 className="scene3-title font-black leading-[0.95] tracking-tight mb-6 text-4xl sm:text-6xl md:text-7xl lg:text-8xl select-none text-white">
                       <span className="scene3-title-text block">REAL SYSTEMS</span>
-                    </h1>
+                    </h2>
 
                     {/* Description: PHRASE-BY-PHRASE REASSEMBLY */}
                     {section.description && (

@@ -414,14 +414,12 @@ export function AevionText({
     return (
       <Tag
         ref={containerRef}
-        aria-label={rawText || undefined}
         style={style}
         className={`${className} inline-block`}
       >
         {chars.map((char, i) => (
           <span
             key={i}
-            aria-hidden="true"
             className="aevion-char-token inline-block will-change-transform"
             style={{ whiteSpace: char === " " ? "pre" : "normal" }}
           >
@@ -438,7 +436,6 @@ export function AevionText({
     return (
       <Tag
         ref={containerRef}
-        aria-label={rawText || undefined}
         style={style}
         className={className}
       >
@@ -461,7 +458,6 @@ export function AevionText({
     return (
       <Tag
         ref={containerRef}
-        aria-label={rawText || undefined}
         style={style}
         className={className}
       >

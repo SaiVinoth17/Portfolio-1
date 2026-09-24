@@ -44,6 +44,13 @@ export default function LenisProvider({ children }) {
       // Adaptive engine auto-calibrates display refresh rate (60–144Hz+)
     });
 
+    // Configure ScrollTrigger to limit callbacks and avoid thrashing on mobile viewport changes
+    ScrollTrigger.config({
+      limitCallbacks: true,
+      ignoreMobileResize: true,
+      autoRefreshEvents: "visibilitychange,DOMContentLoaded,load,resize",
+    });
+
     // 1. Recalculate triggers once all web fonts are loaded (prevents stale text offset metrics)
     if (typeof document !== "undefined" && document.fonts) {
       document.fonts.ready.then(() => {
@@ -59,20 +66,15 @@ export default function LenisProvider({ children }) {
     };
     window.addEventListener("load", handleWindowLoad);
 
-    // 3. Observe body layout changes (lazy-loaded elements, dynamic expansion)
+    // 3. Handle viewport resize with debounce
     let resizeTimer = null;
     const handleViewportResize = () => {
       clearTimeout(resizeTimer);
       resizeTimer = setTimeout(() => {
         if (lenisRef.current) lenisRef.current.resize();
         ScrollTrigger.refresh();
-      }, 100);
+      }, 150);
     };
-
-    const resizeObserver = new ResizeObserver(handleViewportResize);
-    if (typeof document !== "undefined" && document.body) {
-      resizeObserver.observe(document.body);
-    }
 
     window.addEventListener("resize", handleViewportResize, { passive: true });
     window.addEventListener("orientationchange", handleViewportResize, { passive: true });
@@ -82,7 +84,6 @@ export default function LenisProvider({ children }) {
       window.removeEventListener("load", handleWindowLoad);
       window.removeEventListener("resize", handleViewportResize);
       window.removeEventListener("orientationchange", handleViewportResize);
-      resizeObserver.disconnect();
       gsap.ticker.remove(tickerUpdate);
       lenis.destroy();
       lenisRef.current = null;

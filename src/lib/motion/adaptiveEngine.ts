@@ -143,7 +143,16 @@ class AdaptiveEngine {
         this.emaFrameTime = this.targetFrameMs;
         this.isCalibrated = true;
         this.applyTier(0);
+        if (this.listeners.size === 0) {
+          this.isRunning = false;
+          return;
+        }
       }
+      return;
+    }
+
+    if (this.isCalibrated && this.listeners.size === 0) {
+      this.isRunning = false;
       return;
     }
 
@@ -211,8 +220,17 @@ class AdaptiveEngine {
 
   public subscribe(listener: Listener): () => void {
     this.listeners.add(listener);
+    if (!this.isRunning && this.isTabVisible) {
+      this.startLoop();
+    }
     listener(this.getState());
-    return () => this.listeners.delete(listener);
+    return () => {
+      this.listeners.delete(listener);
+      if (this.listeners.size === 0 && this.isCalibrated) {
+        this.isRunning = false;
+        if (this.rafId) cancelAnimationFrame(this.rafId);
+      }
+    };
   }
 
   private notify() {

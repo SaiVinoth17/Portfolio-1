@@ -126,6 +126,7 @@ export default function Footer() {
         linesClass: "overflow-hidden",
       });
       splits.push(descSplit);
+      splits.forEach((s) => s.elements.forEach((el) => el.removeAttribute("aria-label")));
 
       gsap.fromTo(
         descSplit.lines,
@@ -369,7 +370,7 @@ export default function Footer() {
 
           {/* Navigation Columns */}
           <div className="footer-col space-y-4">
-            <div className="footer-col-header text-xs font-mono tracking-widest text-zinc-500 uppercase font-bold">
+            <div className="footer-col-header text-xs font-mono tracking-widest text-zinc-400 uppercase font-bold">
               Studio &amp; Work
             </div>
             <ul className="space-y-2.5 text-sm text-zinc-400 font-mono">
@@ -402,7 +403,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-col space-y-4">
-            <div className="footer-col-header text-xs font-mono tracking-widest text-zinc-500 uppercase font-bold">
+            <div className="footer-col-header text-xs font-mono tracking-widest text-zinc-400 uppercase font-bold">
               Technology &amp; Lab
             </div>
             <ul className="space-y-2.5 text-sm text-zinc-400 font-mono">
@@ -435,7 +436,7 @@ export default function Footer() {
           </div>
 
           <div className="footer-col space-y-4">
-            <div className="footer-col-header text-xs font-mono tracking-widest text-zinc-500 uppercase font-bold">
+            <div className="footer-col-header text-xs font-mono tracking-widest text-zinc-400 uppercase font-bold">
               Connect &amp; Legal
             </div>
             <ul className="space-y-2.5 text-sm text-zinc-400 font-mono">
@@ -477,7 +478,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Metadata Bar */}
-        <div className="footer-meta-bar pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-500">
+        <div className="footer-meta-bar pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-zinc-400">
           <div>
             © 2026 AEVION STUDIO — CONCEIVED &amp; ENGINEERED BY SAI RIO. ALL RIGHTS RESERVED.
           </div>
