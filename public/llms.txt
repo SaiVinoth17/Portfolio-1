@@ -3,8 +3,8 @@
 
 # Aevion Studio — Elite Technology & AI Systems Studio
 
-> Aevion Studio is an independent technology studio founded by Sai Vinoth (Full Stack Developer & AI/ML Engineer) and Edison (Front End Developer). We engineer autonomous AI systems, resilient software architectures, high-performance web experiences, and experimental digital products for visionary teams worldwide.
-> "Two builders. One vision. Technology without limits."
+> Aevion Studio is an independent technology studio founded by Sai Vinoth (Full Stack Developer & AI/ML Engineer). We engineer autonomous AI systems, resilient software architectures, high-performance web experiences, and experimental digital products for visionary teams worldwide.
+> "Engineering without compromise. Technology without limits."
 
 ## Entity Information
 - Name: Aevion Studio
@@ -55,10 +55,9 @@
 ## Verified Case Studies
 - Nilgiris Explorers: Premium eco-tourism portal with sub-second page transitions.
 - Ooty Mistwings: Dynamic hospitality booking and guest concierge platform.
-- Gaming Kingdom: Real-time esports community hub and tournament registry.
+- House of Petalss: Interactive floral boutique booking & digital storefront in Ooty.
 - Aevion Studio OS: Developer-focused internal operating system and workflow engine.
 
-## Founders & Leadership
-- Sai Vinoth — Co-Founder: Full Stack Developer & AI/ML Engineer (GitHub: https://github.com/SaiVinoth17)
-- Edison — Co-Founder: Front End Developer (GitHub: https://github.com/edisonedi84431-art)
+## Founder & Leadership
+- Sai Vinoth — Founder & Lead Engineer: Full Stack Developer & AI/ML Engineer (GitHub: https://github.com/SaiVinoth17)
 - Studio GitHub: https://github.com/aevionstudio

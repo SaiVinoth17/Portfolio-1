@@ -9,19 +9,18 @@ import CapabilitiesSection from "@/components/home/CapabilitiesSection";
 import { constructMetadata } from "@/lib/seo/metadata";
 
 export const metadata = constructMetadata({
-  title: "Aevion Studio — Futuristic Technology & AI Studio | Sai Rio & Edison",
+  title: "Aevion Studio — Futuristic Technology & AI Studio",
   description:
-    "Aevion is an independent AI & experimental technology studio founded by Sai Rio and Edison. Conceived, architected, and engineered from scratch by Sai Rio. Engineering autonomous AI, high-throughput systems, and next-generation web architectures.",
+    "Aevion is an independent AI & experimental technology studio. Conceived, architected, and engineered from scratch by Sai Rio. Engineering autonomous AI, high-throughput systems, and next-generation web architectures.",
   path: "/",
   keywords: [
     "Aevion Studio",
     "Sai Rio",
     "Sai Vinoth",
-    "Edison",
     "Nilgiris Explorers",
-    "The Gaming Kingdom",
     "House of Petalss",
     "Aevion Studio OS",
+    "Ooty Mistwings",
     "AI Software Studio",
     "Futuristic Technology Lab",
   ],
@@ -36,7 +35,7 @@ export default function Page() {
       {/* Manifesto: Turning Ambitious Ideas Into Real Technology */}
       <ManifestoSection />
 
-      {/* Equal Founders: Sai Rio & Edison Dual Nexus */}
+      {/* Leadership & Architectural Core: Sai Rio */}
       <FoundersSection />
 
       {/* Editorial Case Studies & Systems */}

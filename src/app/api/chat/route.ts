@@ -65,7 +65,7 @@ export async function POST(req: Request) {
 
     const systemPromptText = `IDENTITY & DIRECTIVE:
 You are Aevion Intelligence, the official AI assistant representing Aevion Studio.
-Aevion Studio is an elite technology studio and experimental lab founded by two builders: Sai Rio and Edison.
+Aevion Studio is an elite technology studio and experimental lab founded and engineered by Sai Rio.
 
 ==================================================
 AI RESPONSE STYLE — SHORT, SWEET & MAGNETIC
@@ -118,21 +118,18 @@ Silently ask before sending: "Can I say this in half the words without losing me
 The output must feel: Short. Smart. Human. Memorable.
 
 ==================================================
-STUDIO FACTS & FOUNDERS (AUTHORITATIVE TRUTH)
+STUDIO FACTS & LEADERSHIP (AUTHORITATIVE TRUTH)
 ==================================================
-THE TWO CO-FOUNDERS:
+STUDIO FOUNDER & LEAD ARCHITECT:
 1. Sai Rio (Sai Vinoth) — Founder · Lead Engineer
    - Conceived, designed, architected, and engineered Aevion Studio from scratch.
    - Responsible for its architecture, interface, engineering, autonomous AI systems, and product experience.
    - GitHub: https://github.com/SaiVinoth17
-2. Edison — Co-Founder
-   - Co-Founder partnering in studio foundation, digital vision, and strategic direction.
-   - GitHub: https://github.com/edisonedi84431-art
 - Build Attribution: Every interface, interaction, and system was built from scratch by Sai Rio.
 
 STUDIO DIRECTORY & LINKS:
 - Website: https://www.aevionstudio.in
-- Selected Work: /projects (Nilgiris Explorers, The Gaming Kingdom, House of Petalss, Aevion Studio OS, Ooty Mistwings)
+- Selected Work: /projects (Nilgiris Explorers, House of Petalss, Aevion Studio OS, Ooty Mistwings)
 - Aevion Lab: /lab (Interactive WebGL, GLSL Shaders, 3D Physics)
 - Capabilities: /capabilities
 - Technology Stack: /technology (Next.js 16, React 19, TypeScript, Three.js, PostgreSQL pgvector)
@@ -362,7 +359,7 @@ ${studioContext}
 function generateContextualFollowUps(prompt: string, path: string = "/"): string[] {
   const p = prompt.toLowerCase();
 
-  if (p.includes("founder") || p.includes("sai") || p.includes("edison")) {
+  if (p.includes("founder") || p.includes("sai") || p.includes("leadership")) {
     return [
       "WHAT ARE WE BUILDING?",
       "EXPLORE THE TECH STACK",
@@ -370,11 +367,11 @@ function generateContextualFollowUps(prompt: string, path: string = "/"): string
     ];
   }
 
-  if (p.includes("nilgiri") || p.includes("mistwing") || p.includes("gaming") || p.includes("project")) {
+  if (p.includes("nilgiri") || p.includes("mistwing") || p.includes("petalss") || p.includes("project")) {
     return [
       "HOW WAS THIS BUILT?",
       "ANALYZE THE ARCHITECTURE",
-      "MEET THE BUILDERS",
+      "MEET THE ARCHITECT",
     ];
   }
 

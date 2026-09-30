@@ -5,12 +5,11 @@ import { getBreadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = constructMetadata({
   title: "Open Source Repositories & Engineering Public R&D",
   description:
-    "Explore open source repositories, developer utilities, and public R&D contributions by Aevion Studio founders Sai Vinoth and Edison.",
+    "Explore open source repositories, developer utilities, and public R&D contributions by Aevion Studio and founder Sai Vinoth.",
   path: "/open-source",
   keywords: [
     "Aevion Open Source",
     "Sai Vinoth GitHub",
-    "Edison GitHub",
     "Next.js Open Source",
     "Three.js Components",
   ],

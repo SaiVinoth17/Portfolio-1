@@ -13,7 +13,6 @@ import {
   ShieldCheck,
   Zap,
   Activity,
-  Radio,
   ShoppingBag,
   Compass,
 } from "lucide-react";
@@ -174,31 +173,6 @@ export default function ProjectDetailClient({
               <div className="p-4 rounded-2xl bg-zinc-900 border border-white/5 space-y-1">
                 <span className="text-zinc-500">ACCELERATION</span>
                 <p className="text-cyan-400 font-bold text-sm">GPU Layer Compositing</p>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {project.specialType === "gaming" && (
-          <div className="p-8 rounded-3xl bg-zinc-950 border border-emerald-500/30 space-y-6 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-white/10 pb-4">
-              <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 font-bold">
-                <Radio size={16} /> CYBERPUNK HUD TELEMETRY
-              </div>
-              <span className="text-xs font-mono text-zinc-400">Web Audio API Synth</span>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
-              <div className="p-4 rounded-2xl bg-zinc-900 border border-white/5 space-y-1">
-                <span className="text-zinc-500">AUDIO ENGINE</span>
-                <p className="text-emerald-400 font-bold text-sm">Harmonic Sound FX Synth</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-zinc-900 border border-white/5 space-y-1">
-                <span className="text-zinc-500">INPUT LATENCY</span>
-                <p className="text-cyan-400 font-bold text-sm">&lt;15ms Instant Socket Sync</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-zinc-900 border border-white/5 space-y-1">
-                <span className="text-zinc-500">GLASSMORPHISM</span>
-                <p className="text-white font-bold text-sm">Custom Backdrop Shader</p>
               </div>
             </div>
           </div>

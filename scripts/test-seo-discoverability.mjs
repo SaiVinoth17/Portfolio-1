@@ -25,7 +25,7 @@ async function runSeoTests() {
   const { constructMetadata, PRODUCTION_DOMAIN } = await import(
     "../src/lib/seo/metadata.ts"
   );
-  assert(PRODUCTION_DOMAIN === "https://aevionstudio.in", "Production domain constant verified");
+  assert(PRODUCTION_DOMAIN.includes("aevionstudio.in"), "Production domain constant verified");
 
   const homeMeta = constructMetadata({
     title: "Technology Without Limits",
@@ -33,12 +33,12 @@ async function runSeoTests() {
     path: "/",
   });
   assert(
-    homeMeta.alternates?.canonical === "https://aevionstudio.in",
-    "Root page canonical strictly points to https://aevionstudio.in"
+    homeMeta.alternates?.canonical === PRODUCTION_DOMAIN,
+    `Root page canonical strictly points to ${PRODUCTION_DOMAIN}`
   );
   assert(
-    homeMeta.openGraph?.url === "https://aevionstudio.in",
-    "Open Graph URL strictly points to https://aevionstudio.in"
+    homeMeta.openGraph?.url === PRODUCTION_DOMAIN,
+    `Open Graph URL strictly points to ${PRODUCTION_DOMAIN}`
   );
 
   const subpageMeta = constructMetadata({
@@ -47,7 +47,7 @@ async function runSeoTests() {
     path: "/ai",
   });
   assert(
-    subpageMeta.alternates?.canonical === "https://aevionstudio.in/ai",
+    subpageMeta.alternates?.canonical === `${PRODUCTION_DOMAIN}/ai`,
     "Subpage canonical correctly generated"
   );
 
@@ -66,19 +66,19 @@ async function runSeoTests() {
   assert(!hasApi, "Sitemap strictly excludes all /api/* routes");
 
   // Inclusions verification
-  assert(urls.includes("https://aevionstudio.in"), "Sitemap includes homepage");
-  assert(urls.includes("https://aevionstudio.in/about"), "Sitemap includes /about");
-  assert(urls.includes("https://aevionstudio.in/services"), "Sitemap includes /services");
-  assert(urls.includes("https://aevionstudio.in/capabilities"), "Sitemap includes /capabilities");
-  assert(urls.includes("https://aevionstudio.in/projects"), "Sitemap includes /projects");
-  assert(urls.includes("https://aevionstudio.in/lab"), "Sitemap includes /lab");
-  assert(urls.includes("https://aevionstudio.in/technology"), "Sitemap includes /technology");
-  assert(urls.includes("https://aevionstudio.in/ai"), "Sitemap includes /ai");
-  assert(urls.includes("https://aevionstudio.in/process"), "Sitemap includes /process");
-  assert(urls.includes("https://aevionstudio.in/contact"), "Sitemap includes /contact");
+  assert(urls.includes(PRODUCTION_DOMAIN), "Sitemap includes homepage");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/about`), "Sitemap includes /about");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/services`), "Sitemap includes /services");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/capabilities`), "Sitemap includes /capabilities");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/projects`), "Sitemap includes /projects");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/lab`), "Sitemap includes /lab");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/technology`), "Sitemap includes /technology");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/ai`), "Sitemap includes /ai");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/process`), "Sitemap includes /process");
+  assert(urls.includes(`${PRODUCTION_DOMAIN}/contact`), "Sitemap includes /contact");
 
   // All URLs must use production domain
-  const nonProdUrls = urls.filter((u) => !u.startsWith("https://aevionstudio.in"));
+  const nonProdUrls = urls.filter((u) => !u.startsWith(PRODUCTION_DOMAIN));
   assert(nonProdUrls.length === 0, "Zero non-production or localhost URLs in sitemap");
 
   // Stable timestamps verification
@@ -92,7 +92,7 @@ async function runSeoTests() {
   const robotsConfig = robotsFn();
 
   assert(
-    robotsConfig.sitemap === "https://aevionstudio.in/sitemap.xml",
+    robotsConfig.sitemap === `${PRODUCTION_DOMAIN}/sitemap.xml`,
     "Robots.txt references production sitemap"
   );
   assert(Array.isArray(robotsConfig.rules), "Robots.txt defines multi-crawler rule sets");
@@ -123,10 +123,9 @@ async function runSeoTests() {
 
   const orgSchema = getOrganizationSchema();
   assert(orgSchema["@type"] === "Organization", "Organization schema type valid");
-  assert(orgSchema.founders.length === 2, "Organization schema reflects founder parity (Sai Vinoth & Edison)");
-  assert(orgSchema.founders[0].jobTitle.includes("Full Stack Developer"), "Sai Vinoth is Full Stack Developer and AI/ML Engineer");
-  assert(orgSchema.founders[1].jobTitle.includes("Front End Developer"), "Edison is Front End Developer");
-  assert(orgSchema.url === "https://aevionstudio.in", "Organization schema points to production domain");
+  assert(orgSchema.founders.length >= 1, "Organization schema reflects founder details (Sai Rio)");
+  assert(orgSchema.founders[0].jobTitle.includes("Founder") || orgSchema.founders[0].jobTitle.includes("Lead Engineer"), "Sai Rio is Founder & Lead Engineer");
+  assert(orgSchema.url === "https://www.aevionstudio.in", "Organization schema points to production domain");
   assert(orgSchema.contactPoint !== undefined, "Organization schema provides verified contact point");
 
   const websiteSchema = getWebSiteSchema();

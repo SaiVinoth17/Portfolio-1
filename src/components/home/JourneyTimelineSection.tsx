@@ -23,9 +23,9 @@ const MILESTONES = [
   {
     phase: "PHASE 04",
     status: "DEPLOYED",
-    title: "House of Petalss & The Gaming Kingdom",
-    desc: "Shipped high-concurrency WebSocket arcade hub (The Gaming Kingdom) and modern floral boutique booking platform (House of Petalss) in Ooty.",
-    tags: ["WebSockets", "E-Commerce", "React 19", "Real-Time"],
+    title: "House of Petalss Digital Boutique",
+    desc: "Shipped modern floral boutique booking platform and interactive direct order storefront (House of Petalss) in Ooty.",
+    tags: ["E-Commerce", "React 19", "Storefront Architecture"],
     accent: "#ec4899",
   },
   {
@@ -48,8 +48,8 @@ const MILESTONES = [
     phase: "PHASE 01",
     status: "ORIGIN",
     title: "Founding of Aevion Studio",
-    desc: "Aevion Studio was founded by Sai Rio and Edison with a singular vision: to establish an independent technology studio dedicated to engineering ambitious AI software and digital systems.",
-    tags: ["Sai Rio", "Edison", "Studio Core"],
+    desc: "Aevion Studio was founded by Sai Rio with a singular vision: to establish an independent technology studio dedicated to engineering ambitious AI software and digital systems.",
+    tags: ["Sai Rio", "Architecture", "Studio Core"],
     accent: "#38bdf8",
   },
 ];

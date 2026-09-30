@@ -164,7 +164,7 @@ export default function Footer() {
         }
       );
 
-      // 5. Co-Founders Matrix: Scramble decode header
+      // 5. Architectural Core: Scramble decode header
       const matrixHeader = footerRef.current.querySelector(".footer-matrix-header");
       if (matrixHeader) {
         ScrollTrigger.create({
@@ -175,7 +175,7 @@ export default function Footer() {
             gsap.to(matrixHeader, {
               duration: 0.8,
               scrambleText: {
-                text: "CO-FOUNDERS MATRIX",
+                text: "ARCHITECTURAL CORE",
                 chars: "01/<>[]_!#&*",
                 speed: 0.7,
               },
@@ -325,14 +325,13 @@ export default function Footer() {
 
             <div className="p-4 rounded-2xl border border-white/5 bg-white/[0.02] space-y-2">
               <div className="footer-matrix-header text-[10px] font-mono uppercase tracking-widest text-emerald-400 font-bold flex items-center gap-1.5">
-                <Cpu size={12} /> Co-Founders Matrix
+                <Cpu size={12} /> Architectural Core
               </div>
               <p className="text-xs text-zinc-300 leading-relaxed">
-                Founded by <strong className="text-white font-semibold">Sai Rio</strong> (Founder &amp; Lead Engineer) and{" "}
-                <strong className="text-white font-semibold">Edison</strong> (Co-Founder). Conceived, architected, and engineered from scratch by Sai Rio.
+                Conceived, architected, and engineered from scratch by <strong className="text-white font-semibold">Sai Rio</strong>.
               </p>
               <div className="text-[11px] font-mono text-zinc-400 italic pt-1">
-                &ldquo;Two builders. One vision. Technology without limits.&rdquo;
+                &ldquo;Engineering without compromise. Technology without limits.&rdquo;
               </div>
             </div>
 
@@ -346,15 +345,6 @@ export default function Footer() {
                 title="Sai Vinoth GitHub Profile"
               >
                 <Github size={13} /> Sai Vinoth GitHub
-              </a>
-              <a
-                href="https://github.com/edisonedi84431-art"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-link-item flex items-center gap-2 px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 hover:text-white rounded-xl text-xs font-mono transition-colors"
-                title="Edison GitHub Profile"
-              >
-                <Github size={13} /> Edison GitHub
               </a>
               <a
                 href="https://github.com/aevionstudio"

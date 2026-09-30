@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const PRODUCTION_DOMAIN = "https://www.aevionstudio.in";
 
@@ -32,7 +32,7 @@ export function constructMetadata({
   const defaultKeywords = [
     "Aevion Studio",
     "Sai Rio",
-    "Edison",
+    "Sai Vinoth",
     "Autonomous AI Systems",
     "AI Product Engineering",
     "High Performance Software",
@@ -50,7 +50,6 @@ export function constructMetadata({
     keywords: mergedKeywords,
     authors: [
       { name: "Sai Vinoth", url: "https://github.com/SaiVinoth17" },
-      { name: "Edison", url: "https://github.com/edisonedi84431-art" },
       { name: "Aevion Studio", url: PRODUCTION_DOMAIN },
     ],
     creator: "Aevion Studio",

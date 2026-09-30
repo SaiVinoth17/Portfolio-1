@@ -17,16 +17,6 @@ const FOUNDERS_INFO = [
     github: "https://github.com/SaiVinoth17",
     accent: "#34d399",
   },
-  {
-    id: "edison",
-    name: "Edison",
-    role: "Co-Founder",
-    title: "Co-Founder",
-    bio: "Co-founder partnering in studio foundation, digital vision, and strategic direction.",
-    specialties: ["Studio Foundation", "Digital Strategy", "Brand Direction", "Co-Founder"],
-    github: "https://github.com/edisonedi84431-art",
-    accent: "#38bdf8",
-  },
 ];
 
 const ERAS = [
@@ -37,7 +27,7 @@ const ERAS = [
     org: "Aevion Studio Core",
     focus: "Autonomous AI & High-Throughput Web Systems",
     summary:
-      "Aevion Studio was founded by Sai Rio and Edison with a unified conviction: to engineer next-generation AI platforms, custom SaaS products, and fluid digital systems from the ground up.",
+      "Aevion Studio was founded with a singular conviction: to engineer next-generation AI platforms, custom SaaS products, and fluid digital systems from the ground up.",
     stack: ["Next.js 16", "React 19", "Groq Llama", "TypeScript", "Three.js", "GSAP"],
     icon: Cpu,
     color: "#34d399",
@@ -107,20 +97,20 @@ export default function AboutPage() {
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-mono"
           >
             <Sparkles size={12} />
-            <AevionText as="span" variant="eyebrow" text="THE PEOPLE BEHIND AEVION" />
+            <AevionText as="span" variant="eyebrow" text="THE ARCHITECT BEHIND AEVION" />
           </motion.div>
 
           <AevionText
             as="h1"
             variant="display"
-            text="Two builders. One codebase. Zero compromise."
+            text="Direct architecture. Zero bloat. Pure engineering."
             className="text-5xl sm:text-7xl lg:text-8xl font-extrabold tracking-tight leading-none text-white justify-center"
           />
 
           <AevionText
             as="p"
             variant="paragraph"
-            text="Founded by Sai Rio and Edison. We build software with the patience of craftsmen and the speed of modern hardware. Direct architecture, zero agency bloat."
+            text="Conceived, architected, and engineered by Sai Rio. We build software with the patience of craftsmen and the speed of modern hardware. Direct architecture, zero agency bloat."
             className="text-base sm:text-lg text-zinc-400 max-w-2xl mx-auto leading-relaxed justify-center"
           />
 
@@ -141,85 +131,87 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
-      {/* Equal Co-Founders Grid */}
+      {/* Leadership Architecture */}
       <section className="px-4 sm:px-8 max-w-7xl mx-auto mb-28">
-        <AevionText
-          as="div"
-          variant="eyebrow"
-          text="LEADERSHIP ARCHITECTURE"
-          className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase"
-        />
-        <AevionText
-          as="h2"
-          variant="section"
-          text="The Two Founders"
-          className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-10"
-        />
+        <div className="max-w-3xl mx-auto">
+          <AevionText
+            as="div"
+            variant="eyebrow"
+            text="LEADERSHIP ARCHITECTURE"
+            className="text-xs font-mono font-bold tracking-widest text-emerald-400 mb-3 uppercase"
+          />
+          <AevionText
+            as="h2"
+            variant="section"
+            text="Studio Leadership"
+            className="text-4xl sm:text-5xl font-extrabold text-white tracking-tight mb-10"
+          />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {FOUNDERS_INFO.map((founder) => (
-            <div
-              key={founder.id}
-              className="p-8 sm:p-10 rounded-3xl border border-white/10 bg-[#08080f] hover:border-white/20 transition-all space-y-6"
-            >
-              <div className="flex items-start justify-between">
-                <div>
-                  <span
-                    className="text-[10px] font-mono tracking-widest px-2.5 py-0.5 rounded-full font-bold uppercase"
-                    style={{
-                      background: `${founder.accent}15`,
-                      color: founder.accent,
-                      border: `1px solid ${founder.accent}30`,
-                    }}
-                  >
-                    {founder.role}
-                  </span>
-                  <AevionText
-                    as="h3"
-                    variant="subheading"
-                    text={founder.name}
-                    className="text-3xl font-extrabold text-white mt-2"
-                  />
-                  <div className="text-xs font-mono text-zinc-400 mt-1">{founder.title}</div>
-                </div>
-
-                {founder.github && (
-                  <a
-                    href={founder.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white transition-colors"
-                    title="GitHub"
-                  >
-                    <Github size={16} />
-                  </a>
-                )}
-              </div>
-
-              <AevionText
-                as="p"
-                variant="paragraph"
-                text={founder.bio}
-                className="text-sm text-zinc-300 font-light leading-relaxed"
-              />
-
-              <div className="space-y-2 pt-4 border-t border-white/5">
-                <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
-                  Specialties &amp; Focus
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {founder.specialties.map((s) => (
+          <div className="grid grid-cols-1 gap-8">
+            {FOUNDERS_INFO.map((founder) => (
+              <div
+                key={founder.id}
+                className="p-8 sm:p-10 rounded-3xl border border-white/10 bg-[#08080f] hover:border-white/20 transition-all space-y-6"
+              >
+                <div className="flex items-start justify-between">
+                  <div>
                     <span
-                      key={s}
-                      className="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/10 text-zinc-400"
+                      className="text-[10px] font-mono tracking-widest px-2.5 py-0.5 rounded-full font-bold uppercase"
+                      style={{
+                        background: `${founder.accent}15`,
+                        color: founder.accent,
+                        border: `1px solid ${founder.accent}30`,
+                      }}
                     >
-                      {s}
+                      {founder.role}
                     </span>
-                  ))}
+                    <AevionText
+                      as="h3"
+                      variant="subheading"
+                      text={founder.name}
+                      className="text-3xl font-extrabold text-white mt-2"
+                    />
+                    <div className="text-xs font-mono text-zinc-400 mt-1">{founder.title}</div>
+                  </div>
+
+                  {founder.github && (
+                    <a
+                      href={founder.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-3 rounded-2xl border border-white/10 bg-white/5 hover:bg-white/10 text-zinc-300 hover:text-white transition-colors"
+                      title="GitHub"
+                    >
+                      <Github size={16} />
+                    </a>
+                  )}
+                </div>
+
+                <AevionText
+                  as="p"
+                  variant="paragraph"
+                  text={founder.bio}
+                  className="text-sm text-zinc-300 font-light leading-relaxed"
+                />
+
+                <div className="space-y-2 pt-4 border-t border-white/5">
+                  <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500">
+                    Specialties &amp; Focus
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {founder.specialties.map((s) => (
+                      <span
+                        key={s}
+                        className="text-[11px] font-mono px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/10 text-zinc-400"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </section>
 

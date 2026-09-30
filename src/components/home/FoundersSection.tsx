@@ -57,29 +57,6 @@ const FOUNDERS: FounderData[] = [
     nodeIndex: "NODE_01 // ARCHITECT & LEAD ENGINEER",
     buildStatus: "CONCEIVED · ARCHITECTED · DESIGNED · ENGINEERED",
   },
-  {
-    id: "edison",
-    name: "EDISON",
-    role: "CO-FOUNDER",
-    badge: "CO-FOUNDER",
-    title: "Co-Founder",
-    tagline:
-      "Co-founder of Aevion Studio, partnering in studio foundation, digital vision, and strategic direction.",
-    focus: [
-      "Studio Foundation",
-      "Digital Brand Direction",
-      "Product Strategy",
-      "Creative Vision",
-      "Strategic Partnerships",
-    ],
-    philosophy:
-      "Great studios are built on singular conviction. When vision and engineering align without friction, ambitious ideas turn into enduring reality.",
-    specialties: ["Studio Operations", "Digital Strategy", "Brand Direction", "Co-Founder"],
-    github: "https://github.com/edisonedi84431-art",
-    accentColor: "#22d3ee",
-    gradient: "from-cyan-400 to-blue-500",
-    nodeIndex: "NODE_02 // CO-FOUNDER",
-  },
 ];
 
 export default function FoundersSection() {
@@ -245,45 +222,7 @@ export default function FoundersSection() {
         }
       );
 
-      // 8. EDISON — Restrained Text Motion (Scoped to Edison's card)
-      gsap.fromTo(
-        ".founder-name-edison",
-        { letterSpacing: "-0.03em", y: 12, opacity: 0 },
-        {
-          letterSpacing: "0.02em",
-          y: 0,
-          opacity: 1,
-          duration: 0.65,
-          ease: "power2.out",
-          delay: 0.05,
-          scrollTrigger: {
-            trigger: ".founder-card-edison",
-            start: "top 88%",
-            once: true,
-          },
-        }
-      );
-
-      // 9. EDISON Role: Independent Tracking / Mask
-      gsap.fromTo(
-        ".founder-role-edison",
-        { clipPath: "inset(0 100% 0 0)", letterSpacing: "0.2em", opacity: 0 },
-        {
-          clipPath: "inset(0 0% 0 0)",
-          letterSpacing: "0.08em",
-          opacity: 1,
-          duration: 0.65,
-          ease: "power2.out",
-          delay: 0.1,
-          scrollTrigger: {
-            trigger: ".founder-card-edison",
-            start: "top 88%",
-            once: true,
-          },
-        }
-      );
-
-      // 10. Descriptions: Phrase-by-phrase masked construction
+      // 8. Descriptions: Phrase-by-phrase masked construction
       const descSplitSai = new SplitText(".founder-desc-sai", { type: "lines,words" });
       splits.push(descSplitSai);
       gsap.fromTo(
@@ -303,27 +242,7 @@ export default function FoundersSection() {
         }
       );
 
-      const descSplitEdison = new SplitText(".founder-desc-edison", { type: "lines,words" });
-      splits.push(descSplitEdison);
-      gsap.fromTo(
-        descSplitEdison.words,
-        { opacity: 0, y: 10 },
-        {
-          opacity: 1,
-          y: 0,
-          stagger: 0.02,
-          duration: 0.5,
-          ease: "power2.out",
-          delay: 0.05,
-          scrollTrigger: {
-            trigger: ".founder-card-edison",
-            start: "top 86%",
-            once: true,
-          },
-        }
-      );
-
-      // 11. Focus tags stagger
+      // 9. Focus tags stagger
       gsap.fromTo(
         ".founder-focus-tag-sai",
         { x: -14, opacity: 0, scale: 0.95 },
@@ -336,24 +255,6 @@ export default function FoundersSection() {
           ease: "power2.out",
           scrollTrigger: {
             trigger: ".founder-card-sai-rio",
-            start: "top 84%",
-            once: true,
-          },
-        }
-      );
-
-      gsap.fromTo(
-        ".founder-focus-tag-edison",
-        { y: 10, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          stagger: 0.03,
-          duration: 0.5,
-          ease: "power2.out",
-          delay: 0.05,
-          scrollTrigger: {
-            trigger: ".founder-card-edison",
             start: "top 84%",
             once: true,
           },
@@ -449,7 +350,7 @@ export default function FoundersSection() {
               <span className="founders-eyebrow-text">LEADERSHIP &amp; ARCHITECTURAL CORE</span>
             </div>
             <h2 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-none text-white select-none">
-              <span className="founders-hl-line1 block">THE PEOPLE</span>
+              <span className="founders-hl-line1 block">THE ARCHITECT</span>
               <span className="founders-hl-line2 block bg-gradient-to-r from-white via-zinc-300 to-zinc-600 bg-clip-text text-transparent">
                 BEHIND AEVION.
               </span>
@@ -458,36 +359,35 @@ export default function FoundersSection() {
 
           <div className="max-w-md space-y-3">
             <p className="founders-header-desc text-sm font-mono text-zinc-400 leading-relaxed">
-              Two builders united by a shared vision. Aevion Studio is engineered from the ground up, pairing deep technical architecture with creative digital craft.
+              Aevion Studio is engineered from the ground up, pairing deep technical systems architecture with creative digital craft.
             </p>
             <div className="founders-quote-line text-xs font-mono text-emerald-400 flex items-center gap-2 select-none">
               <Activity size={12} className="animate-pulse flex-shrink-0" />
-              <span>&ldquo;Two builders. One vision. Technology without limits.&rdquo;</span>
+              <span>&ldquo;Engineering without compromise. Technology without limits.&rdquo;</span>
             </div>
           </div>
         </div>
 
         {/* Central Convergence Circuit visualization */}
         <div className="founders-circuit relative py-4 hidden md:block">
-          <div className="founders-circuit-line h-px w-full bg-gradient-to-r from-emerald-500/30 via-white/40 to-cyan-500/30" />
+          <div className="founders-circuit-line h-px w-full bg-gradient-to-r from-emerald-500/20 via-emerald-400/40 to-emerald-500/20" />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-4 py-1 rounded-full bg-[#06060a] border border-white/20 text-[10px] font-mono tracking-widest text-zinc-400 uppercase flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-            <span>AEVION DUAL-NEXUS CORE</span>
+            <span>AEVION ARCHITECTURAL CORE</span>
           </div>
         </div>
 
-        {/* Founders Cards Grid */}
-        <div className="founders-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Founders Cards Deck */}
+        <div className="founders-grid grid grid-cols-1 max-w-4xl mx-auto w-full gap-8">
           {FOUNDERS.map((founder) => {
             const isHovered = hoveredFounder === founder.id;
-            const isSai = founder.id === "sai-rio";
 
             return (
               <div
                 key={founder.id}
                 onMouseEnter={() => setHoveredFounder(founder.id)}
                 onMouseLeave={() => setHoveredFounder(null)}
-                className={`founder-card founder-card-${founder.id} relative rounded-3xl border transition-all duration-500 p-8 sm:p-10 flex flex-col justify-between overflow-hidden group`}
+                className={`founder-card founder-card-${founder.id} relative rounded-3xl border transition-all duration-500 p-8 sm:p-12 flex flex-col justify-between overflow-hidden group`}
                 style={{
                   borderColor: isHovered ? founder.accentColor : "rgba(255, 255, 255, 0.1)",
                   background: isHovered
@@ -512,17 +412,11 @@ export default function FoundersSection() {
                       <div className="founder-node-idx text-[11px] font-mono tracking-widest text-zinc-500 font-bold mb-1 select-none">
                         {founder.nodeIndex}
                       </div>
-                      <h3
-                        className={`${
-                          isSai ? "founder-name-sai" : "founder-name-edison"
-                        } text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3 select-none`}
-                      >
+                      <h3 className="founder-name-sai text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3 select-none">
                         {founder.name}
                       </h3>
                       <div
-                        className={`${
-                          isSai ? "founder-role-sai" : "founder-role-edison"
-                        } inline-block mt-1 text-xs font-mono font-bold tracking-widest px-2.5 py-0.5 rounded-md select-none`}
+                        className="founder-role-sai inline-block mt-1 text-xs font-mono font-bold tracking-widest px-2.5 py-0.5 rounded-md select-none"
                         style={{
                           background: `${founder.accentColor}18`,
                           color: founder.accentColor,
@@ -552,11 +446,7 @@ export default function FoundersSection() {
 
                   {/* Core Description / Build Positioning */}
                   <div className="pt-2 border-t border-white/5 space-y-1.5">
-                    <p
-                      className={`${
-                        isSai ? "founder-desc-sai" : "founder-desc-edison"
-                      } text-xs sm:text-sm font-mono text-zinc-300 leading-relaxed`}
-                    >
+                    <p className="founder-desc-sai text-xs sm:text-sm font-mono text-zinc-300 leading-relaxed">
                       {founder.tagline}
                     </p>
                     {founder.buildStatus && (
@@ -581,15 +471,13 @@ export default function FoundersSection() {
                   {/* Focus Areas Pills */}
                   <div className="space-y-2">
                     <div className="text-[10px] font-mono uppercase tracking-widest text-zinc-500 select-none">
-                      {isSai ? "Craft & Core Disciplines" : "Focus & Technical Craft"}
+                      Craft &amp; Core Disciplines
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {founder.focus.map((item) => (
                         <span
                           key={item}
-                          className={`${
-                            isSai ? "founder-focus-tag-sai" : "founder-focus-tag-edison"
-                          } text-xs font-mono px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-zinc-300 select-none`}
+                          className="founder-focus-tag-sai text-xs font-mono px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-zinc-300 select-none"
                         >
                           {item}
                         </span>
@@ -612,7 +500,7 @@ export default function FoundersSection() {
                   </div>
 
                   <div className="text-[11px] font-mono font-semibold" style={{ color: founder.accentColor }}>
-                    {isSai ? "LEAD ARCHITECT →" : "CO-FOUNDER →"}
+                    LEAD ARCHITECT →
                   </div>
                 </div>
               </div>

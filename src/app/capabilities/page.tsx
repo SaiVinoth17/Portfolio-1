@@ -113,7 +113,7 @@ const FAQS = [
   {
     question: "What makes Aevion Studio's engineering different from a traditional agency?",
     answer:
-      "Aevion Studio is run by two equal co-founders who write every line of architecture themselves. We do not use bloated templates, outsourced teams, or junior handoffs. Every client collaborates directly with the founding architects.",
+      "Aevion Studio is an independent studio where every line of architecture is written in-house by our founding engineer. We do not use bloated templates, outsourced teams, or junior handoffs. Every client collaborates directly with the lead architect.",
   },
   {
     question: "Can Aevion Studio build both the AI backend and the frontend user experience?",
@@ -160,7 +160,7 @@ export default function CapabilitiesPage() {
         <AevionText
           as="p"
           variant="paragraph"
-          text="From raw GPU compute shaders to deterministic AI agents. Here is our technical surface, engineered in-house by Sai Rio and Edison."
+          text="From raw GPU compute shaders to deterministic AI agents. Here is our technical surface, engineered in-house by Sai Rio."
           className="text-base sm:text-lg text-zinc-400 leading-relaxed font-sans"
         />
       </header>

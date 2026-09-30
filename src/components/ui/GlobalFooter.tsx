@@ -25,7 +25,7 @@ export default function GlobalFooter() {
               </span>
             </div>
             <p className="text-zinc-500 text-xs leading-relaxed max-w-md font-sans">
-              Autonomous AI software, high-throughput systems, and creative web engineering. Founded by Sai Rio and Edison.
+              Autonomous AI software, high-throughput systems, and creative web engineering. Conceived and engineered by Sai Rio.
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export default function GlobalFooter() {
         {/* Bottom Tier */}
         <div className="pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-zinc-500">
           <div>
-            © {new Date().getFullYear()} Aevion Studio • Sai Rio &amp; Edison. All rights reserved.
+            © {new Date().getFullYear()} Aevion Studio. All rights reserved.
           </div>
           <div className="flex items-center gap-4">
             <span>TypeScript • Next.js 16 • Three.js</span>

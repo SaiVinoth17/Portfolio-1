@@ -17,7 +17,7 @@ export interface Project {
   githubUrl: string | null;
   image: string;
   images: string[];
-  specialType: "travel" | "motion" | "gaming" | "ai-os" | "ecommerce";
+  specialType: "travel" | "motion" | "ai-os" | "ecommerce";
   status: "SHIPPED & LIVE" | "PRODUCTION CORE" | "ACTIVE SPECIFICATION";
   year: string;
   tags: string[];
@@ -80,60 +80,6 @@ export const PROJECTS: Project[] = [
     tags: ["AI", "Maps", "Discovery", "Geospatial"],
     color: "#f59e0b",
     accent: "#fbbf24",
-    published: true,
-  },
-  {
-    id: "gaming-kingdom",
-    slug: "gaming-kingdom",
-    title: "The Gaming Kingdom",
-    subtitle: "High-Performance Interactive Gaming Portal & Community Hub",
-    category: "Real-Time WebSocket Gaming Portal",
-    description:
-      "A high-throughput competitive gaming hub in Ooty. Sub-15ms WebSocket state synchronization, live spectator leaderboards, and synthesized Web Audio soundscapes.",
-    problem:
-      "Gaming communities battle socket latency spikes and bloated frontend bundles during peak tournament concurrency.",
-    approach:
-      "We built a low-overhead WebSocket engine with client-side state prediction, optimistic UI updates, and an arcade sound system.",
-    whatWeBuilt: [
-      "Modular Component Architecture",
-      "Optimized React State Pipelines",
-      "High-Performance CSS Grid System",
-      "Web Audio Interaction Feedback",
-      "Real-time dynamic leaderboard streaming",
-      "Low-latency WebSocket sync hub",
-    ],
-    features: [
-      "Sub-15ms WebSocket state synchronization",
-      "Dynamic client-side leaderboard filtering",
-      "Arcade-inspired harmonic sound FX synthesis",
-      "Cyberpunk dark glassmorphic styling",
-    ],
-    technologies: [
-      "React 19",
-      "TypeScript",
-      "Node.js",
-      "Socket.io",
-      "PostgreSQL",
-      "Tailwind CSS",
-      "Web Audio API",
-    ],
-    metrics: "Fluid Interactive Feedback • Sub-15ms Socket Sync • Instant Filtering",
-    challenges:
-      "Balancing rich cyberpunk aesthetics with lightweight bundle delivery and instant client-side filtering responsiveness.",
-    lessons:
-      "Decoupling complex UI state from heavy renders kept input response latency consistently minimal.",
-    liveUrl: "https://www.ootythegamingkingdom.com/",
-    githubUrl: "https://github.com/aevionstudio",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80",
-    images: [
-      "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80",
-    ],
-    specialType: "gaming",
-    status: "SHIPPED & LIVE",
-    year: "2023",
-    tags: ["Real-Time", "Gaming", "WebSockets", "Arcade"],
-    color: "#34d399",
-    accent: "#6ee7b7",
     published: true,
   },
   {

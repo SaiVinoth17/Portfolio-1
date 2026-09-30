@@ -298,7 +298,7 @@ export default function UsersSettingsPage() {
                 <input
                   type="text"
                   required
-                  placeholder="Edison"
+                  placeholder="Alex Rivera"
                   value={newName}
                   onChange={(e) => setNewName(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-zinc-900 border border-white/10 text-white outline-none focus:border-emerald-500"
@@ -310,7 +310,7 @@ export default function UsersSettingsPage() {
                 <input
                   type="email"
                   required
-                  placeholder="edison@aevionstudio.in"
+                  placeholder="admin@aevionstudio.in"
                   value={newEmail}
                   onChange={(e) => setNewEmail(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-zinc-900 border border-white/10 text-white outline-none focus:border-emerald-500"

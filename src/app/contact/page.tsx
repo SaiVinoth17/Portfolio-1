@@ -254,7 +254,7 @@ export default function ContactPage() {
                 </span>
               </div>
               <p className="text-xs text-zinc-400 font-sans leading-relaxed">
-                Connect directly with Sai Rio and Edison via prefilled WhatsApp templates:
+                Connect directly with Aevion Studio via prefilled WhatsApp templates:
               </p>
               <div className="space-y-1.5 pt-1">
                 {[
@@ -487,7 +487,7 @@ export default function ContactPage() {
                       Brief logged under <strong className="text-white">{referenceId}</strong>.
                     </p>
                     <p className="text-zinc-400 text-xs font-mono max-w-md mx-auto leading-relaxed">
-                      Sai Rio and Edison personally review incoming project briefs. You will receive an architectural response within 24 hours.
+                      Aevion Studio leadership personally reviews incoming project briefs. You will receive an architectural response within 24 hours.
                     </p>
                   </motion.div>
                 )}

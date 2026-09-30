@@ -2,7 +2,7 @@ export const STUDIO_CONFIG = {
   name: "Aevion Studio",
   tagline: "Technology Without Limits",
   description:
-    "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Founded by Sai Rio and Edison.",
+    "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Conceived and engineered by Sai Rio.",
   domain: "https://www.aevionstudio.in",
   email: "hello@aevionstudio.in",
   whatsappNumber: (() => {
@@ -21,12 +21,6 @@ export const STUDIO_CONFIG = {
       role: "Founder · Lead Engineer",
       discipline: "Architecture, Full-Stack Engineering, AI Systems",
       github: "https://github.com/SaiVinoth17",
-    },
-    {
-      name: "Edison",
-      role: "Co-Founder",
-      discipline: "Co-Founder",
-      github: "https://github.com/edisonedi84431-art",
     },
   ],
   socials: {

@@ -3,17 +3,16 @@ import { constructMetadata } from "@/lib/seo/metadata";
 import { getBreadcrumbSchema } from "@/lib/seo/schema";
 
 export const metadata: Metadata = constructMetadata({
-  title: "About & Founders Dossier | Sai Rio & Edison",
+  title: "About & Leadership Dossier | Aevion Studio",
   description:
-    "Learn about Aevion Studio co-founders Sai Rio (Founder · Lead Engineer) and Edison (Co-Founder). Conceived, architected, and engineered from scratch by Sai Rio.",
+    "Learn about Aevion Studio leadership and architectural foundation. Conceived, architected, and engineered from scratch by Sai Rio.",
   path: "/about",
   keywords: [
     "Sai Rio",
     "Sai Vinoth",
-    "Edison",
-    "Aevion Studio Founders",
+    "Aevion Studio Leadership",
     "About Aevion",
-    "AI Software Studio Team",
+    "AI Software Studio",
   ],
 });
 

@@ -14,7 +14,7 @@ export function getOrganizationSchema() {
     logo: `${PRODUCTION_DOMAIN}/images/aevion-logo.png`,
     email: "hello@aevionstudio.in",
     description:
-      "Aevion Studio is an independent technology studio founded by Sai Rio and Edison. Conceived, architected, and engineered from scratch by Sai Rio.",
+      "Aevion Studio is an independent technology studio. Conceived, architected, and engineered from scratch by Sai Rio.",
     founders: [
       {
         "@type": "Person",
@@ -32,20 +32,6 @@ export function getOrganizationSchema() {
           "Three.js & WebGL Shaders",
         ],
       },
-      {
-        "@type": "Person",
-        "@id": `${PRODUCTION_DOMAIN}/#edison`,
-        name: "Edison",
-        jobTitle: "Co-Founder",
-        sameAs: ["https://github.com/edisonedi84431-art"],
-        knowsAbout: [
-          "Studio Operations",
-          "Digital Strategy",
-          "Brand Direction",
-          "Product Strategy",
-          "Strategic Partnerships",
-        ],
-      },
     ],
     address: {
       "@type": "PostalAddress",
@@ -61,7 +47,6 @@ export function getOrganizationSchema() {
     ],
     sameAs: [
       "https://github.com/SaiVinoth17",
-      "https://github.com/edisonedi84431-art",
       "https://github.com/aevionstudio",
     ],
     contactPoint: {
@@ -84,7 +69,7 @@ export function getWebSiteSchema() {
     "@id": `${PRODUCTION_DOMAIN}/#website`,
     name: "Aevion Studio",
     url: PRODUCTION_DOMAIN,
-    description: "Futuristic Technology & AI Studio | Sai Rio & Edison",
+    description: "Futuristic Technology & AI Studio | Autonomous Systems & Web Engineering",
     publisher: {
       "@id": `${PRODUCTION_DOMAIN}/#organization`,
     },

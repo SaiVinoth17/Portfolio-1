@@ -27,19 +27,18 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
       "owner",
       "team",
       "meet the founders",
+      "leadership",
       "people behind aevion",
-      "both founders",
     ],
     content:
-      "Aevion Studio was founded by Sai Rio (Founder & Lead Engineer) and Edison (Co-Founder). Aevion is conceived, architected, and engineered from scratch by Sai Rio.",
+      "Aevion Studio was founded and engineered by Sai Rio (Founder & Lead Engineer). Conceived, architected, and engineered from scratch by Sai Rio.",
     details: [
       "Sai Rio — Founder · Lead Engineer: Architecture • Full-Stack • Frontend • AI Systems • Product Engineering. (GitHub: https://github.com/SaiVinoth17)",
-      "Edison — Co-Founder. (GitHub: https://github.com/edisonedi84431-art)",
       "Architectural Record: 'Every interface, interaction, and system is built from scratch by Sai Rio.'",
     ],
     suggestedFollowUps: [
       "Who is Sai Rio?",
-      "Who is Edison?",
+      "Explain the technology",
       "What is Aevion building?",
       "Explore our projects",
     ],
@@ -60,53 +59,33 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
       "Philosophy: 'Software should be an extension of human will. Eliminate friction until only raw performance, intelligence, and clarity remain.'",
     ],
     suggestedFollowUps: [
-      "Who is Edison?",
       "Who founded Aevion?",
       "What are you building?",
-    ],
-  },
-  {
-    id: "founder-edison",
-    category: "founders",
-    title: "About Co-Founder Edison",
-    keywords: ["edison", "who is edison", "about edison", "edison role", "edison github", "edison's role"],
-    content:
-      "Edison is Co-Founder of Aevion Studio, partnering in studio foundation, digital vision, and strategic direction.",
-    details: [
-      "Role: Co-Founder of Aevion Studio.",
-      "Focus Areas: Studio foundation, brand direction, and strategic collaboration.",
-      "Verified GitHub Profile: https://github.com/edisonedi84431-art",
-      "Philosophy: 'Great studios are built on singular conviction. Ambitious ideas turn into enduring reality when vision and engineering align.'",
-    ],
-    suggestedFollowUps: [
-      "Who is Sai Rio?",
-      "Who founded Aevion?",
       "Explore our projects",
     ],
   },
   {
-    id: "founders-equality",
+    id: "founders-leadership",
     category: "founders",
-    title: "Founders Record & Architectural Credit",
+    title: "Leadership Record & Architectural Credit",
     keywords: [
-      "are sai and edison both founders",
-      "are both founders",
-      "are they co-founders",
-      "who is the main founder",
-      "is edison a founder",
+      "founder",
+      "leadership",
+      "who created aevion",
+      "who is the founder",
+      "who designed aevion",
       "is sai a founder",
     ],
     content:
-      "Sai Rio is the Founder and Lead Engineer who conceived, architected, and engineered Aevion from scratch. Edison is Co-Founder of the studio.",
+      "Sai Rio is the Founder and Lead Engineer who conceived, architected, and engineered Aevion from scratch.",
     details: [
       "Sai Rio: Founder · Lead Engineer (Architecture, Full-Stack, Frontend, AI Systems, Product)",
-      "Edison: Co-Founder",
       "Build Attribution: Every interface, interaction, and system was built from scratch by Sai Rio.",
     ],
     suggestedFollowUps: [
       "Who is Sai Rio?",
-      "Who is Edison?",
       "What is Aevion?",
+      "Explore our projects",
     ],
   },
   {
@@ -124,14 +103,14 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
       "what does aevion do",
     ],
     content:
-      "Aevion is an independent technology and AI creative studio founded by Sai Rio and Edison. Our mission is to turn ambitious ideas into real, production-grade technology.",
+      "Aevion is an independent technology and AI creative studio founded by Sai Rio. Our mission is to turn ambitious ideas into real, production-grade technology.",
     details: [
       "Specialization: High-performance AI software, autonomous LLM pipelines, GPU-accelerated web experiences (WebGL/GSAP), and scalable SaaS platforms.",
       "Core Values: Autonomous Intelligence, Kinetic Engineering, Zero-Compromise Scalability, and Direct Craftsmanship.",
-      "Founders: Sai Rio (Founder · Lead Engineer) & Edison (Co-Founder).",
+      "Leadership: Sai Rio (Founder · Lead Engineer).",
     ],
     suggestedFollowUps: [
-      "Meet the founders",
+      "Studio Leadership",
       "What are you building?",
       "Explore our projects",
     ],
@@ -177,13 +156,12 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     details: [
       "Aevion Studio OS: Motion-first portfolio operating system and WebGL sandbox.",
       "Nilgiris Explorers: Geospatial AI travel discovery engine.",
-      "The Gaming Kingdom: High-concurrency WebSocket real-time multiplayer hub.",
       "House of Petalss: Interactive flower boutique booking and florist platform.",
       "Ooty Mistwings: Cinematic WebGL luxury hospitality platform.",
     ],
     suggestedFollowUps: [
       "Tell me about Nilgiris Explorers",
-      "Tell me about The Gaming Kingdom",
+      "Tell me about Ooty Mistwings",
       "Tell me about House of Petalss",
       "Meet the founders",
     ],
@@ -202,7 +180,7 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
       "Live Verified URL: https://nilgirisexplorers.com/",
     ],
     suggestedFollowUps: [
-      "Tell me about The Gaming Kingdom",
+      "Tell me about Ooty Mistwings",
       "Tell me about House of Petalss",
       "Meet the founders",
     ],
@@ -226,24 +204,6 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     ],
   },
   {
-    id: "project-gaming-kingdom",
-    category: "projects",
-    title: "The Gaming Kingdom",
-    keywords: ["gaming", "kingdom", "gaming kingdom", "the gaming kingdom", "interactive interface", "gaming website", "frontend", "websocket"],
-    content:
-      "The Gaming Kingdom is a real-time multiplayer gaming hub powered by sub-15ms WebSockets, live score streaming, and an arcade-inspired responsive UI.",
-    details: [
-      "Stack: React 19, Node.js, Socket.io, and PostgreSQL.",
-      "Live Verified URL: https://www.ootythegamingkingdom.com/",
-      "Engineering Focus: Concurrency synchronization under high-frequency messaging with zero dropped frames.",
-    ],
-    suggestedFollowUps: [
-      "Tell me about Nilgiris Explorers",
-      "Tell me about House of Petalss",
-      "Meet the founders",
-    ],
-  },
-  {
     id: "project-house-of-petalss",
     category: "projects",
     title: "House of Petalss",
@@ -257,7 +217,7 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
     ],
     suggestedFollowUps: [
       "Tell me about Nilgiris Explorers",
-      "Tell me about The Gaming Kingdom",
+      "Tell me about Ooty Mistwings",
       "Explore our projects",
     ],
   },
@@ -308,12 +268,12 @@ export const KNOWLEDGE_BASE: KnowledgeTopic[] = [
       "Aevion Studio is available for select AI software development, SaaS builds, and creative technology partnerships.",
     details: [
       "Direct Uplink: hello@aevion.studio",
-      "Co-Founders: Sai Rio & Edison",
+      "Leadership: Sai Rio (Founder · Lead Engineer)",
       "Location: Nilgiris, India & Global Edge",
     ],
     link: { text: "Email Studio", url: "mailto:hello@aevion.studio" },
     suggestedFollowUps: [
-      "Meet the founders",
+      "Studio Leadership",
       "What is your tech stack?",
       "Explore our projects",
     ],

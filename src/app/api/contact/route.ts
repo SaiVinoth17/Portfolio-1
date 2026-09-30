@@ -73,7 +73,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         status: "success",
-        message: "Mission brief acknowledged. Sai Rio and Edison will review your architecture requirements within 24 hours.",
+        message: "Mission brief acknowledged. Aevion Studio will review your architecture requirements within 24 hours.",
         referenceId: refId,
       },
       { status: 200 }

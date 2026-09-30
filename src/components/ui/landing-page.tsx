@@ -26,7 +26,7 @@ export const DEFAULT_NAV_DOTS: NavDotItem[] = [
   { id: "innovation", badge: "CONNECTED" },
   { id: "discovery", badge: "REAL SYSTEMS" },
   { id: "manifesto", badge: "The Aevion Manifesto" },
-  { id: "founders", badge: "Co-Founders Architecture" },
+  { id: "founders", badge: "Leadership Architecture" },
   { id: "work", badge: "Production Case Studies" },
   { id: "timeline", badge: "Building in Public" },
   { id: "capabilities", badge: "Experimental Lab" },

@@ -268,14 +268,14 @@ export default function AevionHero() {
         <div className="hero-status-badge inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/[0.03] border border-white/10 backdrop-blur-md mb-8 self-start">
           <div className="w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_8px_#34d399]" />
           <span className="text-xs font-mono tracking-widest text-zinc-300 uppercase">
-            Two Builders • One Vision • Technology Without Limits
+            Autonomous AI Systems • Modern Web Architectures • Technology Without Limits
           </span>
         </div>
 
         {/* Monolithic Brand Heading */}
         <div className="space-y-4">
           <div className="hero-eyebrow text-[12px] sm:text-sm font-mono uppercase tracking-[0.25em] text-emerald-400 font-semibold">
-            AEVION STUDIO // FOUNDERS: SAI RIO &amp; EDISON
+            AEVION STUDIO // LEADERSHIP CORE
           </div>
 
           <h1 className="text-5xl sm:text-7xl lg:text-[88px] xl:text-[104px] font-extrabold tracking-tighter leading-[0.92] text-white">
@@ -291,22 +291,15 @@ export default function AevionHero() {
           <div className="lg:col-span-7 space-y-4">
             <p className="hero-narrative text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-2xl">
               An elite technology studio building autonomous AI systems, software products,
-              high-performance web experiences, and experimental digital architectures. Founded by{" "}
-              <strong className="text-white font-semibold">Sai Rio</strong> and{" "}
-              <strong className="text-white font-semibold">Edison</strong>. Conceived and engineered from scratch by Sai Rio.
+              high-performance web experiences, and experimental digital architectures. Conceived, architected, and engineered from scratch by <strong className="text-white font-semibold">Sai Rio</strong>.
             </p>
 
-            {/* Dual Founder Micro-Badges */}
+            {/* Founder Micro-Badge */}
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                 <span className="text-white font-semibold">Sai Rio</span>
                 <span className="text-zinc-500">/ Founder · Lead Engineer</span>
-              </div>
-              <div className="hero-founder-badge px-3 py-1 rounded-xl bg-white/[0.03] border border-white/10 text-xs font-mono flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                <span className="text-white font-semibold">Edison</span>
-                <span className="text-zinc-500">/ Co-Founder</span>
               </div>
             </div>
           </div>
@@ -338,7 +331,7 @@ export default function AevionHero() {
       <div className="relative z-10 max-w-7xl mx-auto w-full pt-8 border-t border-white/10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: "FOUNDER CORE", value: "Sai Rio & Edison", detail: "Conceived & Engineered by Sai Rio" },
+            { label: "ARCHITECTURAL CORE", value: "Sai Rio", detail: "Conceived & Engineered from scratch" },
             { label: "ENGINEERING STACK", value: "Next.js 16 • React 19", detail: "TypeScript • Three.js • GSAP" },
             { label: "COMPUTE ARCHITECTURE", value: "Edge & Serverless", detail: "Vercel Distributed Runtimes" },
             { label: "DISCIPLINE SPECTRUM", value: "AI + Systems + Motion", detail: "Production Verified" },

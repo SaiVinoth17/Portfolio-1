@@ -5,7 +5,7 @@ import { getBreadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = constructMetadata({
   title: "Careers & Engineering Opportunities",
   description:
-    "Join Aevion Studio: build autonomous AI pipelines, high-throughput SaaS platforms, and 120 FPS WebGL experiences alongside founders Sai Vinoth and Edison.",
+    "Join Aevion Studio: build autonomous AI pipelines, high-throughput SaaS platforms, and 120 FPS WebGL experiences alongside the Aevion Studio engineering team.",
   path: "/careers",
   keywords: [
     "Aevion Careers",

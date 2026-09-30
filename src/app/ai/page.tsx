@@ -226,7 +226,7 @@ export default function AIPage() {
           READY TO DEPLOY REAL AUTONOMY?
         </h2>
         <p className="text-sm text-zinc-400 max-w-xl mx-auto font-sans">
-          Skip brittle wrappers. Partner directly with Sai Rio and Edison to architect mission-critical
+          Skip brittle wrappers. Partner directly with Aevion Studio to architect mission-critical
           neural workflows.
         </p>
         <div className="pt-2">

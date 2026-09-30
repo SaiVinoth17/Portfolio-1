@@ -27,20 +27,20 @@ export default function AdminTeamPage() {
           ENGINEERING TEAM &amp; ROLES
         </h1>
         <p className="text-xs text-zinc-500 font-mono mt-0.5">
-          Founder parity and authenticated administrative access tiers
+          Founder and authenticated administrative access tiers
         </p>
       </div>
 
       {/* Founder Cores Deck */}
       <div className="space-y-4">
         <div className="text-xs font-mono text-zinc-400 uppercase tracking-wider font-bold">
-          EQUAL FOUNDING CORES
+          STUDIO LEADERSHIP CORE
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 max-w-xl gap-6">
           <div className="p-6 rounded-2xl bg-zinc-950/80 border border-emerald-500/30 space-y-3 relative overflow-hidden">
             <div className="flex items-center justify-between">
               <div className="text-emerald-400 font-mono text-xs font-bold flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-emerald-400" /> CO-FOUNDER
+                <span className="w-2 h-2 rounded-full bg-emerald-400" /> FOUNDER
               </div>
               <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
                 OWNER
@@ -54,26 +54,6 @@ export default function AdminTeamPage() {
             </div>
             <p className="text-xs text-zinc-500 leading-relaxed font-mono">
               Lead engineer and architect of Aevion Studio. Conceived, architected, and engineered the platform from scratch.
-            </p>
-          </div>
-
-          <div className="p-6 rounded-2xl bg-zinc-950/80 border border-cyan-500/30 space-y-3 relative overflow-hidden">
-            <div className="flex items-center justify-between">
-              <div className="text-cyan-400 font-mono text-xs font-bold flex items-center gap-1.5">
-                <span className="w-2 h-2 rounded-full bg-cyan-400" /> CO-FOUNDER
-              </div>
-              <span className="px-2.5 py-0.5 rounded text-[10px] font-mono font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30">
-                OWNER
-              </span>
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-white font-mono">Edison</h3>
-              <p className="text-xs font-mono text-zinc-400 mt-1">
-                Co-Founder · Studio Foundation & Strategy
-              </p>
-            </div>
-            <p className="text-xs text-zinc-500 leading-relaxed font-mono">
-              Co-Founder of Aevion Studio, partnering in studio foundation, digital brand direction, and strategic growth.
             </p>
           </div>
         </div>

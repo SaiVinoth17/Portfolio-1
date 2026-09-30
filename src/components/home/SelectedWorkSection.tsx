@@ -6,7 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import { ScrambleTextPlugin } from "gsap/ScrambleTextPlugin";
-import { ArrowUpRight, Github, Layers, Compass, Sparkles, Gamepad2, Laptop, ShoppingBag } from "lucide-react";
+import { ArrowUpRight, Github, Layers, Compass, Sparkles, Laptop, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { MOTION, isReducedMotion } from "@/lib/motion/motionTokens";
 import { AevionMagnetic } from "@/components/motion/AevionMagnetic";
@@ -23,8 +23,8 @@ interface CaseStudy {
   solution: string;
   outcome: string;
   technologies: string[];
-  demoUrl?: string;
-  githubUrl?: string;
+  demoUrl: string;
+  githubUrl: string;
   status: string;
   accentColor: string;
   icon: typeof Compass;
@@ -70,27 +70,8 @@ const CASE_STUDIES: CaseStudy[] = [
     icon: Sparkles,
   },
   {
-    id: "gaming-kingdom",
-    number: "03",
-    name: "Gaming Kingdom",
-    category: "Real-Time WebSocket Gaming Portal",
-    tagline: "High-concurrency multiplayer hub with bi-directional socket sync.",
-    problem:
-      "Web gaming hubs frequently suffered from socket latency spikes, UI stutter during high player concurrency, and clunky social leaderboard updates.",
-    solution:
-      "Architected a low-latency socket engine paired with an aggressive frontend caching layer, live score streaming, and an arcade-inspired responsive UI.",
-    outcome:
-      "Demonstrated resilient real-time state synchronization under concurrent WebSocket messaging with responsive client rendering.",
-    technologies: ["React 19", "Node.js", "Socket.io", "PostgreSQL", "Tailwind CSS", "Web Audio API"],
-    demoUrl: "/projects/gaming-kingdom",
-    githubUrl: "https://github.com/aevionstudio",
-    status: "SHIPPED & LIVE",
-    accentColor: "#34d399",
-    icon: Gamepad2,
-  },
-  {
     id: "house-of-petalss",
-    number: "04",
+    number: "03",
     name: "House of Petalss",
     category: "E-Commerce & Florist Platform",
     tagline: "Interactive flower boutique booking & digital storefront in Ooty.",
@@ -109,7 +90,7 @@ const CASE_STUDIES: CaseStudy[] = [
   },
   {
     id: "aevion-studio-os",
-    number: "05",
+    number: "04",
     name: "Aevion Studio OS",
     category: "Brand Motion & Experimental Lab",
     tagline: "The studio's flagship interactive operating system & 3D sandbox.",

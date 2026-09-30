@@ -76,7 +76,7 @@ export default function ResumePage() {
 
         <AevionText
           variant="paragraph"
-          text="Co-founded by Sai Rio and Edison. Architected from scratch by Sai Rio: specialized in Next.js 16, React 19, high-throughput Groq LLM pipelines, and GPU creative engineering."
+          text="Founded and architected from scratch by Sai Rio: specialized in Next.js 16, React 19, high-throughput Groq LLM pipelines, and GPU creative engineering."
           className="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed text-center print:text-zinc-700 print:text-xs print:mx-0"
           delay={0.15}
         />

@@ -47,7 +47,7 @@ export default function CommandPalette() {
     },
     {
       id: "about",
-      title: "Founders Dossier // Sai Rio & Edison",
+      title: "Leadership Dossier // Studio Core",
       category: "Navigation",
       icon: User,
       shortcut: "A",

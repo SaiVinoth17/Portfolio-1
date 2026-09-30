@@ -123,11 +123,11 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
     {
       id: "initial-aevion-composer-msg",
       sender: "ai",
-      text: "AEVION INTELLIGENCE ONLINE\n\n*\"Two builders. One vision. Technology without limits.\"*\n\nWhat are we building?",
+      text: "AEVION INTELLIGENCE ONLINE\n\n*\"Engineering without compromise. Technology without limits.\"*\n\nWhat are we building?",
       suggestedFollowUps: [
         "EXPLORE AEVION",
         "ENTER THE LAB",
-        "MEET THE BUILDERS",
+        "MEET THE ARCHITECT",
         "CHALLENGE THE INTELLIGENCE",
       ],
       timestamp: "ONLINE",
@@ -345,7 +345,7 @@ export function AIChat9({ className = "", initialPrompt = "", onClose }: AIChat9
                 STUDIO OS
               </span>
             </div>
-            <p className="text-[10px] text-zinc-400 font-mono">Two builders • One vision • Technology without limits</p>
+            <p className="text-[10px] text-zinc-400 font-mono">Engineering without compromise • Technology without limits</p>
           </div>
         </div>
 

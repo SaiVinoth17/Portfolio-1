@@ -107,10 +107,10 @@ const DYNAMIC_PLACEHOLDERS = [
 const INITIAL_MESSAGE: Message = {
   id: "initial-aevion-system-msg",
   sender: "ai",
-  text: "AEVION INTELLIGENCE ONLINE\n\n*\"Two builders. One vision. Technology without limits.\"*\n\nWhat are we building?",
+  text: "AEVION INTELLIGENCE ONLINE\n\n*\"Engineering without compromise. Technology without limits.\"*\n\nWhat are we building?",
   suggestedFollowUps: [
     "Explore Aevion",
-    "Meet the founders",
+    "Studio Leadership",
     "What are we building?",
     "Enter the lab",
   ],
@@ -401,14 +401,6 @@ export function AevionAI() {
         tags: ["WebGL Shaders", "GSAP 3", "Stripe API", "60 FPS"],
       };
     }
-    if (q.includes("gaming") || q.includes("kingdom")) {
-      return {
-        title: "Gaming Kingdom",
-        description:
-          "High-concurrency real-time multiplayer gaming hub engineered with sub-15ms WebSockets and arcade UI architecture.",
-        tags: ["WebSockets", "Socket.io", "React 19", "High Concurrency"],
-      };
-    }
     return undefined;
   };
 
@@ -450,7 +442,7 @@ export function AevionAI() {
       .join("\n\n---\n\n");
     const blob = new Blob(
       [
-        `# Aevion Intelligence Session Log\n*Generated: ${new Date().toISOString()}*\n*Two builders. One vision. Technology without limits.*\n\n---\n\n${chatText}`,
+        `# Aevion Intelligence Session Log\n*Generated: ${new Date().toISOString()}*\n*Engineering without compromise. Technology without limits.*\n\n---\n\n${chatText}`,
       ],
       { type: "text/markdown" }
     );
@@ -533,14 +525,14 @@ export function AevionAI() {
         isErrorResponse = true;
         setAiStatus("INTELLIGENCE INTERRUPTED");
         responseText = `INTELLIGENCE INTERRUPTED\n\n${data?.details || data?.error || "Unable to complete the intelligence query."}\n\nSelect **Retry** or issue a refined command.`;
-        followUps = ["Meet the founders", "What are we building?", "Explore our projects"];
+        followUps = ["Studio Leadership", "What are we building?", "Explore our projects"];
       } else {
         responseText = data.text || "Aevion Intelligence ready. State your objective.";
-        followUps = data.suggestedFollowUps || ["Explore Aevion", "Meet the founders", "What are we building?"];
+        followUps = data.suggestedFollowUps || ["Explore Aevion", "Studio Leadership", "What are we building?"];
         isFounders = Boolean(
           data.isFoundersCard ||
-            (responseText.includes("Sai Rio") && responseText.includes("Edison")) ||
-            /founder|founders|meet the founders|who created|who is sai|who is edison/i.test(promptToSend)
+            responseText.includes("Sai Rio") ||
+            /founder|founders|leadership|who created|who is sai/i.test(promptToSend)
         );
         setAiStatus("GENERATING");
       }
@@ -636,18 +628,6 @@ export function AevionAI() {
         github: "https://github.com/SaiVinoth17",
         color: "#34d399",
       },
-      {
-        id: "edison",
-        name: "Edison",
-        role: "CO-FOUNDER",
-        discipline: "Studio Foundation • Digital Vision • Strategy",
-        focus:
-          "Co-founder of Aevion Studio, partnering in studio foundation, digital vision, and strategic direction.",
-        quote: "Great studios are built on singular conviction. When vision and engineering align without friction, ambitious ideas turn into enduring reality.",
-        tags: ["Studio Foundation", "Digital Strategy", "Brand Direction", "Co-Founder"],
-        github: "https://github.com/edisonedi84431-art",
-        color: "#38bdf8",
-      },
     ];
 
     return (
@@ -656,15 +636,15 @@ export function AevionAI() {
           <div className="flex items-center gap-2">
             <Users size={13} className="text-emerald-400" />
             <span className="text-[11px] font-mono tracking-wider text-emerald-400 font-bold uppercase">
-              Aevion Co-Founders Matrix
+              Aevion Studio Leadership
             </span>
           </div>
           <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">
-            Equal Standing
+            Studio Core
           </span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3">
           {founders.map((f) => (
             <div
               key={f.id}
@@ -951,7 +931,7 @@ export function AevionAI() {
                       </div>
                     </div>
                     <div className="text-[9px] font-mono text-zinc-500 tracking-wide">
-                      Two Builders • One Vision • Studio AI Layer
+                      Studio Core • Intelligence Layer
                     </div>
                   </div>
                 </div>
@@ -1076,7 +1056,7 @@ export function AevionAI() {
                       </h2>
 
                       <p className="text-[12px] text-zinc-400 max-w-[340px] leading-relaxed mt-2">
-                        Direct intelligence uplink to Aevion Studio. Explore systems architecture, our co-founders, or start an experiment.
+                        Direct intelligence uplink to Aevion Studio. Explore systems architecture, our studio leadership, or start an experiment.
                       </p>
 
                       {/* Contextual Prompt Matrix Chips */}

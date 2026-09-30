@@ -19,13 +19,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
-  description: "Aevion is an AI & experimental technology studio founded by Sai Rio and Edison. Two builders. One vision. Technology without limits.",
+  title: "Aevion — Futuristic Technology & AI Studio",
+  description: "Aevion is an AI & experimental technology studio building autonomous AI systems, resilient cloud platforms, and cinematic WebGL interfaces. Technology without limits.",
   keywords: [
     "Aevion",
     "Aevion Studio",
     "Sai Rio",
-    "Edison",
     "AI Software Studio",
     "Futuristic Technology Lab",
     "Digital Engineering",
@@ -35,16 +34,16 @@ export const metadata = {
     "Creative Web Engineering",
     "Nilgiris Explorers",
     "Ooty Mistwings",
-    "Gaming Kingdom"
+    "House of Petalss"
   ],
-  authors: [{ name: "Sai Rio" }, { name: "Edison" }, { name: "Aevion Studio" }],
+  authors: [{ name: "Sai Rio" }, { name: "Aevion Studio" }],
   metadataBase: new URL("https://www.aevionstudio.in"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
-    description: "Two builders. One vision. Technology without limits. Engineering autonomous AI, high-throughput systems, and next-generation software.",
+    title: "Aevion — Futuristic Technology & AI Studio",
+    description: "Engineering autonomous AI, high-throughput systems, and next-generation software. Technology without limits.",
     url: "https://www.aevionstudio.in",
     siteName: "Aevion Studio",
     locale: "en_US",
@@ -60,8 +59,8 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Aevion — Futuristic Technology & AI Studio | Sai Rio & Edison",
-    description: "Two builders. One vision. Technology without limits. Engineering autonomous AI, high-throughput systems, and next-generation software.",
+    title: "Aevion — Futuristic Technology & AI Studio",
+    description: "Engineering autonomous AI, high-throughput systems, and next-generation software. Technology without limits.",
     images: ["/og-image.jpg"],
   },
   icons: {
@@ -94,17 +93,10 @@ export default function RootLayout({ children }) {
             "jobTitle": "Founder & Lead Engineer",
             "sameAs": "https://github.com/SaiVinoth17",
             "knowsAbout": ["Full Stack Development", "Systems Architecture", "AI/ML Engineering", "Next.js", "Cloud Backends"]
-          },
-          {
-            "@type": "Person",
-            "name": "Edison",
-            "jobTitle": "Co-Founder",
-            "sameAs": "https://github.com/edisonedi84431-art",
-            "knowsAbout": ["Studio Operations", "Digital Strategy", "Brand Direction", "Product Strategy"]
           }
         ],
-        "description": "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Founded by Sai Rio and Edison. Conceived and engineered from scratch by Sai Rio.",
-        "sameAs": ["https://github.com/SaiVinoth17", "https://github.com/edisonedi84431-art", "https://github.com/aevionstudio"],
+        "description": "An elite technology studio building autonomous AI systems, resilient software products, high-performance web experiences, and experimental digital architectures. Conceived and engineered from scratch by Sai Rio.",
+        "sameAs": ["https://github.com/SaiVinoth17", "https://github.com/aevionstudio"],
         "address": {
           "@type": "PostalAddress",
           "addressRegion": "Tamil Nadu",
@@ -124,16 +116,6 @@ export default function RootLayout({ children }) {
         "name": "Sai Rio (Sai Vinoth)",
         "jobTitle": "Founder & Lead Engineer",
         "sameAs": "https://github.com/SaiVinoth17",
-        "worksFor": {
-          "@id": "https://www.aevionstudio.in/#organization"
-        }
-      },
-      {
-        "@type": "Person",
-        "@id": "https://www.aevionstudio.in/#edison",
-        "name": "Edison",
-        "jobTitle": "Co-Founder",
-        "sameAs": "https://github.com/edisonedi84431-art",
         "worksFor": {
           "@id": "https://www.aevionstudio.in/#organization"
         }

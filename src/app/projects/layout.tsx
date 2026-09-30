@@ -5,12 +5,11 @@ import { getBreadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = constructMetadata({
   title: "Selected Systems & Architecture Projects",
   description:
-    "Explore production-grade software architectures, AI systems, interactive gaming portals, and digital platforms engineered by Aevion Studio.",
+    "Explore production-grade software architectures, AI systems, interactive digital storefronts, and web platforms engineered by Aevion Studio.",
   path: "/projects",
   keywords: [
     "Aevion Studio Projects",
     "Nilgiris Explorers",
-    "The Gaming Kingdom",
     "House of Petalss",
     "Aevion Studio OS",
     "Ooty Mistwings",

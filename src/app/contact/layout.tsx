@@ -5,14 +5,13 @@ import { getBreadcrumbSchema } from "@/lib/seo/schema";
 export const metadata: Metadata = constructMetadata({
   title: "Initiate Project Brief & Engineering Inquiries",
   description:
-    "Partner with Aevion Studio founders Sai Vinoth and Edison. Submit your technical project brief for autonomous AI systems, custom SaaS, and immersive web platforms.",
+    "Partner with Aevion Studio. Submit your technical project brief for autonomous AI systems, custom SaaS, and immersive web platforms.",
   path: "/contact",
   keywords: [
     "Contact Aevion Studio",
     "Hire AI Studio",
     "Request Project Proposal",
     "Sai Vinoth Contact",
-    "Edison Contact",
   ],
 });
 
