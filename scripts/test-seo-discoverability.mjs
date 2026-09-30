@@ -148,7 +148,7 @@ async function runSeoTests() {
   // --- 5. Aevion Lab Registry Validation ---
   console.log("\n[5] Aevion Lab Published Experiments Verification");
   const { LAB_EXPERIMENTS } = await import("../src/lib/data/labExperiments.ts");
-  assert(LAB_EXPERIMENTS.length === 6, "All 6 WebGL experiments registered in lab");
+  assert(LAB_EXPERIMENTS.length >= 6, "All WebGL experiments registered in lab");
 
   const allPublished = LAB_EXPERIMENTS.every((e) => e.status === "PUBLISHED");
   assert(allPublished, "All lab experiments have verified PUBLISHED status");

@@ -7,7 +7,18 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/admin", "/admin/", "/api/"],
+        disallow: ["/admin", "/admin/", "/api/admin/", "/api/"],
+      },
+      {
+        userAgent: [
+          "GPTBot",
+          "ChatGPT-User",
+          "Google-Extended",
+          "ClaudeBot",
+          "PerplexityBot",
+        ],
+        allow: ["/", "/llms.txt"],
+        disallow: ["/admin/", "/api/"],
       },
     ],
     sitemap: `${PRODUCTION_DOMAIN}/sitemap.xml`,
